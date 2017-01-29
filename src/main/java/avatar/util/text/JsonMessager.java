@@ -22,14 +22,22 @@ public class JsonMessager {
         ActionCommand(String s){this.string = s;}
     }
 
+    public static PacketPlayOutChat getChatPacket(String message, ActionCommand actionCommand, String actionValue, String hoverText){
+        IChatBaseComponent component = IChatBaseComponent.ChatSerializer.a(generateJsonString(message, actionCommand.string, actionValue, hoverText));
+        return new PacketPlayOutChat(component);
+    }
+
+    public static void sendMessage(Player player, PacketPlayOutChat packet){
+        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
+    }
+
     public static void sendMessage(Player player, String message, ActionCommand actionCommand, String actionValue, String hoverText){
         sendMessage(player, generateJsonString(message, actionCommand.string, actionValue, hoverText));
     }
 
     public static void sendMessage(Player player, String message){
         IChatBaseComponent component = IChatBaseComponent.ChatSerializer.a(message);
-        PacketPlayOutChat packet = new PacketPlayOutChat(component);
-        ((CraftPlayer)player).getHandle().playerConnection.sendPacket(packet);
+        sendMessage(player, new PacketPlayOutChat(component));
     }
 
     public static String generateJsonString(String message, String actionCommand, String actionValue, String hoverText){

@@ -1,27 +1,22 @@
 package avatar.game.dialogue.core.displayable;
 
 import avatar.Avatar;
-import avatar.event.custom.DialogueEvent;
+import avatar.events.custom.DialogueEvent;
 import avatar.game.dialogue.core.actions.DialogueAction;
 import avatar.game.dialogue.core.conditions.Condition;
 import avatar.game.user.UserPlayer;
-import avatar.util.text.AltCodes;
-import avatar.util.text.Messager;
-import org.spongepowered.api.Sponge;
-import org.spongepowered.api.command.CommandSource;
+import avatar.manager.DialogueManager;
+import avatar.manager.ListenerManager;
+import avatar.util.text.JsonMessager;
+import net.minecraft.server.v1_11_R1.PacketPlayOutChat;
+import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.spongepowered.api.event.cause.Cause;
-import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.action.TextActions;
-import org.spongepowered.api.text.format.TextColors;
-import org.spongepowered.api.text.format.TextStyles;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.function.Consumer;
 
-public class Choice implements Consumer<CommandSource>{
+public class Choice extends ChoiceCallback{
 
     /*
      * This is a clickable choice that is linked to an action
@@ -30,51 +25,31 @@ public class Choice implements Consumer<CommandSource>{
 
     private List<DialogueAction> actions;
     private List<Condition> conditions;
-    private String sentence;
+    private PacketPlayOutChat sentence;
     private Player player;
     private String id;
-    private Optional<String> hover = Optional.empty();
 
-    public Choice(String text, String hover, String id, Player player, DialogueAction... action){
-        this.sentence = text;
+    public Choice(String text, String hover, String choiceID, Player player, DialogueAction... action){
+        super(DialogueManager.getGroupID(), choiceID);
         this.actions = Arrays.asList(action);
-        if(hover != null){
-            this.hover = Optional.of(hover);
-        }
-        this.id = id;
-
-        if(this.hover.isPresent()){
-            sentence = Text.builder().append(Text.of(TextColors.GREEN, TextStyles.BOLD, AltCodes.ARROW_RIGHT.getSign() + " "), sentence)
-                    .onClick(TextActions.executeCallback(this)).onHover(TextActions.showText(this.hover.get())).build();
-        } else {
-            sentence = Text.builder().append(Text.of(TextColors.GOLD, TextStyles.BOLD, AltCodes.ARROW_RIGHT.getSign() + " "), sentence)
-                    .onClick(TextActions.executeCallback(this)).build();
-        }
-
+        this.id = choiceID;
+        sentence = JsonMessager.getChatPacket(text, JsonMessager.ActionCommand.COMMAND, "/choice " + getGroupID() + "." + id, hover);
         this.player = player;
     }
 
     public void display(Player player) {
-        Messager.sendMessage(player, sentence, Optional.<Messager.Prefix>empty());
-    }
-
-    public List<DialogueAction> getAction() {
-        return actions;
-    }
-
-    public String getSentence() {
-        return sentence;
+        JsonMessager.sendMessage(player, sentence);
     }
 
     @Override
-    public void accept(CommandSource commandSource) {
+    public boolean handle() {
         Optional<UserPlayer> temp = Avatar.INSTANCE.getUserManager().findUserPlayer(this.player);
         if(temp.isPresent() && temp.get().getCurrentDialogue() != null && temp.get().getCurrentDialogue().hasChoiceID(this.id)) {
             if(conditions != null){
                 for(Condition condition: conditions){
                     if(!condition.isValid(player)){
                         condition.sendErrorMessage(player);
-                        return;
+                        return false;
                     }
                 }
             }
@@ -84,9 +59,10 @@ public class Choice implements Consumer<CommandSource>{
             for (DialogueAction action : this.actions)
                 action.doWork(player);
 
-            Sponge.getEventManager().post(new DialogueEvent.ChoiceClicked(Cause.source(Avatar.INSTANCE.getPluginContainer()).build(), this.getId(), temp.get()));
+            Bukkit.getServer().getPluginManager().callEvent(new DialogueEvent.ChoiceClicked(ListenerManager.getDefaultCause(), this.getId(), temp.get()));
+            return true;
         }
-
+        return false;
     }
 
     public String getId() {

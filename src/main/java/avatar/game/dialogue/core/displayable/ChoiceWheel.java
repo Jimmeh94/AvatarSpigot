@@ -1,6 +1,7 @@
 package avatar.game.dialogue.core.displayable;
 
 import avatar.game.dialogue.core.conditions.Condition;
+import avatar.manager.DialogueManager;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -18,6 +19,7 @@ public class ChoiceWheel implements Displayable {
 
     public ChoiceWheel(Choice... choices){
         this.choices = Arrays.asList(choices);
+        DialogueManager.incrementID();
     }
 
     public ChoiceWheel addConditions(List<Condition> condition){

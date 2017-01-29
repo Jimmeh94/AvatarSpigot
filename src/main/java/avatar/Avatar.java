@@ -1,5 +1,6 @@
 package avatar;
 
+import avatar.commands.ChoiceCommands;
 import avatar.game.dialogue.core.DialogueBuilder;
 import avatar.game.quest.builder.QuestBuilder;
 import avatar.manager.AreaManager;
@@ -28,6 +29,17 @@ public class Avatar extends JavaPlugin {
         INSTANCE = this;
 
         getLogger().info(">> " + getDescription().getName() + " v" + getDescription().getVersion() + " enabled! <<");
+
+        registerListeners();
+        registerCommands();
+    }
+
+    private void registerListeners() {
+
+    }
+
+    private void registerCommands() {
+        getCommand("choice").setExecutor(new ChoiceCommands());
     }
 
     @Override
