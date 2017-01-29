@@ -1,8 +1,7 @@
 package avatar.util.particles.effects;
 
 import avatar.util.misc.LocationUtils;
-import com.flowpowered.math.vector.Vector3d;
-import org.spongepowered.api.world.Location;
+import org.bukkit.Location;
 
 import java.util.List;
 
@@ -30,9 +29,9 @@ public class LineEffect extends AbstractEffect {
 		}
 		if(display < draw.size() - 1)
 			display++;*/
-		Vector3d v = target.getPosition().sub(effectData.getCenter().getPosition());
+		Location  v = target.subtract(effectData.getCenter());
 		for (double i = 0; i < v.length(); i += 0.5) {
-			Location loc = effectData.getCenter().copy().add(v.clone().normalize().mul(i));
+			Location loc = effectData.getCenter().clone().add(v.clone().multiply(i));
 			effectData.setDisplayAt(loc);
 			playParticle();
 		}

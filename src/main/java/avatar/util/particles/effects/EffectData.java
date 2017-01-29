@@ -5,8 +5,8 @@ import avatar.game.user.User;
 import avatar.game.user.UserPlayer;
 import avatar.util.misc.Vector;
 import org.bukkit.Location;
-
-import java.util.List;
+import org.bukkit.Particle;
+import org.bukkit.scheduler.BukkitTask;
 
 public class EffectData {
 
@@ -17,16 +17,13 @@ public class EffectData {
     private Location center, displayAt;
     private UserPlayer owner;
     private int amount = 10;
-    protected ParticleType particle = ParticleTypes.FLAME;
+    protected Particle particle = Particle.FLAME;
     private double xOffset = 0, yOffset = 0, zOffset = 0;
-    private Scheduler scheduler = Sponge.getScheduler();
-    private Task.Builder taskBuilder = scheduler.createTaskBuilder();
-    private Task task;
+    private BukkitTask task;
     private long delay = 0, interval = 5, cancel = 1; //cancel is currently how many ticks, not how many intervals have passed
     private IPlayParticles playParticles;
     private boolean randomizeOffsets;
-    private List<ParticleOption> particleOptions;
-    private Vector.Vector.Vector3D velocity;
+    private Vector.Vector3D velocity;
     private double displayRadius;
     private Area displayArea;
 
@@ -44,7 +41,6 @@ public class EffectData {
         this.cancel = builder.cancel;
         this.playParticles = builder.playParticles;
         this.randomizeOffsets = builder.randomizeOffsets;
-        this.particleOptions = builder.particleOptions;
         this.velocity = builder.velocity;
         this.displayRadius = builder.displayRadius;
         this.displayArea = builder.displayArea;
@@ -55,7 +51,7 @@ public class EffectData {
         return this;
     }
 
-    public EffectData setTask(Task task) {
+    public EffectData setBukkitTask(BukkitTask task) {
         this.task = task;
         return this;
     }
@@ -80,7 +76,7 @@ public class EffectData {
         return this;
     }
 
-    public EffectData setParticle(ParticleType particle) {
+    public EffectData setParticle(Particle particle) {
         this.particle = particle;
         return this;
     }
@@ -120,7 +116,7 @@ public class EffectData {
         return amount;
     }
 
-    public ParticleType getParticle() {
+    public Particle getParticle() {
         return particle;
     }
 
@@ -136,15 +132,7 @@ public class EffectData {
         return zOffset;
     }
 
-    public Scheduler getScheduler() {
-        return scheduler;
-    }
-
-    public Task.Builder getTaskBuilder() {
-        return taskBuilder;
-    }
-
-    public Task getTask() {
+    public BukkitTask getBukkitTask() {
         return task;
     }
 
@@ -162,10 +150,6 @@ public class EffectData {
 
     public IPlayParticles getPlayParticles() {
         return playParticles;
-    }
-
-    public List<ParticleOption> getParticleOptions() {
-        return particleOptions;
     }
 
     public Vector.Vector3D getVelocity() {
@@ -191,11 +175,10 @@ public class EffectData {
         private UserPlayer owner;
         private long delay, interval, cancel; //cancel is currently how many ticks, not how many intervals have passed
         private int amount = 10;
-        protected ParticleType particle = ParticleTypes.FLAME;
+        protected Particle particle = Particle.FLAME;
         private double xOffset = 0, yOffset = 0, zOffset = 0;
         private IPlayParticles playParticles;
         private boolean randomizeOffsets = false;
-        private List<ParticleOption> particleOptions;
         private Vector.Vector3D velocity;
         private double displayRadius;
         private Area displayArea;
@@ -207,11 +190,6 @@ public class EffectData {
 
         public EffectDataBuilder displayArea(Area displayArea){
             this.displayArea = displayArea;
-            return this;
-        }
-
-        public EffectDataBuilder particleOptions(List<ParticleOption> particleOptions){
-            this.particleOptions = particleOptions;
             return this;
         }
 

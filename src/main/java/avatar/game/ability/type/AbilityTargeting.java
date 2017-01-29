@@ -10,6 +10,7 @@ import avatar.util.misc.LocationUtils;
 import avatar.util.particles.effects.EffectData;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Particle;
 import org.bukkit.scheduler.BukkitTask;
 
 /**
@@ -43,7 +44,7 @@ public abstract class AbilityTargeting extends Ability implements Runnable{
         this.speed = speed;
         this.target = setInitialTarget();
 
-        effectData = EffectData.builder().amount(50).center(getCenter()).particle(ParticleTypes.FLAME).build();
+        effectData = EffectData.builder().amount(50).center(getCenter()).particle(Particle.FLAME).build();
     }
 
     @Override

@@ -2,8 +2,8 @@ package avatar.game.ability.type;
 
 import avatar.game.ability.AbilityStage;
 import avatar.game.user.User;
-import org.spongepowered.api.entity.Entity;
-import org.spongepowered.api.world.Location;
+import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 
 public abstract class AbilityTargetingEntity extends AbilityTargeting {
 
@@ -17,7 +17,7 @@ public abstract class AbilityTargetingEntity extends AbilityTargeting {
     }
 
     private boolean entityValid(){
-        return !targetEntity.isRemoved() && targetEntity.isLoaded();
+        return !targetEntity.isDead() && targetEntity.isValid();
     }
 
     @Override

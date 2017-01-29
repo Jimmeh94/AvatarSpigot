@@ -2,8 +2,9 @@ package avatar.util.particles.effects;
 
 
 import avatar.Avatar;
-import com.flowpowered.math.vector.Vector3d;
-import org.spongepowered.api.scheduler.Task;
+import avatar.util.misc.Vector;
+import org.bukkit.Bukkit;
+import org.bukkit.scheduler.BukkitTask;
 
 public abstract class AbstractEffect {
 
@@ -24,9 +25,8 @@ public abstract class AbstractEffect {
 	 * @return The current instance of the effect to allow chaining of methods.
 	 */
 	public AbstractEffect start() {
-		Task task;
-		Task.Builder taskBuilder = effectData.getTaskBuilder();
-		task = taskBuilder.delayTicks(effectData.getDelay()).intervalTicks(effectData.getInterval()).execute(
+		BukkitTask task = Bukkit.getScheduler().runTaskTimer(Avatar.INSTANCE,
+
 				new Runnable() {
 					int c = 0;
 
@@ -38,8 +38,8 @@ public abstract class AbstractEffect {
 							stop();
 					}
 				}
-		).submit(Avatar.INSTANCE);
-		effectData.setTask(task);
+		, effectData.getInterval(), effectData.getDelay());
+		effectData.setBukkitTask(task);
 		return this;
 	}
 
@@ -50,12 +50,11 @@ public abstract class AbstractEffect {
 	 *         methods.
 	 */
 	public AbstractEffect stop() {
-		Task task = effectData.getTask();
+		BukkitTask task = effectData.getBukkitTask();
 		if (task == null)
 			return this;
 		try {
 			task.cancel();
-			task = null;
 		} catch (IllegalStateException exc) {
 		}
 		return this;
@@ -72,25 +71,25 @@ public abstract class AbstractEffect {
 		return effectData;
 	}
 
-	protected Vector3d rotateAroundAxisX(Vector3d v, double angle) {
+	protected Vector.Vector3D rotateAroundAxisX(Vector.Vector3D  v, double angle) {
 		angle = Math.toRadians(angle);
 		double y, z, cos, sin;
 		cos = Math.cos(angle);
 		sin = Math.sin(angle);
 		y = v.getY() * cos - v.getZ() * sin;
 		z = v.getY() * sin + v.getZ() * cos;
-		return new Vector3d(v.getX(), y, z);
+		return new Vector.Vector3D (v.getX(), y, z);
 		//return v.set(y).setZ(z);
 	}
 
-	protected Vector3d rotateAroundAxisY(Vector3d v, double angle) {
+	protected Vector.Vector3D  rotateAroundAxisY(Vector.Vector3D  v, double angle) {
 		angle = Math.toRadians(angle);
 		double x, z, cos, sin;
 		cos = Math.cos(angle);
 		sin = Math.sin(angle);
 		x = v.getX() * cos + v.getZ() * sin;
 		z = v.getX() * -sin + v.getZ() * cos;
-		return new Vector3d(x, v.getY(), z);
+		return new Vector.Vector3D (x, v.getY(), z);
 		//return v.setX(x).setZ(z);
 	}
 
@@ -101,9 +100,9 @@ public abstract class AbstractEffect {
 		return new float[] { v.getYaw(), loc.getPitch() };
 	}*/
 
-	public Vector3d yawPitchToVector(float yaw, float pitch) {
+	public Vector.Vector3D  yawPitchToVector(float yaw, float pitch) {
 		yaw += 90;
-		return new Vector3d(Math.cos(Math.toRadians(yaw)), Math.sin(Math.toRadians(pitch)),
+		return new Vector.Vector3D (Math.cos(Math.toRadians(yaw)), Math.sin(Math.toRadians(pitch)),
 				Math.sin(Math.toRadians(yaw)));
 	}
 

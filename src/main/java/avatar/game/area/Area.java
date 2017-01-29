@@ -1,11 +1,14 @@
 package avatar.game.area;
 
+import avatar.events.custom.AreaEvent;
 import avatar.game.ability.type.Ability;
 import avatar.game.chat.channel.ChatChannel;
 import avatar.game.user.User;
 import avatar.game.user.UserPlayer;
 import avatar.manager.AbilityManager;
+import avatar.manager.ListenerManager;
 import avatar.util.misc.LocationUtils;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
 import java.util.ArrayList;
@@ -161,8 +164,7 @@ public class Area {
                 ((UserPlayer)targetEntity).getPlayer().sendMessage("Entering " + displayName);
             }
 
-            AreaEvent event = new AreaEvent.Enter(targetEntity, this, ListenerManager.getDefaultCause());
-            Sponge.getEventManager().post(event);
+            Bukkit.getPluginManager().callEvent(new AreaEvent.Enter(targetEntity, this, ListenerManager.getDefaultCause()));
         }
     }
 
@@ -179,8 +181,7 @@ public class Area {
                 ((UserPlayer)targetEntity).getPlayer().get().sendMessage(Text.builder().append(Text.of("Leaving ")).append(displayName).build());
             }*/
 
-            AreaEvent event = new AreaEvent.Exit(targetEntity, targetEntity.getPresentArea(), ListenerManager.getDefaultCause());
-            Sponge.getEventManager().post(event);
+            Bukkit.getPluginManager().callEvent(new AreaEvent.Exit(targetEntity, targetEntity.getPresentArea(), ListenerManager.getDefaultCause()));
         }
     }
 

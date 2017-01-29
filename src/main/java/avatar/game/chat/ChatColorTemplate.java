@@ -1,29 +1,28 @@
 package avatar.game.chat;
 
-import org.spongepowered.api.text.format.TextColor;
-import org.spongepowered.api.text.format.TextColors;
+import org.bukkit.ChatColor;
 
 public class ChatColorTemplate{
 
-    public static final ChatColorTemplate GRAY = new ChatColorTemplate(TextColors.GRAY, TextColors.GRAY, TextColors.GRAY);
+    public static final ChatColorTemplate GRAY = new ChatColorTemplate(ChatColor.GRAY, ChatColor.GRAY, ChatColor.GRAY);
 
-    private TextColor prefix, name, message;
+    private ChatColor prefix, name, message;
 
-    ChatColorTemplate(TextColor... colors){
+    ChatColorTemplate(ChatColor... colors){
         this.prefix = colors[0];
         this.name = colors[1];
         this.message = colors[2];
     }
 
-    public TextColor getPrefix() {
+    public ChatColor getPrefix() {
         return prefix;
     }
 
-    public TextColor getName() {
+    public ChatColor getName() {
         return name;
     }
 
-    public TextColor getMessage() {
+    public ChatColor getMessage() {
         return message;
     }
 }

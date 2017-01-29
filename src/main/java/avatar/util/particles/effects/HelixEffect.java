@@ -41,7 +41,7 @@ public class HelixEffect extends AbstractEffect {
 						+ (circleCoordinates - 1 - ((spinner) % circleCoordinates))) % circleCoordinates];
 				effectData.setDisplayAt(effectData.getCenter().add(array[0], array[1], array[2]));
 				playParticle();
-				effectData.getCenter().sub(array[0], array[1], array[2]);
+				effectData.getCenter().subtract(array[0], array[1], array[2]);
 			}
 			i++;
 		}

@@ -1,6 +1,6 @@
 package avatar.util.particles.effects;
 
-import org.spongepowered.api.world.Location;
+import org.bukkit.Location;
 
 public class TestEffect extends AbstractEffect {
 
@@ -10,7 +10,7 @@ public class TestEffect extends AbstractEffect {
 
     @Override
     public void play() {
-        Location at = effectData.getCenter().copy();
+        Location at = effectData.getCenter().clone();
         for(int i = 0; i < 50; i++){
             at = at.add(0.1, 0, 0);
             effectData.setDisplayAt(at);

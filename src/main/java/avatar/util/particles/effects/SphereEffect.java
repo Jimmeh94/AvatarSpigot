@@ -32,7 +32,7 @@ public class SphereEffect extends AbstractEffect {
 			for (int i2 = 0; i2 < sphereCoordinates[i].length; i2++) {
 				effectData.setDisplayAt(effectData.getCenter().add(sphereCoordinates[i][i2][0], sphereCoordinates[i][i2][1], sphereCoordinates[i][i2][2]));
 				playParticle();
-				effectData.getCenter().sub(sphereCoordinates[i][i2][0], sphereCoordinates[i][i2][1], sphereCoordinates[i][i2][2]);
+				effectData.getCenter().subtract(sphereCoordinates[i][i2][0], sphereCoordinates[i][i2][1], sphereCoordinates[i][i2][2]);
 			}
 	}
 

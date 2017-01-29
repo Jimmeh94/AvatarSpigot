@@ -1,6 +1,7 @@
 package avatar.util.particles.effects;
 
-import org.spongepowered.api.world.Location;
+
+import org.bukkit.Location;
 
 public interface IPlayParticles {
 
