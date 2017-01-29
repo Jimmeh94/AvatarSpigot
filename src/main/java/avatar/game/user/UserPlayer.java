@@ -1,12 +1,17 @@
 package avatar.game.user;
 
 import avatar.Avatar;
+import avatar.events.custom.DialogueEvent;
 import avatar.game.area.Area;
 import avatar.game.area.AreaReferences;
 import avatar.game.chat.ChatColorTemplate;
 import avatar.game.chat.channel.ChatChannel;
+import avatar.game.dialogue.core.Dialogue;
+import avatar.game.dialogue.core.DialogueReference;
+import avatar.game.quest.PlayerQuestManager;
 import avatar.game.user.scoreboard.Scoreboard;
 import avatar.game.user.stats.IStatsPreset;
+import avatar.manager.ListenerManager;
 import avatar.util.misc.LocationUtils;
 import avatar.util.particles.ParticleUtils;
 import org.bukkit.Bukkit;
@@ -133,7 +138,7 @@ public class UserPlayer extends User {
     public void startDialogue() {
         currentDialogue.displayNext();
 
-        Sponge.getEventManager().post(new DialogueEvent.Displayed(Cause.source(Avatar.INSTANCE.getPluginContainer()).build(), this));
+        Bukkit.getPluginManager().callEvent(new DialogueEvent.Displayed(ListenerManager.getDefaultCause(), this));
     }
 
     public void updateScoreboard() {

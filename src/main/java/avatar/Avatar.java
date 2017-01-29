@@ -1,5 +1,7 @@
 package avatar;
 
+import avatar.game.dialogue.core.DialogueBuilder;
+import avatar.game.quest.builder.QuestBuilder;
 import avatar.manager.AreaManager;
 import avatar.manager.ChatChannelManager;
 import avatar.manager.EconomyManager;
@@ -18,6 +20,8 @@ public class Avatar extends JavaPlugin {
 
     //misc
     private final int combatInterval = 5; //how many seconds out of combat needed to be switched to out of combat
+    private final QuestBuilder questBuilder = new QuestBuilder();
+    private final DialogueBuilder dialogueBuilder = new DialogueBuilder();
 
     @Override
     public void onEnable(){
@@ -49,5 +53,13 @@ public class Avatar extends JavaPlugin {
 
     public EconomyManager getEconomyManager() {
         return economyManager;
+    }
+
+    public QuestBuilder getQuestBuilder() {
+        return questBuilder;
+    }
+
+    public DialogueBuilder getDialogueBuilder() {
+        return dialogueBuilder;
     }
 }
