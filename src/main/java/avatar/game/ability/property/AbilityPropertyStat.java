@@ -3,7 +3,6 @@ package avatar.game.ability.property;
 import avatar.game.ability.AbilityStage;
 import avatar.game.ability.type.Ability;
 import avatar.game.user.stats.Stats;
-import org.spongepowered.api.text.Text;
 
 public abstract class AbilityPropertyStat extends AbilityProperty {
 
@@ -34,7 +33,7 @@ public abstract class AbilityPropertyStat extends AbilityProperty {
         }
 
         @Override
-        public Text getFailMessage() {
+        public String getFailMessage() {
             return null;
         }
     }
@@ -54,7 +53,7 @@ public abstract class AbilityPropertyStat extends AbilityProperty {
         }
 
         @Override
-        public Text getFailMessage() {
+        public String getFailMessage() {
             return null;
         }
     }

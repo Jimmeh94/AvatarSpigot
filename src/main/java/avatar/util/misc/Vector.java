@@ -54,6 +54,16 @@ public abstract class Vector<T> {
             z -= (Double)vector.getZ();
             return this;
         }
+        public double getFloorX(){
+            return Math.floor(x);
+        }
+        public double getFloorY(){
+            return Math.floor(y);
+        }
+
+        public double getFloorZ(){
+            return Math.floor(z);
+        }
     }
 
     public static class Vector3i extends Vector<Integer>{

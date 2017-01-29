@@ -2,7 +2,7 @@ package avatar.game.ability;
 
 import avatar.game.ability.type.Ability;
 import avatar.game.ability.type.Element;
-import org.spongepowered.api.item.inventory.ItemStack;
+import org.bukkit.inventory.ItemStack;
 
 public abstract class AbilityRepresentation {
 

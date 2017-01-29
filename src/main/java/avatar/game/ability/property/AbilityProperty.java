@@ -3,7 +3,6 @@ package avatar.game.ability.property;
 import avatar.game.ability.AbilityStage;
 import avatar.game.ability.type.Ability;
 import avatar.game.user.User;
-import org.spongepowered.api.text.Text;
 
 /**
  * For things like energy/chi cost,
@@ -39,7 +38,7 @@ public abstract class AbilityProperty{
     /**
      * Prints to the user why the action was unsuccessful, i.e. didn't have enough energy
      */
-    public abstract Text getFailMessage();
+    public abstract String getFailMessage();
 
 
     public boolean checkNow(AbilityStage stage) {

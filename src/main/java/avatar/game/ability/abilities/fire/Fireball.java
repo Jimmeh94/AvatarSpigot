@@ -12,8 +12,8 @@ import java.util.List;
 
 public class Fireball extends AbilityTargetingLocation {
 
-    public Fireball(User owner, double x, double y, double z, double speed, long interval) {
-        super(owner, x, y, z, speed, interval);
+    public Fireball(User owner,double speed, long interval) {
+        super(owner, speed, interval);
     }
 
     @Override

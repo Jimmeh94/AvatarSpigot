@@ -2,11 +2,10 @@ package avatar.util.misc;
 
 
 import avatar.util.text.AltCodes;
-import org.spongepowered.api.entity.Entity;
-import org.spongepowered.api.entity.living.player.Player;
-import org.spongepowered.api.text.Text;
-import org.spongepowered.api.text.format.TextColors;
-import org.spongepowered.api.world.Location;
+import org.bukkit.ChatColor;
+import org.bukkit.Location;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
 public class PlayerDirection {
 
@@ -15,7 +14,7 @@ public class PlayerDirection {
      */
     public static String getCardinalDirection(Entity entity) {
 
-        double rotation = entity.getRotation().getY() % 360; //get x is pitch, get y is yaw
+        double rotation = entity.getLocation().getYaw() % 360;
         if (rotation < 0) {
             rotation += 360.0;
         }
@@ -43,25 +42,6 @@ public class PlayerDirection {
     }
 
     /*
-     * Gets the location of shift blocks in front of entity's location
-     */
-    public static Location getLocation(Entity entity, double shift){ //get a block x shift away
-        String direction = getCardinalDirection(entity);
-        //n = -z, s = z, w = -x, e = x
-        Location give = entity.getLocation();
-        if(direction.contains("n")){
-            give.add(0,0, shift * -1);
-        } if(direction.contains("e")){
-            give.add(shift,0,0);
-        } if(direction.contains("s")){
-            give.add(0,0,shift);
-        } if(direction.contains("w")){
-            give.add(shift * -1,0,0);
-        }
-        return give;
-    }
-
-    /*
      * Gets the string representation of the opposite direction of current direction
      */
     public static String reflect(String d){
@@ -82,7 +62,7 @@ public class PlayerDirection {
     /*
      * Returns arrow pointing towards the desired location. Used for quest-target-location tracker
      */
-    public static Text getDesiredDirection(Player player, Location target) {
+    public static String getDesiredDirection(Player player, Location target) {
         //n = -z, s = z, w = -x, e = x
         Location at = player.getLocation();
         String current = getCardinalDirection(player);
@@ -130,13 +110,13 @@ public class PlayerDirection {
             case 3: result = AltCodes.ARROW_LEFT.getSign();
         }
 
-        Text text;
+        String text;
         if(player.getLocation().getBlockY() < target.getBlockY()){
-           text = Text.builder().append(Text.of(TextColors.GREEN, result)).build();
+           text = ChatColor.GREEN + result;
         } else if(player.getLocation().getBlockY() > target.getBlockY()){
-            text = Text.builder().append(Text.of(TextColors.RED, result)).build();
+            text = ChatColor.RED +  result;
         } else {
-            text = Text.builder().append(Text.of(TextColors.GRAY, result)).build();
+            text = ChatColor.GRAY + result;
         }
         return text;
     }

@@ -2,12 +2,32 @@ package avatar.util.misc;
 
 
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class LocationUtils {
+
+    /*
+  * Gets the location of shift blocks in front of entity's location
+  */
+    public static Location getLocation(Entity entity, double shift){ //get a block x shift away
+        String direction = PlayerDirection.getCardinalDirection(entity);
+        //n = -z, s = z, w = -x, e = x
+        Location give = entity.getLocation().clone();
+        if(direction.contains("n")){
+            give.add(0,0, shift * -1);
+        } if(direction.contains("e")){
+            give.add(shift,0,0);
+        } if(direction.contains("s")){
+            give.add(0,0,shift);
+        } if(direction.contains("w")){
+            give.add(shift * -1,0,0);
+        }
+        return give;
+    }
 
     //the next step towards a certain target, adjusted by a scale
     public static Location getNextLocation(Location start, Location end, double scale){

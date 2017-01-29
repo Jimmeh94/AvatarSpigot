@@ -2,7 +2,6 @@ package avatar.game.ability.property;
 
 import avatar.game.ability.AbilityStage;
 import avatar.game.ability.type.Ability;
-import org.spongepowered.api.text.Text;
 
 /**
  * How long the ability lasts
@@ -37,7 +36,7 @@ public class AbilityPropertyDuration extends AbilityProperty {
     }
 
     @Override
-    public Text getFailMessage() {
+    public String getFailMessage() {
         return null;
     }
 }

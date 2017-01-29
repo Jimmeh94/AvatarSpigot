@@ -2,7 +2,6 @@ package avatar.game.ability.property;
 
 import avatar.game.ability.AbilityStage;
 import avatar.game.ability.type.Ability;
-import org.spongepowered.api.text.Text;
 
 /**
  * How far the ability can travel
@@ -24,7 +23,7 @@ public class AbilityPropertyBoundRange extends AbilityProperty {
     }
 
     protected boolean inRange(){
-        return range == INFINITE || ability.getCenter().getPosition().distance(ability.getFiredFrom().getPosition()) < range;
+        return range == INFINITE || ability.getCenter().distance(ability.getFiredFrom()) < range;
     }
 
     @Override
@@ -33,7 +32,7 @@ public class AbilityPropertyBoundRange extends AbilityProperty {
     }
 
     @Override
-    public Text getFailMessage() {
+    public String getFailMessage() {
         return null;
     }
 

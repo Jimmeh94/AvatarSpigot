@@ -2,9 +2,9 @@ package avatar.game.ability.type;
 
 import avatar.game.ability.property.AbilityPropertyBoundRange;
 import avatar.game.user.User;
-import org.spongepowered.api.util.blockray.BlockRay;
-import org.spongepowered.api.util.blockray.BlockRayHit;
-import org.spongepowered.api.world.Location;
+import org.bukkit.Location;
+import org.bukkit.entity.LivingEntity;
+import org.bukkit.util.BlockIterator;
 
 public abstract class AbilityTargetingLocation extends AbilityTargeting {
 
@@ -14,19 +14,17 @@ public abstract class AbilityTargetingLocation extends AbilityTargeting {
 
     @Override
     protected Location setInitialTarget() {
-        BlockRay blockRay;
-        if(((AbilityPropertyBoundRange)getProperty(AbilityPropertyBoundRange.class).get()).getRange() == -1){
+        double range = ((AbilityPropertyBoundRange)getProperty(AbilityPropertyBoundRange.class).get()).getRange();
+        if(range == -1){
             //If it's location based, it shouldn't be infinite
-            return getOwner().getEntity().get().getLocation();
+            return getOwner().getEntity().getLocation();
         } else {
-            blockRay = BlockRay.from(getOwner().getEntity().get())
-                    .distanceLimit(((AbilityPropertyBoundRange)getProperty(AbilityPropertyBoundRange.class).get()).getRange())
-                    .skipFilter(BlockRay.allFilter()).build();
+            BlockIterator blockIterator = new BlockIterator((LivingEntity)owner.getEntity(), (int)range);
+            Location give = null;
+            while(blockIterator.hasNext()){
+                give = blockIterator.next().getLocation();
+            }
+            return give;
         }
-
-        if(blockRay.end().isPresent()){
-           return ((BlockRayHit)blockRay.end().get()).getLocation();
-        }
-        return null;
     }
 }

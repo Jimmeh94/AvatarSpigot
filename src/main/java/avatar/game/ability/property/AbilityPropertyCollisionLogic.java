@@ -4,12 +4,12 @@ import avatar.Avatar;
 import avatar.game.ability.AbilityStage;
 import avatar.game.ability.type.Ability;
 import avatar.game.user.User;
+import avatar.util.misc.AABB;
 import avatar.util.misc.LocationUtils;
-import com.flowpowered.math.vector.Vector3d;
-import org.spongepowered.api.entity.Entity;
-import org.spongepowered.api.text.Text;
-import org.spongepowered.api.util.AABB;
-import org.spongepowered.api.world.Location;
+import avatar.util.misc.Vector;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,9 +64,9 @@ public abstract class AbilityPropertyCollisionLogic extends AbilityProperty {
             }
         }
 
-        public void adjustSurface(Vector3d vector3d){
+        public void adjustSurface(Vector.Vector3D vector3d){
             for(Location location: flatSurface){
-                location.add(vector3d);
+                location.add(vector3d.getX(), vector3d.getY(), vector3d.getZ());
             }
         }
 
@@ -79,19 +79,19 @@ public abstract class AbilityPropertyCollisionLogic extends AbilityProperty {
             if(ability.getProperty(CubeCollisionLogic.class).isPresent()){
                 CubeCollisionLogic logic = (CubeCollisionLogic) ability.getProperty(CubeCollisionLogic.class).get();
 
-                for(Vector3d vector3d: logic.getBoxLocations()){
+                for(Location vector3d: logic.getBoxLocations()){
                     if(domeDirection == DomeDirection.UP){
-                        if(vector3d.getFloorY() < this.ability.getCenter().getBlockY())
+                        if(vector3d.getBlockY() < this.ability.getCenter().getBlockY())
                             continue;
                         else {
-                            if(this.ability.getCenter().getPosition().distance(vector3d) <= radius)
+                            if(this.ability.getCenter().distance(vector3d) <= radius)
                                 return true;
                         }
                     } else if(domeDirection == DomeDirection.DOWN){
-                        if(vector3d.getFloorY() > this.ability.getCenter().getBlockY())
+                        if(vector3d.getBlockY() > this.ability.getCenter().getBlockY())
                             continue;
                         else {
-                            if(this.ability.getCenter().getPosition().distance(vector3d) <= radius)
+                            if(this.ability.getCenter().distance(vector3d) <= radius)
                                 return true;
                         }
                     }
@@ -102,13 +102,13 @@ public abstract class AbilityPropertyCollisionLogic extends AbilityProperty {
                 double full = logic.radius + radius;
                 //Full is the absolute furthest away they can be
 
-                if(ability.getCenter().getPosition().distance(this.ability.getCenter().getPosition()) <= full) {
+                if(ability.getCenter().distance(this.ability.getCenter()) <= full) {
                     if (domeDirection == DomeDirection.UP) {
                         //Meaning the dome's radius won't extend down
                         if (ability.getCenter().getBlockY() < this.ability.getCenter().getBlockY()) {
                             //this means the sphere is below the dome, meaning it can only be the sphere's radius away
                             for(Location location: flatSurface){
-                                if(ability.getCenter().getPosition().distance(location.getPosition()) <= logic.radius){
+                                if(ability.getCenter().distance(location) <= logic.radius){
                                     return true;
                                 }
                             }
@@ -118,7 +118,7 @@ public abstract class AbilityPropertyCollisionLogic extends AbilityProperty {
                     } else if (domeDirection == DomeDirection.DOWN) {
                         if (ability.getCenter().getBlockY() > this.ability.getCenter().getBlockY()) {
                             for(Location location: flatSurface){
-                                if(ability.getCenter().getPosition().distance(location.getPosition()) <= logic.radius){
+                                if(ability.getCenter().distance(location) <= logic.radius){
                                     return true;
                                 }
                             }
@@ -133,14 +133,14 @@ public abstract class AbilityPropertyCollisionLogic extends AbilityProperty {
 
                 if(domeDirection != logic.domeDirection){
                     //facing each other (opposite directions)
-                    if(ability.getCenter().getPosition().distance(this.ability.getCenter().getPosition()) <= full){
+                    if(ability.getCenter().distance(this.ability.getCenter()) <= full){
                         return true;
                     } else return false;
                 }
 
                 //We know they are facing the same direction
                 for(Location location: logic.flatSurface){
-                    if(location.getPosition().distance(this.ability.getCenter().getPosition()) <= radius){
+                    if(location.distance(this.ability.getCenter()) <= radius){
                         return true;
                     }
                 }
@@ -162,8 +162,8 @@ public abstract class AbilityPropertyCollisionLogic extends AbilityProperty {
 
             //check for nearby entities next
             Optional<User> user;
-            for(Entity entity: ability.getCenter().getExtent().getEntities()){
-                if(entity.getLocation().getPosition().distance(ability.getCenter().getPosition()) <= radius){
+            for(Entity entity: ability.getCenter().getChunk().getEntities()){
+                if(entity.getLocation().distance(ability.getCenter()) <= radius){
                     user = Avatar.INSTANCE.getUserManager().findUser(entity);
                     if(user.isPresent()){
                         collidedUsers.add(user.get());
@@ -179,7 +179,7 @@ public abstract class AbilityPropertyCollisionLogic extends AbilityProperty {
         }
 
         @Override
-        public Text getFailMessage() {
+        public String getFailMessage() {
             return null;
         }
     }
@@ -208,8 +208,8 @@ public abstract class AbilityPropertyCollisionLogic extends AbilityProperty {
 
             //check for nearby entities next
             Optional<User> user;
-            for(Entity entity: ability.getCenter().getExtent().getEntities()){
-                if(entity.getLocation().getPosition().distance(ability.getCenter().getPosition()) <= radius){
+            for(Entity entity: ability.getCenter().getChunk().getEntities()){
+                if(entity.getLocation().distance(ability.getCenter()) <= radius){
                     user = Avatar.INSTANCE.getUserManager().findUser(entity);
                     if(user.isPresent()){
                         collidedUsers.add(user.get());
@@ -228,8 +228,8 @@ public abstract class AbilityPropertyCollisionLogic extends AbilityProperty {
         protected boolean collides(Ability ability) {
             if(ability.getProperty(CubeCollisionLogic.class).isPresent()){
                 CubeCollisionLogic logic = (CubeCollisionLogic) ability.getProperty(CubeCollisionLogic.class).get();
-                for(Vector3d vector3d: logic.getBoxLocations()){
-                    if(vector3d.distance(this.ability.getCenter().getPosition()) <= radius){
+                for(Location vector3d: logic.getBoxLocations()){
+                    if(vector3d.distance(this.ability.getCenter()) <= radius){
                         return true;
                     }
                 }
@@ -245,13 +245,13 @@ public abstract class AbilityPropertyCollisionLogic extends AbilityProperty {
                 double full = logic.radius + radius;
                 //Full is the absolute furthest away they can be
 
-                if(ability.getCenter().getPosition().distance(this.ability.getCenter().getPosition()) <= full) {
+                if(ability.getCenter().distance(this.ability.getCenter()) <= full) {
                     if (logic.domeDirection == DomeCollisionLogic.DomeDirection.UP) {
                         //Meaning the dome's radius won't extend down
                         if (this.ability.getCenter().getBlockY() < ability.getCenter().getBlockY()) {
                             //this means the sphere is below the dome, meaning it can only be the sphere's radius away
                             for(Location location: logic.flatSurface){
-                                if(ability.getCenter().getPosition().distance(location.getPosition()) <= logic.radius){
+                                if(ability.getCenter().distance(location) <= logic.radius){
                                     return true;
                                 }
                             }
@@ -261,7 +261,7 @@ public abstract class AbilityPropertyCollisionLogic extends AbilityProperty {
                     } else if (logic.domeDirection == DomeCollisionLogic.DomeDirection.DOWN) {
                         if (this.ability.getCenter().getBlockY() > ability.getCenter().getBlockY()) {
                             for(Location location: logic.flatSurface){
-                                if(ability.getCenter().getPosition().distance(location.getPosition()) <= logic.radius){
+                                if(ability.getCenter().distance(location) <= logic.radius){
                                     return true;
                                 }
                             }
@@ -275,7 +275,7 @@ public abstract class AbilityPropertyCollisionLogic extends AbilityProperty {
         }
 
         @Override
-        public Text getFailMessage() {
+        public String getFailMessage() {
             return null;
         }
     }
@@ -288,17 +288,17 @@ public abstract class AbilityPropertyCollisionLogic extends AbilityProperty {
         public CubeCollisionLogic(String displayName, Ability ability, double x, double y, double z){
             super(displayName, ability);
 
-            Location temp = ability.getOwner().getEntity().get().getLocation().add(0, 1, 0);
+            Location temp = ability.getOwner().getEntity().getLocation().add(0, 1, 0);
             this.hitbox = new AABB(temp.getX() - x/2, temp.getY() - y/2, temp.getZ() - z/2,
                     temp.getX() + x/2, temp.getY() + y/2, temp.getZ() + z/2);
         }
 
-        public List<Vector3d> getBoxLocations(){
-            List<Vector3d> give = new ArrayList<>();
+        public List<Location> getBoxLocations(){
+            List<Location> give = new ArrayList<>();
             for(double y = new Double(hitbox.getMin().getY()); y <= hitbox.getMax().getY(); y += .01){
                 for(double x = new Double(hitbox.getMin().getX()); x <= hitbox.getMax().getX(); x += .01){
                     for(double z = new Double(hitbox.getMin().getZ()); z <= hitbox.getMax().getZ(); z += .01){
-                        give.add(new Vector3d(x, y, z));
+                        give.add(new Location(Bukkit.getWorlds().get(0), x, y, z));
                     }
                 }
             }
@@ -318,8 +318,8 @@ public abstract class AbilityPropertyCollisionLogic extends AbilityProperty {
 
             //check for nearby entities next
             Optional<User> user;
-            for(Entity entity: ability.getCenter().getExtent().getEntities()){
-                if(this.hitbox.contains(entity.getLocation().getPosition())){
+            for(Entity entity: ability.getCenter().getChunk().getEntities()){
+                if(this.hitbox.contains(entity.getLocation())){
                     user = Avatar.INSTANCE.getUserManager().findUser(entity);
                     if(user.isPresent()){
                         collidedUsers.add(user.get());
@@ -335,7 +335,7 @@ public abstract class AbilityPropertyCollisionLogic extends AbilityProperty {
         }
 
         @Override
-        public Text getFailMessage() {
+        public String getFailMessage() {
             return null;
         }
 
@@ -348,27 +348,27 @@ public abstract class AbilityPropertyCollisionLogic extends AbilityProperty {
                 }
             } else if(ability.getProperty(SphereCollisionLogic.class).isPresent()){
                 SphereCollisionLogic logic = (SphereCollisionLogic) ability.getProperty(SphereCollisionLogic.class).get();
-                for(Vector3d vector3d: getBoxLocations()){
-                    if(vector3d.distance(ability.getCenter().getPosition()) <= logic.radius){
+                for(Location vector3d: getBoxLocations()){
+                    if(vector3d.distance(ability.getCenter()) <= logic.radius){
                         return true;
                     }
                 }
             } else if(ability.getProperty(DomeCollisionLogic.class).isPresent()){
                 DomeCollisionLogic logic = (DomeCollisionLogic) ability.getProperty(DomeCollisionLogic.class).get();
 
-                for(Vector3d vector3d: getBoxLocations()){
+                for(Location vector3d: getBoxLocations()){
                     if(logic.domeDirection == DomeCollisionLogic.DomeDirection.UP){
-                        if(vector3d.getFloorY() < ability.getCenter().getBlockY())
+                        if(vector3d.getBlockY() < ability.getCenter().getBlockY())
                             continue;
                         else {
-                            if(ability.getCenter().getPosition().distance(vector3d) <= logic.radius)
+                            if(ability.getCenter().distance(vector3d) <= logic.radius)
                                 return true;
                         }
                     } else if(logic.domeDirection == DomeCollisionLogic.DomeDirection.DOWN){
-                        if(vector3d.getFloorY() > ability.getCenter().getBlockY())
+                        if(vector3d.getBlockY() > ability.getCenter().getBlockY())
                             continue;
                         else {
-                            if(ability.getCenter().getPosition().distance(vector3d) <= logic.radius)
+                            if(ability.getCenter().distance(vector3d) <= logic.radius)
                                 return true;
                         }
                     }

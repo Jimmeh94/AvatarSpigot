@@ -2,13 +2,12 @@ package avatar.game.ability.property;
 
 import avatar.game.ability.AbilityStage;
 import avatar.game.ability.type.Ability;
-import org.spongepowered.api.scheduler.Task;
-import org.spongepowered.api.text.Text;
+import org.bukkit.scheduler.BukkitTask;
 
 public class AbilityPropertyCharge extends AbilityProperty implements Runnable{
 
     private int duration, countdown;
-    private Task task;
+    private BukkitTask task;
     private boolean charged = false;
 
     public AbilityPropertyCharge(String displayName, Ability ability, int duration) {
@@ -37,7 +36,7 @@ public class AbilityPropertyCharge extends AbilityProperty implements Runnable{
     }
 
     @Override
-    public Text getFailMessage() {
+    public String getFailMessage() {
         return null;
     }
 }

@@ -4,7 +4,6 @@ import avatar.game.ability.AbilityStage;
 import avatar.game.ability.type.Ability;
 import avatar.game.user.User;
 import avatar.game.user.stats.Stats;
-import org.spongepowered.api.text.Text;
 
 /**
  * The cost to use this ability
@@ -41,7 +40,7 @@ public class AbilityPropertyCost extends AbilityProperty {
     }
 
     @Override
-    public Text getFailMessage() {
+    public String getFailMessage() {
         return null;
     }
 }
