@@ -7,6 +7,7 @@ import avatar.manager.AreaManager;
 import avatar.manager.ChatChannelManager;
 import avatar.manager.EconomyManager;
 import avatar.manager.UserManager;
+import avatar.runnable.GameTimer;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Avatar extends JavaPlugin {
@@ -23,15 +24,26 @@ public class Avatar extends JavaPlugin {
     private final int combatInterval = 5; //how many seconds out of combat needed to be switched to out of combat
     private final QuestBuilder questBuilder = new QuestBuilder();
     private final DialogueBuilder dialogueBuilder = new DialogueBuilder();
+    private GameTimer gameTimer;
 
     @Override
     public void onEnable(){
         INSTANCE = this;
 
-        getLogger().info(">> " + getDescription().getName() + " v" + getDescription().getVersion() + " enabled! <<");
+        userManager = new UserManager();
+        chatChannelManager = new ChatChannelManager();
+        areaManager = new AreaManager();
+        economyManager = new EconomyManager();
 
         registerListeners();
         registerCommands();
+        registerRunnables();
+
+        getLogger().info(">> " + getDescription().getName() + " v" + getDescription().getVersion() + " enabled! <<");
+    }
+
+    private void registerRunnables() {
+        gameTimer = new GameTimer(5L);
     }
 
     private void registerListeners() {
