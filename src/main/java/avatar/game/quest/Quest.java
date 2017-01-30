@@ -6,7 +6,8 @@ import avatar.game.user.UserPlayer;
 import avatar.manager.ListenerManager;
 import avatar.util.misc.PlayerDirection;
 import avatar.util.text.AltCodes;
-import avatar.util.text.Messager;
+import avatar.util.text.Action;
+import avatar.util.text.Title;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
@@ -102,9 +103,9 @@ public class Quest {
         //get distance from player to target, get arrow direction, send message
         if (checkpoints.get(currentCheckpoint).getTargetLocation().isPresent()) {
             int distance = getTrackerDistance();
-            Messager.sendActionBarMessage(owner.getPlayer(), ChatColor.GRAY + checkpoints.get(currentCheckpoint).getDescription().get() + " " +
+            Action.send(owner.getPlayer(), ChatColor.GRAY + checkpoints.get(currentCheckpoint).getDescription().get() + " " +
                     ChatColor.GOLD + String.valueOf(distance) + " "
-                     + PlayerDirection.getDesiredDirection(owner.getPlayer(), checkpoints.get(currentCheckpoint).getTargetLocation().get()));
+                    + PlayerDirection.getDesiredDirection(owner.getPlayer(), checkpoints.get(currentCheckpoint).getTargetLocation().get()));
         }
         return false;
     }
@@ -118,7 +119,7 @@ public class Quest {
     }
 
     private void completeQuest(){
-        Messager.sendTitleAndSubTitle(owner.getPlayer(), ChatColor.GOLD + getTitle(), ChatColor.GREEN + "Completed");
+        Title.sendBoth(owner.getPlayer(), ChatColor.GOLD + getTitle(), ChatColor.GREEN + "Completed", 2, 3, 2);
         if(reward != null)
             reward.giveAward(owner.getPlayer());
 
@@ -157,7 +158,7 @@ public class Quest {
             active = true;
             setLore();
             checkpoints.get(currentCheckpoint).start();
-            Messager.sendTitleAndSubTitle(owner.getPlayer(), getTitle(), getDescription());
+            Title.sendBoth(owner.getPlayer(), getTitle(), getDescription(), 2, 3, 2);
 
             Avatar.INSTANCE.getServer().getPluginManager().callEvent(new QuestEvent.Start(ListenerManager.getDefaultCause(), owner, this));
         }

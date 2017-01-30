@@ -17,14 +17,6 @@ public class Messager {
         player.sendMessage(" ");
     }
 
-    public static void sendActionBarMessage(Player player, String text){
-        player.sendMessage(ChatTypes.ACTION_BAR, text);
-    }
-
-    public static void sendTitleMessage(Player player, String text){player.sendTitle(Title.of(text));}
-
-    public static void sendTitleAndSubTitle(Player player, String title, String subtitle){player.sendTitle(Title.of(title, subtitle));}
-
     public static void broadcastMessage(String text, Optional<Prefix> prefix){
         if(prefix.isPresent()){
             text = prefix.get().getText() + text;

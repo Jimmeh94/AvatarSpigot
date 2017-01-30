@@ -16,7 +16,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
-public class Choice extends ChoiceCallback{
+public class Choice{
 
     /*
      * This is a clickable choice that is linked to an action
@@ -30,10 +30,9 @@ public class Choice extends ChoiceCallback{
     private String id;
 
     public Choice(String text, String hover, String choiceID, Player player, DialogueAction... action){
-        super(DialogueManager.getGroupID(), choiceID);
         this.actions = Arrays.asList(action);
         this.id = choiceID;
-        sentence = JsonMessager.getChatPacket(text, JsonMessager.ActionCommand.COMMAND, "/choice " + getGroupID() + "." + id, hover);
+        sentence = JsonMessager.getChatPacket(text, JsonMessager.ActionCommand.COMMAND, "/choice " + DialogueManager.getGroupID() + "." + id, hover);
         this.player = player;
     }
 
@@ -41,7 +40,6 @@ public class Choice extends ChoiceCallback{
         JsonMessager.sendMessage(player, sentence);
     }
 
-    @Override
     public boolean handle() {
         Optional<UserPlayer> temp = Avatar.INSTANCE.getUserManager().findUserPlayer(this.player);
         if(temp.isPresent() && temp.get().getCurrentDialogue() != null && temp.get().getCurrentDialogue().hasChoiceID(this.id)) {

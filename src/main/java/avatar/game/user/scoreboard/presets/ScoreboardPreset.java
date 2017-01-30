@@ -39,6 +39,9 @@ public class ScoreboardPreset {
     }
 
     public void takeSnapshot() {
+        if(scores.isEmpty()){
+            updateScores();
+        }
         oldSnapshot = new ArrayList<>(scores);
     }
 

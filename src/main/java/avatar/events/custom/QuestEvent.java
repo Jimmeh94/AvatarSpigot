@@ -4,7 +4,6 @@ import avatar.game.quest.Checkpoint;
 import avatar.game.quest.Quest;
 import avatar.game.user.UserPlayer;
 import org.bukkit.event.HandlerList;
-import org.spongepowered.api.event.cause.String;
 
 public abstract class QuestEvent extends CustomEvent {
 

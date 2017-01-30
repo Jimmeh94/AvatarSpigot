@@ -10,7 +10,6 @@ import avatar.game.user.stats.presets.DefaultBenderPreset;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
 
-import java.util.Optional;
 import java.util.UUID;
 
 /**
@@ -52,7 +51,7 @@ public class User {
      * Use this to have this User enter an area rather than Area#enterArea(User user)
      * @param area
      */
-    public void enterArea(Area area){
+    public void enterArea(Area area, boolean updateScoreboard){
         if(area == presentArea)
             return;
 

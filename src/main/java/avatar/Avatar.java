@@ -1,6 +1,10 @@
 package avatar;
 
 import avatar.commands.ChoiceCommands;
+import avatar.commands.DialogueCommands;
+import avatar.commands.QuestCommands;
+import avatar.events.PlayerJoin;
+import avatar.events.PlayerQuit;
 import avatar.game.dialogue.core.DialogueBuilder;
 import avatar.game.quest.builder.QuestBuilder;
 import avatar.manager.AreaManager;
@@ -47,11 +51,14 @@ public class Avatar extends JavaPlugin {
     }
 
     private void registerListeners() {
-
+        getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
+        getServer().getPluginManager().registerEvents(new PlayerQuit(), this);
     }
 
     private void registerCommands() {
         getCommand("choice").setExecutor(new ChoiceCommands());
+        getCommand("quest").setExecutor(new QuestCommands());
+        getCommand("dialogue").setExecutor(new DialogueCommands());
     }
 
     @Override

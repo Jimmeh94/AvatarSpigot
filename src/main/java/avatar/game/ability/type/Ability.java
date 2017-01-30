@@ -1,13 +1,15 @@
 package avatar.game.ability.type;
 
 import avatar.Avatar;
+import avatar.events.custom.AbilityEvent;
 import avatar.game.ability.AbilityStage;
 import avatar.game.ability.property.AbilityProperty;
 import avatar.game.area.Area;
 import avatar.game.user.User;
 import avatar.game.user.UserPlayer;
-import avatar.util.misc.Vector;
+import avatar.manager.ListenerManager;
 import avatar.util.text.Messager;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -89,7 +91,7 @@ public abstract class Ability{
 
         stage = AbilityStage.UPDATE;
 
-        Sponge.getEventManager().post(new AbilityEvent.PostFire(this, ListenerManager.getDefaultCause()));
+        Bukkit.getServer().getPluginManager().callEvent(new AbilityEvent.PostFire(this, ListenerManager.getDefaultCause()));
     }
 
 

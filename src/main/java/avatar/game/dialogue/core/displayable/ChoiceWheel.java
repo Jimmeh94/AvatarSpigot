@@ -16,9 +16,12 @@ public class ChoiceWheel implements Displayable {
 
     private List<Choice> choices = new ArrayList<>();
     private List<Condition> conditions;
+    private int groupID;
 
     public ChoiceWheel(Choice... choices){
         this.choices = Arrays.asList(choices);
+        this.groupID = DialogueManager.getGroupID();
+        DialogueManager.add(this);
         DialogueManager.incrementID();
     }
 
@@ -43,11 +46,24 @@ public class ChoiceWheel implements Displayable {
         }
     }
 
+    public Choice getChoice(String id){
+        for(Choice choice: choices){
+            if(choice.getId().equals(id))
+                return choice;
+        }
+        return null;
+
+    }
+
     public boolean hasID(String id) {
         for(Choice choice: choices){
-            if(choice.getId() == id)
+            if(choice.getId().equals(id))
                 return true;
         }
         return false;
+    }
+
+    public int getGroupID() {
+        return groupID;
     }
 }

@@ -29,7 +29,6 @@ public class Scoreboard {
         //setPrefix();
 
         preset = new DefaultPreset(owner);
-        //updateScoreboard();
     }
 
    /* public void setPrefix(){
@@ -42,8 +41,6 @@ public class Scoreboard {
     }
 
     public void setPreset(ScoreboardPreset preset){
-        if(preset.getClass() == this.preset.getClass())
-            return;
         this.preset.takeSnapshot();
 
         Objective objective = owner.getPlayer().getScoreboard().getObjective(DisplaySlot.SIDEBAR);
@@ -62,6 +59,18 @@ public class Scoreboard {
         owner.setScoreboard(null);
     }
 
+    public void init(){//sidebar scoreboard
+        updatePreset();
+        Objective objective = owner.getPlayer().getScoreboard().getObjective(DisplaySlot.SIDEBAR);
+        objective.setDisplayName(preset.getScore(0));
+
+        //we are to assume that the lines of the snapshot match the lines of the current scores
+        //starting at 1 because 0 is the title
+        for(int i = 1; i < preset.getOldSnapshot().size(); i++){
+            objective.getScore(preset.getScore(i)).setScore(16 - i);
+        }
+    }
+
     public void updateScoreboard(){//sidebar scoreboard
         updatePreset();
         Objective objective = owner.getPlayer().getScoreboard().getObjective(DisplaySlot.SIDEBAR);
@@ -70,12 +79,6 @@ public class Scoreboard {
         //we are to assume that the lines of the snapshot match the lines of the current scores
         //starting at 1 because 0 is the title
         for(int i = 1; i < preset.getOldSnapshot().size(); i++){
-            String old = preset.getOldSnapshot().get(i);
-            String current = preset.getScore(i);
-            //For when setting up the scoreboard, if the line is blank or doesn't exist, add it
-            if(objective.getScore(old) == null && objective.getScore(current) == null){
-                objective.getScore(preset.getScore(i)).setScore(16 - i);
-            }
             if(!preset.getOldSnapshot().get(i).equals(preset.getScore(i))){
                 objective.getScoreboard().resetScores(this.preset.getOldSnapshot().get(i));
                 objective.getScore(preset.getScore(i)).setScore(16 - i);

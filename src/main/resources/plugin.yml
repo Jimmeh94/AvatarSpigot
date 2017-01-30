@@ -1,0 +1,15 @@
+author: Jimmeh
+name: Avatar
+version: 1.0.0
+main: avatar.Avatar
+commands:
+    choice:
+        usage: /<command>
+        description: For the server's usage of dialogue
+    quest:
+        usage: /<command>
+        description: Quest stuff
+    dialogue:
+        usage: /<command>
+        description: Dialogue stuff
+

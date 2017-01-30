@@ -1,50 +1,37 @@
 package avatar.manager;
 
-import avatar.game.dialogue.core.displayable.ChoiceCallback;
+import avatar.game.dialogue.core.displayable.ChoiceWheel;
 
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.util.ArrayList;
+import java.util.List;
 
 public class DialogueManager {
 
     private static int groupID = 0;
 
-    private static Map<Integer, ChoiceCallback> callbacks = new HashMap<>();
+    private static List<ChoiceWheel> callbacks = new ArrayList<>();
 
-    public static void add(ChoiceCallback choiceCallback){
-        callbacks.put(groupID, choiceCallback);
+    public static void add(ChoiceWheel choiceCallback){
+        callbacks.add(choiceCallback);
     }
 
     public static void callCallback(int groupid, String choiceID){
-        boolean called = false;
-        int id = -1;
-        Iterator<Map.Entry<Integer, ChoiceCallback>> iterator = callbacks.entrySet().iterator();
-        while(iterator.hasNext()){
-            Map.Entry<Integer, ChoiceCallback> entry = iterator.next();
-            if(groupid == entry.getKey() && entry.getValue().getChoiceID().equals(choiceID)){
-                if(entry.getValue().handle()){
-                    called = true;
-                    id = entry.getKey();
-                }
+        ChoiceWheel choiceWheel = null;
+        for(ChoiceWheel choiceWheel1: callbacks){
+            if(choiceWheel1.getGroupID() == groupid){
+               if(choiceWheel1.hasID(choiceID)){
+                   choiceWheel = choiceWheel1;
+                   choiceWheel1.getChoice(choiceID).handle();
+               }
             }
         }
-        if(called){
-            removeAll(id);
+
+        if(choiceWheel != null){
+            callbacks.remove(choiceWheel);
         }
     }
 
     public static void incrementID(){groupID++;}
-
-    private static void removeAll(int id){
-        Iterator<Map.Entry<Integer, ChoiceCallback>> iterator = callbacks.entrySet().iterator();
-        while(iterator.hasNext()){
-            Map.Entry<Integer, ChoiceCallback> entry = iterator.next();
-            if(entry.getKey() == id){
-                iterator.remove();
-            }
-        }
-    }
 
     public static int getGroupID() {
         return groupID;

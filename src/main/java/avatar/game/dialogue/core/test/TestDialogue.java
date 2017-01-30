@@ -21,7 +21,6 @@ public class TestDialogue implements IDialogueInitiator{
         return dialogueBuilder.stringID("test")
                 .addDisplayable(new Sentence("[Old Man] Will you help me?"))
                 .addDisplayable(new ChoiceWheel(
-                        //.addCondition(new RangeBound(new Location(Sponge.getServer().getWorld("world").get(), new Vector3d(100f, 100f, 100f)), 100))
                         new Choice("Yes I will", "Get quest", IDialogueInitiator.getIDPrefix(dialogueBuilder) + "yes", player, new GiveQuest(QuestReference.TEST), new DisplayDialogue(){
                             @Override
                             public Dialogue buildToDisplay(Player player) {

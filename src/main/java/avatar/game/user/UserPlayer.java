@@ -53,21 +53,17 @@ public class UserPlayer extends User {
 
         Optional<Area> area = Avatar.INSTANCE.getAreaManager().getAreaByContainedLocation(getPlayer().getLocation());
         if(area.isPresent())
-            enterArea(area.get());
+            enterArea(area.get(), false);
+
+        scoreboard.init();
     }
 
     @Override
-    public void enterArea(Area area){
-        super.enterArea(area);
+    public void enterArea(Area area, boolean updateScoreboard){
+        super.enterArea(area, updateScoreboard);
 
-        scoreboard.updateScoreboard();
-    }
-
-    public void giveDialogue(String id){
-        Optional<DialogueReference> reference = DialogueReference.getReference(id);
-        if(reference.isPresent()){
-            giveDialogue(reference.get());
-        }
+        if(updateScoreboard)
+            scoreboard.updateScoreboard();
     }
 
     public void giveDialogue(DialogueReference reference){
@@ -87,7 +83,7 @@ public class UserPlayer extends User {
         if(getPresentArea() == null){
             Optional<Area> area = Avatar.INSTANCE.getAreaManager().getAreaByReference(AreaReferences.GLOBAL);
             if(area.isPresent()){
-                enterArea(area.get());
+                enterArea(area.get(), true);
             }
         }
 
@@ -112,7 +108,7 @@ public class UserPlayer extends User {
 
                 if(temp.isPresent() && temp2.isPresent()){
                     if(temp.get() != temp2.get()){
-                        enterArea(temp2.get());
+                        enterArea(temp2.get(), true);
                     }
                 }
             }
@@ -123,12 +119,15 @@ public class UserPlayer extends User {
         getQuestManager().tick();
 
         //scoreboard update
-        scoreboard.updateScoreboard();
+        if(scoreboard != null)
+            scoreboard.updateScoreboard();
     }
 
     @Override
     public void cleanUp(){
         super.cleanUp();
+
+        chatChannel.removeMember(this);
     }
 
     public void removeDialogue() {
@@ -139,10 +138,6 @@ public class UserPlayer extends User {
         currentDialogue.displayNext();
 
         Bukkit.getPluginManager().callEvent(new DialogueEvent.Displayed(ListenerManager.getDefaultCause(), this));
-    }
-
-    public void updateScoreboard() {
-        scoreboard.updateScoreboard();
     }
 
     //--- Getters ---

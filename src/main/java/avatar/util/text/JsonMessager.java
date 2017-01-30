@@ -13,7 +13,7 @@ public class JsonMessager {
     //action value is the command/page to be ran/opened
 
     public enum ActionCommand{
-        COMMAND("run_comamnd"),
+        COMMAND("run_command"),
         URL("open_url"),
         SUGGEST_COMMAND("suggest_command");
 

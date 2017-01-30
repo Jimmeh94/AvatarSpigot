@@ -22,7 +22,6 @@ public class DefaultPreset extends ScoreboardPreset {
 
     public DefaultPreset(UserPlayer statistics){
         super(statistics);
-        //updateScores();
     }
 
     @Override
