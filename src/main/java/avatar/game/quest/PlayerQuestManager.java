@@ -53,7 +53,7 @@ public class PlayerQuestManager {
     public void add(QuestReference reference) {
         Quest quest = reference.getQuest(owner);
         if(ownedQuests.size() == 54){
-            Messager.sendMessage(owner.getPlayer(), ChatColor.GRAY + "You can only have up to 54 quest at a time!", Optional.of(Messager.Prefix.ERROR));
+            Messager.sendMessage(owner.getPlayer(), ChatColor.GRAY + "You can only have up to 54 quests at a time!", Optional.of(Messager.Prefix.ERROR));
             return;
         } else if(!has(quest.getID()) && !hasCompleted(quest.getID())){
             Messager.sendMessage(owner.getPlayer(), ChatColor.GRAY + "Quest added: " + quest.getTitle(), Optional.of(Messager.Prefix.SUCCESS));
@@ -94,7 +94,6 @@ public class PlayerQuestManager {
             if(quest.get().tick()) {
                 completed.add(quest.get().getID());
                 ownedQuests.remove(quest.get());
-                questMenu.build();
             }
         }
     }

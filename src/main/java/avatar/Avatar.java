@@ -3,6 +3,7 @@ package avatar;
 import avatar.commands.ChoiceCommands;
 import avatar.commands.DialogueCommands;
 import avatar.commands.QuestCommands;
+import avatar.events.InventoryClick;
 import avatar.events.PlayerJoin;
 import avatar.events.PlayerQuit;
 import avatar.game.dialogue.core.DialogueBuilder;
@@ -53,6 +54,7 @@ public class Avatar extends JavaPlugin {
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
         getServer().getPluginManager().registerEvents(new PlayerQuit(), this);
+        getServer().getPluginManager().registerEvents(new InventoryClick(), this);
     }
 
     private void registerCommands() {
