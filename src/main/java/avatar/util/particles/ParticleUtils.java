@@ -4,13 +4,70 @@ import avatar.Avatar;
 import avatar.game.area.Area;
 import avatar.game.area.Instance;
 import avatar.game.user.UserPlayer;
-import avatar.util.particles.effects.EffectData;
+import avatar.util.particles.effects.*;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.*;
 
 public class ParticleUtils {
+
+    public enum Loaded{
+        /** Atom Effects **/
+        ATOM_2RR_1CR_0Y(new AtomEffect(2, 1, 0)),
+        ATOM_3RR_1CR_0Y(new AtomEffect(3, 1, 0)),
+        ATOM_4RR_1CR_0Y(new AtomEffect(4, 1, 0)),
+        ATOM_5RR_1CR_0Y(new AtomEffect(5, 1, 0)),
+        ATOM_3RR_2CR_0Y(new AtomEffect(3, 2, 0)),
+        ATOM_4RR_3CR_0Y(new AtomEffect(4, 3 ,0)),
+        ATOM_5RR_4CR_0Y(new AtomEffect(5, 4, 0)),
+        ATOM_6RR_5CR_0Y(new AtomEffect(6, 4, 0)),
+
+        /** Helix Effects **/
+        HELIX_3T_25HS_75R_15L(new HelixEffect(3, .25, 0.75, 15)),
+        HELIX_35T_25HS_75R_15L(new HelixEffect(3.5, .25, 0.75, 15)),
+        HELIX_4T_25HS_75R_15L(new HelixEffect(4, .25, 0.75, 15)),
+        HELIX_45T_25HS_75R_15L(new HelixEffect(4.5, .25, 0.75, 15)),
+        HELIX_5T_25HS_75R_15L(new HelixEffect(5, .25, 0.75, 15)),
+        HELIX_55T_25HS_75R_15L(new HelixEffect(5.5, .25, 0.75, 15)),
+        HELIX_6T_25HS_75R_15L(new HelixEffect(6, .25, 0.75, 15)),
+        HELIX_65T_25HS_75R_15L(new HelixEffect(6.5, .25, 0.75, 15)),
+        HELIX_7T_25HS_75R_15L(new HelixEffect(7, .25, 0.75, 15)),
+        HELIX_75T_25HS_75R_15L(new HelixEffect(7.5, .25, 0.75, 15)),
+        HELIX_8T_25HS_75R_15L(new HelixEffect(8, .25, 0.75, 15)),
+        HELIX_85T_25HS_75R_15L(new HelixEffect(8.5, .25, 0.75, 15)),
+        HELIX_9T_25HS_75R_15L(new HelixEffect(9, .25, 0.75, 15)),
+        HELIX_95T_25HS_75R_15L(new HelixEffect(9.5, .25, 0.75, 15)),
+        HELIX_10T_25HS_75R_15L(new HelixEffect(10, .25, 0.75, 15)),
+
+        /** Sphere Effects **/
+        SPHERE_05R(new SphereEffect(0.5)),
+        SPHERE_1R(new SphereEffect(1)),
+        SPHERE_15R(new SphereEffect(1.5)),
+        SPHERE_2R(new SphereEffect(2)),
+        SPHERE_25R(new SphereEffect(2.5)),
+        SPHERE_3R(new SphereEffect(3)),
+        SPHERE_35R(new SphereEffect(3.5)),
+        SPHERE_4R(new SphereEffect(4)),
+        SPHERE_45R(new SphereEffect(4.5)),
+        SPHERE_5R(new SphereEffect(5)),
+        SPHERE_55R(new SphereEffect(5.5)),
+        SPHERE_6R(new SphereEffect(6)),
+        SPHERE_65R(new SphereEffect(6.5)),
+        SPHERE_07R(new SphereEffect(7)),
+        SPHERE_75R(new SphereEffect(7.5)),
+        SPHERE_8R(new SphereEffect(8)),
+        SPHERE_855R(new SphereEffect(8.5)),
+        SPHERE_9R(new SphereEffect(9)),
+        SPHERE_95R(new SphereEffect(9.5)),
+        SPHERE_10R(new SphereEffect(10));
+
+        private AbstractEffect abstractEffect;
+
+        Loaded(AbstractEffect effect){this.abstractEffect = effect;}
+
+        public AbstractEffect getEffect(){return abstractEffect;}
+    }
 
     public static class PlayerBased {
 

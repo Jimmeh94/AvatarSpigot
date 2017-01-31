@@ -1,11 +1,32 @@
 package avatar.util.particles.effects;
 
+import avatar.util.particles.ParticleUtils;
+
+import java.util.Arrays;
+
 public class HelixEffect extends AbstractEffect {
 
 	private double[][][] coordinates;
 	private int lines;
 	private int spinner;
 	private int circleCoordinates;
+
+	public HelixEffect(double top, double heightStep, double radius, int lines) {
+		super(null);
+
+		init(top, heightStep, radius);
+		setLines(lines);
+	}
+
+	public HelixEffect(EffectData effectData, ParticleUtils.Loaded loaded){
+		super(effectData);
+
+		HelixEffect helixEffect = (HelixEffect)loaded.getEffect();
+		this.coordinates = Arrays.copyOf(helixEffect.coordinates, helixEffect.coordinates.length);
+		this.lines = helixEffect.lines;
+		this.spinner = helixEffect.spinner;
+		this.circleCoordinates = helixEffect.circleCoordinates;
+	}
 
 	public HelixEffect(EffectData effectData, double top, double heightStep, double radius, int lines) {
 		super(effectData);

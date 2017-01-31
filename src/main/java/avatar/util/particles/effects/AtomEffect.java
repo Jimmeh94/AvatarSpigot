@@ -1,9 +1,27 @@
 package avatar.util.particles.effects;
 
+import avatar.util.particles.ParticleUtils;
+
+import java.util.Arrays;
+
 public class AtomEffect extends AbstractEffect {
 
 	private double[][][] coreCoordinates;
 	private double[][] ringCoordinates;
+
+	public AtomEffect(double ringRadius, double coreRadius, double yawOffset){
+		super(null);
+
+		init(ringRadius, coreRadius, yawOffset);
+	}
+
+	public AtomEffect(EffectData effectData, ParticleUtils.Loaded loaded){
+		super(effectData);
+
+		AtomEffect atomEffect = (AtomEffect)loaded.getEffect();
+		coreCoordinates = Arrays.copyOf(atomEffect.coreCoordinates, atomEffect.coreCoordinates.length);
+		ringCoordinates = Arrays.copyOf(atomEffect.ringCoordinates, atomEffect.ringCoordinates.length);
+	}
 
 	public AtomEffect(EffectData effectData, double ringRadius, double coreRadius, double yawOffset) {
 		super(effectData);
