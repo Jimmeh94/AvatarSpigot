@@ -136,8 +136,8 @@ public class ParticleUtils {
 
     private static void display(EffectData effectData, UserPlayer userPlayer){
         double factor = userPlayer.getParticleModifier().factor;
-        userPlayer.getPlayer().spawnParticle(effectData.getParticle(), effectData.getDisplayAt(),
-                (int)(effectData.getAmount() * factor), effectData.getxOffset(), effectData.getyOffset(), effectData.getzOffset());
+        userPlayer.getPlayer().spawnParticle(effectData.getParticle(), effectData.getDisplayAt(), (int)(factor * effectData.getAmount()),
+            effectData.getxOffset(), effectData.getyOffset(), effectData.getzOffset(), effectData.getVelocity());
     }
 
     /**

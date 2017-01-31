@@ -12,4 +12,7 @@ commands:
     dialogue:
         usage: /<command>
         description: Dialogue stuff
+    particle:
+        usage: /<command>
+        description: Particle stuff
 

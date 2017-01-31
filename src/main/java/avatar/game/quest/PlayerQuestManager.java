@@ -38,7 +38,14 @@ public class PlayerQuestManager {
         owner.getPlayer().openInventory(owner.getQuestManager().getQuestMenu().getMenu());
     }
 
-    public boolean has(String id){return ownedQuests.contains(id);}
+    public boolean has(String id){
+        for(Quest quest: ownedQuests){
+            if(quest.getID().equals(id)){
+                return true;
+            }
+        }
+        return false;
+    }
 
     public boolean hasCompleted(String id){return completed.contains(id);}
 

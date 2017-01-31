@@ -34,7 +34,7 @@ public abstract class AbstractEffect {
 					public void run() {
 						play();
 						c++;
-						if (c >= effectData.getCancel() / effectData.getInterval())
+						if (c >= effectData.getCancel())
 							stop();
 					}
 				}

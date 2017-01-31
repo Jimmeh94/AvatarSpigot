@@ -3,7 +3,6 @@ package avatar.util.particles.effects;
 import avatar.game.area.Area;
 import avatar.game.user.User;
 import avatar.game.user.UserPlayer;
-import avatar.util.misc.Vector;
 import org.bukkit.Location;
 import org.bukkit.Particle;
 import org.bukkit.scheduler.BukkitTask;
@@ -20,10 +19,11 @@ public class EffectData {
     protected Particle particle = Particle.FLAME;
     private double xOffset = 0, yOffset = 0, zOffset = 0;
     private BukkitTask task;
-    private long delay = 0, interval = 5, cancel = 1; //cancel is currently how many ticks, not how many intervals have passed
+    private long delay, interval;
+    private int cancel; //cancel is how many intervals have passed
     private IPlayParticles playParticles;
     private boolean randomizeOffsets;
-    private Vector.Vector3D velocity;
+    private double velocity;
     private double displayRadius;
     private Area displayArea;
 
@@ -144,7 +144,7 @@ public class EffectData {
         return interval;
     }
 
-    public long getCancel() {
+    public int getCancel() {
         return cancel;
     }
 
@@ -152,7 +152,7 @@ public class EffectData {
         return playParticles;
     }
 
-    public Vector.Vector3D getVelocity() {
+    public double getVelocity() {
         return velocity;
     }
 
@@ -173,13 +173,14 @@ public class EffectData {
     public static class EffectDataBuilder{
         private Location center;
         private UserPlayer owner;
-        private long delay, interval, cancel; //cancel is currently how many ticks, not how many intervals have passed
+        private long delay, interval;
+        private int cancel; //cancel is how many intervals have passed
         private int amount = 10;
         protected Particle particle = Particle.FLAME;
         private double xOffset = 0, yOffset = 0, zOffset = 0;
         private IPlayParticles playParticles;
         private boolean randomizeOffsets = false;
-        private Vector.Vector3D velocity;
+        private double velocity;
         private double displayRadius;
         private Area displayArea;
 
@@ -193,12 +194,12 @@ public class EffectData {
             return this;
         }
 
-        public EffectDataBuilder velocity(Vector.Vector3D vector3d){
+        public EffectDataBuilder velocity(double vector3d){
             this.velocity = vector3d;
             return this;
         }
 
-        public EffectDataBuilder taskInfo(long delay, long interval, long cancel){
+        public EffectDataBuilder taskInfo(long delay, long interval, int cancel){
             this.delay = delay;
             this.interval = interval;
             this.cancel = cancel;
