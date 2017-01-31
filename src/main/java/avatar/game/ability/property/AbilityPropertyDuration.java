@@ -22,17 +22,17 @@ public class AbilityPropertyDuration extends AbilityProperty {
     }
 
 
-    private boolean cycleLifetimeExpired(){
+    private boolean cycleLifetimeValid(){
         if(cycleLifetime == -1){
-            return false;
+            return true;
         } else {
-            return cycleCounter++ > cycleLifetime;
+            return cycleCounter++ < cycleLifetime;
         }
     }
 
     @Override
     public boolean validate() {
-        return cycleLifetimeExpired();
+        return cycleLifetimeValid();
     }
 
     @Override

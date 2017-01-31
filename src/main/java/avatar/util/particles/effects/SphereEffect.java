@@ -47,9 +47,9 @@ public class SphereEffect extends AbstractEffect {
 	public void play() {
 		for (int i = 0; i < sphereCoordinates.length; i++)
 			for (int i2 = 0; i2 < sphereCoordinates[i].length; i2++) {
-				effectData.setDisplayAt(effectData.getCenter().add(sphereCoordinates[i][i2][0], sphereCoordinates[i][i2][1], sphereCoordinates[i][i2][2]));
+				effectData.setDisplayAt(effectData.getDisplayAt().add(sphereCoordinates[i][i2][0], sphereCoordinates[i][i2][1], sphereCoordinates[i][i2][2]));
 				playParticle();
-				effectData.getCenter().subtract(sphereCoordinates[i][i2][0], sphereCoordinates[i][i2][1], sphereCoordinates[i][i2][2]);
+				effectData.getDisplayAt().subtract(sphereCoordinates[i][i2][0], sphereCoordinates[i][i2][1], sphereCoordinates[i][i2][2]);
 			}
 	}
 

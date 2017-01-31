@@ -61,14 +61,14 @@ public class AtomEffect extends AbstractEffect {
 	public void play() {
 		for (double[][] firstArray : coreCoordinates)
 			for (double[] secondArray : firstArray) {
-				effectData.setDisplayAt(effectData.getCenter().add(secondArray[0], secondArray[1], secondArray[2]));
+				effectData.setDisplayAt(effectData.getDisplayAt().add(secondArray[0], secondArray[1], secondArray[2]));
 				playParticle();
-				effectData.getCenter().subtract(secondArray[0], secondArray[1], secondArray[2]);
+				effectData.getDisplayAt().subtract(secondArray[0], secondArray[1], secondArray[2]);
 			}
 		for (double[] array : ringCoordinates) {
-			effectData.setDisplayAt(effectData.getCenter().add(array[0], array[1], array[2]));
+			effectData.setDisplayAt(effectData.getDisplayAt().add(array[0], array[1], array[2]));
 			playParticle();
-			effectData.getCenter().subtract(array[0], array[1], array[2]);
+			effectData.getDisplayAt().subtract(array[0], array[1], array[2]);
 		}
 	}
 

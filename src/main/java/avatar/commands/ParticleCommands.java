@@ -3,7 +3,6 @@ package avatar.commands;
 import avatar.Avatar;
 import avatar.util.particles.ParticleUtils;
 import avatar.util.particles.effects.*;
-import org.bukkit.Particle;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,11 +21,7 @@ public class ParticleCommands implements CommandExecutor {
                         .user(Avatar.INSTANCE.getUserManager().findUserPlayer(player).get())
                         .center(player.getLocation().clone().add(0, 1, 0))
                         .taskInfo(0L, 8L, 200)
-                        .amount(5)
-                        .offsets(0, 0, 0)
-                        .particle(Particle.FLAME)
                         .playParticles((data, target) -> ParticleUtils.PlayerBased.displayParticles(data))
-                        .randomizeOffsets(false)
                         .build();
 
                 switch (effect){
@@ -39,8 +34,6 @@ public class ParticleCommands implements CommandExecutor {
                     case "sphere": abstractEffect = new SphereEffect(effectData, 5.0);
                         break;
                     case "tornado": abstractEffect = new TornadoEffect(effectData, 10, 0.5, 6.5, 50);
-                        break;
-                    case "test": abstractEffect = new TestEffect(effectData);
                 }
                 abstractEffect.start();
             }

@@ -15,4 +15,7 @@ commands:
     particle:
         usage: /<command>
         description: Particle stuff
+    ability:
+        usage: /<command>
+        description: Ability stuff
 

@@ -10,8 +10,9 @@ import avatar.util.misc.LocationUtils;
 import avatar.util.particles.effects.EffectData;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Particle;
 import org.bukkit.scheduler.BukkitTask;
+
+import java.util.Arrays;
 
 /**
  * Use this if the ability needs to move somewhere.
@@ -20,6 +21,7 @@ import org.bukkit.scheduler.BukkitTask;
 public abstract class AbilityTargeting extends Ability implements Runnable{
 
     private Location target;
+    protected Location[] history;
     /**
      * The scale at which to move the ability per update.
      * example: 1.0 speed would be to advance the ability by 1 block each update
@@ -30,12 +32,18 @@ public abstract class AbilityTargeting extends Ability implements Runnable{
     protected EffectData effectData;
 
     protected abstract Location setInitialTarget();
+    protected abstract EffectData setEffectData();
     protected abstract void display();
 
     public AbilityTargeting(User owner, double speed, long interval) {
+        this(owner, speed, interval, 3);
+    }
+
+    public AbilityTargeting(User owner, double speed, long interval, int history) {
         super(owner);
 
         this.interval = interval;
+        this.history = new Location[history];
 
         if(!getProperty(AbilityPropertyBoundRange.class).isPresent()){
             addProperty(new AbilityPropertyBoundRange(null, this, AbilityPropertyBoundRange.INFINITE));
@@ -44,7 +52,7 @@ public abstract class AbilityTargeting extends Ability implements Runnable{
         this.speed = speed;
         this.target = setInitialTarget();
 
-        effectData = EffectData.builder().amount(50).center(getCenter()).particle(Particle.FLAME).build();
+        effectData = setEffectData();
     }
 
     @Override
@@ -70,14 +78,16 @@ public abstract class AbilityTargeting extends Ability implements Runnable{
         //if any of those !validate, stop the ability
         setLocationInfo();
         effectData.setDisplayAt(getCenter());
-        if(this.getCenter().distance(this.getTarget()) <= 0.5){
+        if(this.getCenter().distance(this.getTarget()) <= 0.75){
             this.cancel(null);
+            return;
         }
 
         for(AbilityProperty property: properties){
             if(property.checkNow(stage)){
                 if(!property.validate()){
                     this.cancel(property.getFailMessage());
+                    return;
                 }
             }
         }
@@ -87,15 +97,29 @@ public abstract class AbilityTargeting extends Ability implements Runnable{
         }
     }
 
-
+    private void shiftHistory(){
+        Location[] temp = Arrays.copyOfRange(history, 0, history.length);
+        for(int i = 1; i < history.length; i++){
+            history[i] = temp[i - 1];
+        }
+    }
 
     protected void setLocationInfo(){
+        shiftHistory();
+
         this.oldCenter = center.clone();
+        history[0] = oldCenter.clone();
         this.center = adjustCenter();
+
         if(this.center == null)
             return;
 
         this.locationChunk = center.getChunk();
+
+        if(getProperty(AbilityPropertyCollisionLogic.DomeCollisionLogic.class).isPresent()){
+            ((AbilityPropertyCollisionLogic.DomeCollisionLogic)getProperty(AbilityPropertyCollisionLogic.DomeCollisionLogic.class)
+                    .get()).adjustSurface(LocationUtils.getOffsetBetween(oldCenter, center));
+        }
 
         if(getProperty(AbilityPropertyCollisionLogic.CubeCollisionLogic.class).isPresent()){
             ((AbilityPropertyCollisionLogic.CubeCollisionLogic)getProperty(AbilityPropertyCollisionLogic.CubeCollisionLogic.class).get()).offset(oldCenter, center);
@@ -123,14 +147,7 @@ public abstract class AbilityTargeting extends Ability implements Runnable{
 
     @Override
     protected Location adjustCenter(){
-        Location step = LocationUtils.getNextLocation(getCenter(), target, speed);
-
-        if(getProperty(AbilityPropertyCollisionLogic.DomeCollisionLogic.class).isPresent()){
-            ((AbilityPropertyCollisionLogic.DomeCollisionLogic)getProperty(AbilityPropertyCollisionLogic.DomeCollisionLogic.class)
-                    .get()).adjustSurface(LocationUtils.getOffsetBetween(center, step));
-        }
-
-        return step;
+        return LocationUtils.getNextLocation(getCenter(), target, speed);
     }
 
     public void setTarget(Location target) {

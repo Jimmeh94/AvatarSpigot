@@ -10,6 +10,13 @@ import java.util.Random;
 
 public class LocationUtils {
 
+    public static Location getCenteredLocation(Location location){
+        location.setX(location.getBlockX() + 0.5);
+        location.setY(location.getBlockY() + 0.5);
+        location.setZ(location.getBlockZ() + 0.5);
+        return location;
+    }
+
     /*
   * Gets the location of shift blocks in front of entity's location
   */
@@ -34,30 +41,17 @@ public class LocationUtils {
         if(start == null || end == null)
             return null;
 
-        int deltaX, deltaY, deltaZ;
+        Vector.Vector3D offset = getOffsetBetween(start, end);
+        double distance = start.distance(end);
 
-        if(start.getX() > end.getX()){
-            deltaX = -1;
-        } else if(start.getX() < end.getX()){
-            deltaX = 1;
-        } else deltaX = 0;
-
-        if(start.getY() > end.getY()){
-            deltaY = -1;
-        } else if(start.getY() < end.getY()){
-            deltaY = 1;
-        } else deltaY = 0;
-
-        if(start.getZ() > end.getZ()){
-            deltaZ = -1;
-        } else if(start.getZ() < end.getZ()){
-            deltaZ = 1;
-        } else deltaZ = 0;
-
-        return new Location(start.getWorld(), deltaX * scale, deltaY * scale, deltaZ * scale);
+        return new Location(start.getWorld(), start.getX() + (offset.getX() / distance) * scale, start.getY() + (offset.getY() / distance) * scale,
+                start.getZ() + (offset.getZ() / distance) * scale);
     }
 
     public static Vector.Vector3D getOffsetBetween(Location start, Location end){
+        if(start == null || end == null)
+            return new Vector.Vector3D(0.0, 0.0, 0.0);
+
         double deltaX, deltaY, deltaZ;
         deltaX = Math.max(start.getX(), end.getX()) - Math.min(start.getX(), end.getX());
         if(deltaX > 0)
@@ -69,7 +63,7 @@ public class LocationUtils {
 
         deltaZ = Math.max(start.getZ(), end.getZ()) - Math.min(start.getZ(), end.getZ());
         if(deltaZ > 0)
-            deltaZ = Math.max(start.getZ(), end.getZ()) == start.getX() ? deltaZ *-1 : deltaZ * 1;
+            deltaZ = Math.max(start.getZ(), end.getZ()) == start.getZ() ? deltaZ *-1 : deltaZ * 1;
 
         return new Vector.Vector3D(deltaX, deltaY, deltaZ);
     }

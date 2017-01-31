@@ -5,6 +5,7 @@ import avatar.game.area.Area;
 import avatar.game.area.Instance;
 import avatar.game.user.UserPlayer;
 import avatar.util.particles.effects.*;
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
@@ -54,7 +55,7 @@ public class ParticleUtils {
         SPHERE_55R(new SphereEffect(5.5)),
         SPHERE_6R(new SphereEffect(6)),
         SPHERE_65R(new SphereEffect(6.5)),
-        SPHERE_07R(new SphereEffect(7)),
+        SPHERE_7R(new SphereEffect(7)),
         SPHERE_75R(new SphereEffect(7.5)),
         SPHERE_8R(new SphereEffect(8)),
         SPHERE_855R(new SphereEffect(8.5)),
@@ -211,8 +212,12 @@ public class ParticleUtils {
 
     private static void display(EffectData effectData, UserPlayer userPlayer){
         double factor = userPlayer.getParticleModifier().factor;
-        userPlayer.getPlayer().spawnParticle(effectData.getParticle(), effectData.getDisplayAt(), (int)(factor * effectData.getAmount()),
-            effectData.getxOffset(), effectData.getyOffset(), effectData.getzOffset(), effectData.getVelocity());
+
+        EffectData.DisplayProfile displayProfile = effectData.getActiveDisplayProfile();
+        Location use = effectData.getDisplayAt().clone().add(displayProfile.getDisplayAtXOffset(), displayProfile.getDisplayAtYOffset(), displayProfile.getDisplayAtZOffset());
+
+        userPlayer.getPlayer().spawnParticle(displayProfile.getParticle(), use, (int)(factor * displayProfile.getAmount()),
+                displayProfile.getxOffset(), displayProfile.getyOffset(), displayProfile.getzOffset(), displayProfile.getVelocity());
     }
 
     /**

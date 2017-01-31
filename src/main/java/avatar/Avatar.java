@@ -1,9 +1,6 @@
 package avatar;
 
-import avatar.commands.ChoiceCommands;
-import avatar.commands.DialogueCommands;
-import avatar.commands.ParticleCommands;
-import avatar.commands.QuestCommands;
+import avatar.commands.*;
 import avatar.events.InventoryClick;
 import avatar.events.PlayerJoin;
 import avatar.events.PlayerQuit;
@@ -63,6 +60,7 @@ public class Avatar extends JavaPlugin {
         getCommand("quest").setExecutor(new QuestCommands());
         getCommand("dialogue").setExecutor(new DialogueCommands());
         getCommand("particle").setExecutor(new ParticleCommands());
+        getCommand("ability").setExecutor(new AbilityCommands());
     }
 
     @Override

@@ -1,15 +1,31 @@
 package avatar.game.ability.type;
 
+import avatar.game.ability.AbilityStage;
 import avatar.game.ability.property.AbilityPropertyBoundRange;
 import avatar.game.user.User;
+import avatar.util.misc.LocationUtils;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;
-import org.bukkit.util.BlockIterator;
+
+import java.util.Set;
 
 public abstract class AbilityTargetingLocation extends AbilityTargeting {
 
     public AbilityTargetingLocation(User owner, double speed, long interval) {
-        super(owner, speed, interval);
+        this(owner, speed, interval, 3);
+    }
+
+    public AbilityTargetingLocation(User owner, double speed, long interval, int history) {
+        super(owner, speed, interval, history);
+    }
+
+    @Override
+    public void run(){
+        if(this.stage != AbilityStage.FINISH){
+
+        }
+        super.run();
     }
 
     @Override
@@ -19,12 +35,7 @@ public abstract class AbilityTargetingLocation extends AbilityTargeting {
             //If it's location based, it shouldn't be infinite
             return getOwner().getEntity().getLocation();
         } else {
-            BlockIterator blockIterator = new BlockIterator((LivingEntity)owner.getEntity(), (int)range);
-            Location give = null;
-            while(blockIterator.hasNext()){
-                give = blockIterator.next().getLocation();
-            }
-            return give;
+            return LocationUtils.getCenteredLocation(((LivingEntity) owner.getEntity()).getTargetBlock((Set<Material>) null, (int) range).getLocation());
         }
     }
 }

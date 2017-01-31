@@ -10,7 +10,11 @@ public abstract class AbilityTargetingEntity extends AbilityTargeting {
     private Entity targetEntity;
 
     public AbilityTargetingEntity(User owner, double speed, long interval, Entity targetEntity) {
-        super(owner, speed, interval);
+        this(owner, speed, interval, 3, targetEntity);
+    }
+
+    public AbilityTargetingEntity(User owner, double speed, long interval, int history, Entity targetEntity) {
+        super(owner, speed, interval, history);
 
         this.targetEntity = targetEntity;
         this.setTarget(targetEntity.getLocation().add(0, 1, 0));
@@ -22,16 +26,15 @@ public abstract class AbilityTargetingEntity extends AbilityTargeting {
 
     @Override
     public void run(){
-        super.run();
-
         if(this.stage != AbilityStage.FINISH){
             if(entityValid()){
                 setTarget(targetEntity.getLocation());
-                return;
             } else {
                 this.cancel(null);
+                return;
             }
         }
+        super.run();
     }
 
     @Override

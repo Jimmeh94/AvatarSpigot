@@ -24,6 +24,18 @@ public abstract class Vector<T> {
         return z;
     }
 
+    public void setX(T x) {
+        this.x = x;
+    }
+
+    public void setY(T y) {
+        this.y = y;
+    }
+
+    public void setZ(T z) {
+        this.z = z;
+    }
+
     public abstract Vector<T> copy();
     public abstract Vector<T> add(Vector vector);
     public abstract Vector<T> subtract(Vector vector);
@@ -63,6 +75,15 @@ public abstract class Vector<T> {
 
         public double getFloorZ(){
             return Math.floor(z);
+        }
+
+        public Vector3D reflect(){
+            return new Vector3D(x * -1, y * -1, z * -1);
+        }
+
+        @Override
+        public String toString(){
+            return "" + x + " " + y + " " + z;
         }
     }
 

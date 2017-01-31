@@ -49,6 +49,7 @@ public abstract class Ability{
         Entity optional = owner.getEntity();
         if(optional != null){
             this.firedFrom = optional.getLocation().add(0, 1, 0);
+            this.oldCenter = firedFrom.clone();
             this.center = this.firedFrom.clone();
             this.locationChunk = center.getChunk();
             this.area = Avatar.INSTANCE.getAreaManager().getAreaByContainedLocation(this.center).get();
@@ -75,7 +76,6 @@ public abstract class Ability{
             for (AbilityProperty property : properties) {
                 if (property.checkNow(stage)) {
                     if (!property.validate()) {
-                        System.out.println("Property: " + property.getClass().getCanonicalName());
                         this.cancel(property.getFailMessage());
                         return;
                     }
