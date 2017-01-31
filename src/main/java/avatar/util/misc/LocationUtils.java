@@ -311,6 +311,29 @@ public class LocationUtils {
         return give;
     }
 
+    public static List<Location> getCubeLocations(Location start, Location end) {
+        //start is bottom left, end is top right
+        List<Location> give = new ArrayList<>();
+
+        Location add = start.clone();
+        for(int y = 0; y <= end.getBlockY() - start.getBlockY(); y++){
+            add = add.add(0, y, 0);
+            if(!give.contains(add))
+                give.add(add);
+            for(int x = 0; x <= end.getBlockX() - start.getBlockX(); x++){
+                add = add.add(x, 0, 0);
+                if(!give.contains(add))
+                    give.add(add);
+                for(int z = 0; z <= end.getBlockZ() - start.getBlockZ(); z++){
+                    add = add.add(0, 0, z);
+                    if(!give.contains(add))
+                        give.add(add);
+                }
+            }
+        }
+        return give;
+    }
+
     public enum Noise{
 
         HIGH(0.5),
