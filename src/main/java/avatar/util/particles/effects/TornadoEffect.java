@@ -1,5 +1,9 @@
 package avatar.util.particles.effects;
 
+import avatar.util.particles.ParticleUtils;
+
+import java.util.Arrays;
+
 public class TornadoEffect extends AbstractEffect {
 
 	private double[][][] coordinates;
@@ -8,6 +12,23 @@ public class TornadoEffect extends AbstractEffect {
 
 	public TornadoEffect(EffectData effectData, double height, double heightStep, double maxRadius, int lines) {
 		super(effectData);
+
+		spinner = 0;
+		init(height, heightStep, maxRadius);
+		setLines(lines);
+	}
+
+	public TornadoEffect(EffectData effectData, ParticleUtils.Loaded loaded){
+		super(effectData);
+
+		TornadoEffect tornadoEffect = (TornadoEffect)loaded.getEffect();
+		coordinates = Arrays.copyOf(tornadoEffect.coordinates, tornadoEffect.coordinates.length);
+		lines = tornadoEffect.lines;
+		spinner = 0;
+	}
+
+	public TornadoEffect(double height, double heightStep, double maxRadius, int lines){
+		super(null);
 
 		spinner = 0;
 		init(height, heightStep, maxRadius);

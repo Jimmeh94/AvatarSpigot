@@ -60,7 +60,25 @@ public class ParticleUtils {
         SPHERE_855R(new SphereEffect(8.5)),
         SPHERE_9R(new SphereEffect(9)),
         SPHERE_95R(new SphereEffect(9.5)),
-        SPHERE_10R(new SphereEffect(10));
+        SPHERE_10R(new SphereEffect(10)),
+
+        /** Tornado Effects **/
+        //height, height step, max radius, lines
+        TORNADO_3H_3R(new TornadoEffect(3, 0.5, 3, 50)),
+        TORNADO_35H_3R(new TornadoEffect(3.5, 0.5, 3, 50)),
+        TORNADO_4H_3R(new TornadoEffect(4, 0.5, 3, 50)),
+        TORNADO_45H_3R(new TornadoEffect(4.5, 0.5, 3, 50)),
+        TORNADO_5H_3R(new TornadoEffect(5, 0.5, 3, 50)),
+        TORNADO_55H_3R(new TornadoEffect(5.5, 0.5, 3, 50)),
+        TORNADO_6H_3R(new TornadoEffect(6, 0.5, 3, 50)),
+        TORNADO_65H_3R(new TornadoEffect(6.5, 0.5, 3, 50)),
+        TORNADO_7H_3R(new TornadoEffect(7, 0.5, 3, 50)),
+        TORNADO_75H_3R(new TornadoEffect(7.5, 0.5, 3, 50)),
+        TORNADO_8H_3R(new TornadoEffect(8, 0.5, 3, 50)),
+        TORNADO_85H_3R(new TornadoEffect(8.5, 0.5, 3, 50)),
+        TORNADO_9H_3R(new TornadoEffect(9, 0.5, 3, 50)),
+        TORNADO_95H_3R(new TornadoEffect(9.5, 0.5, 3, 50)),
+        TORNADO_10H_3R(new TornadoEffect(10, 0.5, 3, 50));
 
         private AbstractEffect abstractEffect;
 
