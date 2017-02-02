@@ -4,7 +4,7 @@ import avatar.Avatar;
 import avatar.events.custom.QuestEvent;
 import avatar.game.user.UserPlayer;
 import avatar.manager.ListenerManager;
-import avatar.util.misc.PlayerDirection;
+import avatar.util.directional.PlayerDirection;
 import avatar.util.text.AltCodes;
 import avatar.util.text.Action;
 import avatar.util.text.Title;

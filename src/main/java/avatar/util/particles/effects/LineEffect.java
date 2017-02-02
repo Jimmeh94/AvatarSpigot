@@ -1,7 +1,7 @@
 package avatar.util.particles.effects;
 
-import avatar.util.misc.LocationUtils;
-import avatar.util.misc.Vector;
+import avatar.util.directional.LocationUtils;
+import avatar.util.directional.Vector;
 import avatar.util.particles.effectData.EffectData;
 import org.bukkit.Location;
 

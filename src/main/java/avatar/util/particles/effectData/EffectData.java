@@ -1,6 +1,6 @@
 package avatar.util.particles.effectData;
 
-import avatar.util.misc.Vector;
+import avatar.util.directional.Vector;
 import org.bukkit.Location;
 
 public abstract class EffectData {

@@ -2,7 +2,7 @@ package avatar.util.particles.effects;
 
 
 import avatar.Avatar;
-import avatar.util.misc.Vector;
+import avatar.util.directional.Vector;
 import avatar.util.particles.effectData.EffectData;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;

@@ -6,7 +6,7 @@ import avatar.game.ability.property.AbilityProperty;
 import avatar.game.ability.property.AbilityPropertyBoundRange;
 import avatar.game.ability.property.AbilityPropertyCollisionLogic;
 import avatar.game.user.User;
-import avatar.util.misc.LocationUtils;
+import avatar.util.directional.LocationUtils;
 import avatar.util.particles.effectData.EffectData;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

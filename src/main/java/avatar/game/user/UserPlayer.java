@@ -14,7 +14,7 @@ import avatar.game.user.hotbar.HotbarSetup;
 import avatar.game.user.scoreboard.Scoreboard;
 import avatar.game.user.stats.IStatsPreset;
 import avatar.manager.ListenerManager;
-import avatar.util.misc.LocationUtils;
+import avatar.util.directional.LocationUtils;
 import avatar.util.particles.ParticleUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

@@ -1,4 +1,4 @@
-package avatar.util.misc;
+package avatar.util.directional;
 
 
 import org.bukkit.Location;

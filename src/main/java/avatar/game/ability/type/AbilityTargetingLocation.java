@@ -2,7 +2,7 @@ package avatar.game.ability.type;
 
 import avatar.game.ability.property.AbilityPropertyBoundRange;
 import avatar.game.user.User;
-import avatar.util.misc.LocationUtils;
+import avatar.util.directional.LocationUtils;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.LivingEntity;

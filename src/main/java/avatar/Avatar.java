@@ -1,10 +1,7 @@
 package avatar;
 
 import avatar.commands.*;
-import avatar.events.InventoryClick;
-import avatar.events.PlayerChat;
-import avatar.events.PlayerJoin;
-import avatar.events.PlayerQuit;
+import avatar.events.*;
 import avatar.game.dialogue.core.DialogueBuilder;
 import avatar.game.quest.builder.QuestBuilder;
 import avatar.manager.*;
@@ -26,6 +23,7 @@ public class Avatar extends JavaPlugin {
     private ChatChannelManager chatChannelManager;
     private EconomyManager economyManager;
     private BlockManager blockManager;
+    private HologramManager hologramManager;
 
     //misc
     private final int combatInterval = 5; //how many seconds out of combat needed to be switched to out of combat
@@ -43,6 +41,7 @@ public class Avatar extends JavaPlugin {
         areaManager = new AreaManager();
         economyManager = new EconomyManager();
         blockManager = new BlockManager();
+        hologramManager = new HologramManager();
 
         registerListeners();
         registerCommands();
@@ -61,6 +60,11 @@ public class Avatar extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerQuit(), this);
         getServer().getPluginManager().registerEvents(new InventoryClick(), this);
         getServer().getPluginManager().registerEvents(new PlayerChat(), this);
+        getServer().getPluginManager().registerEvents(new PlayerInteractAtEntity(), this);
+        getServer().getPluginManager().registerEvents(new LeafDecay(), this);
+        getServer().getPluginManager().registerEvents(new FireSpread(), this);
+        getServer().getPluginManager().registerEvents(new PlayerHunger(), this);
+        getServer().getPluginManager().registerEvents(new WeatherChange(), this);
     }
 
     private void registerCommands() {
@@ -73,6 +77,8 @@ public class Avatar extends JavaPlugin {
 
     @Override
     public void onDisable(){
+        hologramManager.removeHolograms();
+
         getLogger().info(">> " + getDescription().getName() + " v" + getDescription().getVersion() + " disabled! <<");
     }
 
@@ -106,5 +112,9 @@ public class Avatar extends JavaPlugin {
 
     public BlockManager getBlockManager() {
         return blockManager;
+    }
+
+    public HologramManager getHologramManager() {
+        return hologramManager;
     }
 }

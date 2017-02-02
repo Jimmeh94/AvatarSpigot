@@ -7,7 +7,7 @@ import avatar.game.user.User;
 import avatar.game.user.UserPlayer;
 import avatar.manager.AbilityManager;
 import avatar.manager.ListenerManager;
-import avatar.util.misc.LocationUtils;
+import avatar.util.directional.LocationUtils;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 

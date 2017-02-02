@@ -1,5 +1,7 @@
 package avatar.util.misc;
 
+import avatar.util.directional.LocationUtils;
+import avatar.util.directional.Vector;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
