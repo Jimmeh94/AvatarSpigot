@@ -1,15 +1,15 @@
 package avatar.util.particles;
 
 import avatar.Avatar;
-import avatar.game.area.Area;
-import avatar.game.area.Instance;
 import avatar.game.user.UserPlayer;
+import avatar.util.particles.effectData.DisplayProfile;
+import avatar.util.particles.effectData.EffectData;
 import avatar.util.particles.effects.*;
 import org.bukkit.Location;
-import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-import java.util.*;
+import java.util.Collection;
+import java.util.Optional;
 
 public class ParticleUtils {
 
@@ -42,6 +42,7 @@ public class ParticleUtils {
         HELIX_10T_25HS_75R_15L(new HelixEffect(10, .25, 0.75, 15)),
 
         /** Sphere Effects **/
+        SPHERE_025R(new SphereEffect(0.25)),
         SPHERE_05R(new SphereEffect(0.5)),
         SPHERE_1R(new SphereEffect(1)),
         SPHERE_15R(new SphereEffect(1.5)),
@@ -88,136 +89,41 @@ public class ParticleUtils {
         public AbstractEffect getEffect(){return abstractEffect;}
     }
 
-    public static class PlayerBased {
 
-        public static void displayParticles(EffectData effectData){
-            displayParticles(effectData, Arrays.asList(((UserPlayer)effectData.getOwner()).getPlayer()));
-        }
+    public static void displayParticles(EffectData effectData, Collection<Player> players){
 
-        public static void displayParticles(EffectData effectData, Collection<Player> players){
-            Optional<Instance> instance = Optional.empty();
-            Optional<Area> area = Avatar.INSTANCE.getAreaManager().getAreaByContainedLocation(effectData.getOwner().getEntity().getLocation());
-            Optional<Area> temp;
-
-            if(area.isPresent()){
-                if(area.get().isInstanced(effectData.getOwner())){
-                    instance = area.get().getInstance(effectData.getOwner());
-                }
+        for (Player player : players) {
+            Optional<UserPlayer> user = Avatar.INSTANCE.getUserManager().findUserPlayer(player);
+            if(!user.isPresent()){
+                continue;
             }
-
-            for (Player player : players) {
-                Optional<UserPlayer> user = Avatar.INSTANCE.getUserManager().findUserPlayer(player);
-                if(!user.isPresent()){
-                    continue;
-                }
-
-                if(instance.isPresent()){
-                    temp = Avatar.INSTANCE.getAreaManager().getAreaByContainedLocation(user.get().getPlayer().getLocation());
-                    if(temp.isPresent()){
-                        if(temp.get().isInstanced(user.get())){
-                           if(temp.get().getInstance(user.get()).get() != instance.get()) {
-                               continue;
-                           }
-                        } else continue;
-                    }
-                }
-
-                display(effectData, user.get());
-            }
+            displayParticles(effectData, user.get());
         }
     }
 
-    public static class AreaBased{
-        public static void displayParticles(EffectData effectData) {
-            Optional<Instance> instance = Optional.empty();
-            Optional<Area> area = Avatar.INSTANCE.getAreaManager().getAreaByContainedLocation(effectData.getOwner().getEntity().getLocation());
-            Optional<Area> temp;
 
-            if(area.get().isInstanced(effectData.getOwner())){
-                instance = area.get().getInstance(effectData.getOwner());
-            }
-
-            for (UserPlayer player : effectData.getDisplayArea().getPlayersFromMembers()) {
-                if(instance.isPresent()){
-                    temp = Avatar.INSTANCE.getAreaManager().getAreaByContainedLocation(player.getPlayer().getLocation());
-                    if(temp.isPresent()){
-                        if(temp.get().isInstanced(player)){
-                            if(temp.get().getInstance(player).get() != instance.get()) {
-                                continue;
-                            }
-                        } else continue;
-                    }
-                }
-
-                display(effectData, player);
-            }
-        }
-    }
-
-    public static class LocationBased{
-
-        public static void displayParticles(EffectData effectData) {
-            List<Entity> entities = new ArrayList<>();
-            Entity origin = null;
-
-            //find nearest entity
-            for(Entity entity: effectData.getDisplayAt().getChunk().getEntities()){
-                if(entity.getLocation().distance(effectData.getDisplayAt()) > effectData.getDisplayRadius())
-                    continue;
-                if(origin == null){
-                    origin = entity;
-                } else {
-                    if(origin.getLocation().distance(effectData.getDisplayAt()) > entity.getLocation().distance(effectData.getDisplayAt())){
-                        origin = entity;
-                    }
-                }
-            }
-
-            //get nearby entities
-            if(origin == null){
-                return;
-            } else {
-                entities.addAll(origin.getNearbyEntities(effectData.getDisplayRadius(), effectData.getDisplayRadius(), effectData.getDisplayRadius()));
-            }
-
-            Optional<Instance> instance = Optional.empty();
-            Optional<Area> area = Avatar.INSTANCE.getAreaManager().getAreaByContainedLocation(effectData.getOwner().getEntity().getLocation());
-            Optional<Area> temp;
-
-            if(area.get().isInstanced(effectData.getOwner())){
-                instance = area.get().getInstance(effectData.getOwner());
-            }
-
-            for (Entity entity: entities) {
-                if(!(entity instanceof Player)){
-                    continue;
-                }
-
-                UserPlayer player = Avatar.INSTANCE.getUserManager().findUserPlayer(entity).get();
-                if(instance.isPresent()){
-                    temp = Avatar.INSTANCE.getAreaManager().getAreaByContainedLocation(player.getPlayer().getLocation());
-                    if(temp.isPresent()){
-                        if(temp.get().isInstanced(player)){
-                            if(temp.get().getInstance(player).get() != instance.get()) {
-                                continue;
-                            }
-                        } else continue;
-                    }
-                }
-
-                display(effectData, player);
-            }
-        }
-    }
-
-    private static void display(EffectData effectData, UserPlayer userPlayer){
+    public static void displayParticles(EffectData effectData, UserPlayer userPlayer){
         double factor = userPlayer.getParticleModifier().factor;
 
-        EffectData.DisplayProfile displayProfile = effectData.getActiveDisplayProfile();
+        if(effectData.getDisplayAt() == null){
+            if(effectData.getCenter() == null){
+                effectData.setDisplayAt(userPlayer.getPlayer().getEyeLocation());
+            } else effectData.setDisplayAt(effectData.getCenter());
+        }
+
+        DisplayProfile displayProfile = effectData.getActiveDisplayProfile();
         Location use = effectData.getDisplayAt().clone().add(displayProfile.getDisplayAtXOffset(), displayProfile.getDisplayAtYOffset(), displayProfile.getDisplayAtZOffset());
 
-        userPlayer.getPlayer().spawnParticle(displayProfile.getParticle(), use, (int)(factor * displayProfile.getAmount()),
-                displayProfile.getxOffset(), displayProfile.getyOffset(), displayProfile.getzOffset(), displayProfile.getVelocity());
+        if(displayProfile.getExtra() != -1){
+            userPlayer.getPlayer().spawnParticle(displayProfile.getParticle(), use, (int)(factor * displayProfile.getAmount()),
+                    displayProfile.getxOffset(), displayProfile.getyOffset(), displayProfile.getzOffset(), displayProfile.getVelocity(), displayProfile.getExtra());
+        } else if(displayProfile.getData() != null){
+            userPlayer.getPlayer().spawnParticle(displayProfile.getParticle(), use, (int)(factor * displayProfile.getAmount()),
+                    displayProfile.getxOffset(), displayProfile.getyOffset(), displayProfile.getzOffset(), displayProfile.getVelocity(), displayProfile.getData());
+        } else {
+            userPlayer.getPlayer().spawnParticle(displayProfile.getParticle(), use, (int)(factor * displayProfile.getAmount()),
+                    displayProfile.getxOffset(), displayProfile.getyOffset(), displayProfile.getzOffset(), displayProfile.getVelocity());
+        }
     }
 
     /**

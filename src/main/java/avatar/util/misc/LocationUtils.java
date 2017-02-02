@@ -180,6 +180,9 @@ public class LocationUtils {
     }
 
     public static Location getMidPointLocation(Location start, Location end){
+        if(start.getBlockX() == end.getBlockX() && start.getBlockY() == end.getBlockY() && start.getBlockZ() == end.getBlockZ())
+            return start;
+
         Double[] delta = new Double[]{Math.abs(start.getX() - end.getX()),
                 Math.abs(start.getY() - end.getY()),
                 Math.abs(start.getZ() - end.getZ())};
@@ -314,22 +317,20 @@ public class LocationUtils {
     public static List<Location> getCubeLocations(Location start, Location end) {
         //start is bottom left, end is top right
         List<Location> give = new ArrayList<>();
-
         Location add = start.clone();
-        for(int y = 0; y <= end.getBlockY() - start.getBlockY(); y++){
-            add = add.add(0, y, 0);
-            if(!give.contains(add))
-                give.add(add);
-            for(int x = 0; x <= end.getBlockX() - start.getBlockX(); x++){
-                add = add.add(x, 0, 0);
-                if(!give.contains(add))
-                    give.add(add);
-                for(int z = 0; z <= end.getBlockZ() - start.getBlockZ(); z++){
-                    add = add.add(0, 0, z);
+
+        while(add.getY() <= end.getY()){
+            while(add.getX() <= end.getX()){
+                while(add.getZ() <= end.getZ()){
                     if(!give.contains(add))
-                        give.add(add);
+                        give.add(add.clone());
+                    add = add.add(0, 0, 1);
                 }
+                add.setZ(start.getZ());
+                add = add.add(1, 0, 0);
             }
+            add.setX(start.getX());
+            add = add.add(0, 1, 0);
         }
         return give;
     }

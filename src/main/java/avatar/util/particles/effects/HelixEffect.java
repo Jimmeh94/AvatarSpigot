@@ -1,6 +1,7 @@
 package avatar.util.particles.effects;
 
 import avatar.util.particles.ParticleUtils;
+import avatar.util.particles.effectData.EffectData;
 
 import java.util.Arrays;
 
@@ -18,8 +19,8 @@ public class HelixEffect extends AbstractEffect {
 		setLines(lines);
 	}
 
-	public HelixEffect(EffectData effectData, ParticleUtils.Loaded loaded){
-		super(effectData);
+	public HelixEffect(EffectData effectData, ParticleUtils.Loaded loaded, long delay, long interval, int cancel){
+		super(effectData, delay, interval, cancel);
 
 		HelixEffect helixEffect = (HelixEffect)loaded.getEffect();
 		this.coordinates = Arrays.copyOf(helixEffect.coordinates, helixEffect.coordinates.length);

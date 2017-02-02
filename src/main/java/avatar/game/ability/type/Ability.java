@@ -43,12 +43,11 @@ public abstract class Ability{
 
     public Ability(User owner){
         this.owner = owner;
-        loadProperties(properties = new ArrayList<>());
 
         //set location information
         Entity optional = owner.getEntity();
         if(optional != null){
-            this.firedFrom = optional.getLocation().add(0, 1, 0);
+            this.firedFrom = optional.getLocation().add(0.5, 1.5, 0.5);
             this.oldCenter = firedFrom.clone();
             this.center = this.firedFrom.clone();
             this.locationChunk = center.getChunk();
@@ -58,6 +57,8 @@ public abstract class Ability{
                 area.getInstance(owner).get().addAbility(this);
             }
         }
+
+        loadProperties(properties = new ArrayList<>());
     }
 
     public Optional<AbilityProperty> getProperty(Class<? extends AbilityProperty> clazz){

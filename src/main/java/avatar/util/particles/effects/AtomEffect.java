@@ -1,6 +1,7 @@
 package avatar.util.particles.effects;
 
 import avatar.util.particles.ParticleUtils;
+import avatar.util.particles.effectData.EffectData;
 
 import java.util.Arrays;
 
@@ -15,8 +16,8 @@ public class AtomEffect extends AbstractEffect {
 		init(ringRadius, coreRadius, yawOffset);
 	}
 
-	public AtomEffect(EffectData effectData, ParticleUtils.Loaded loaded){
-		super(effectData);
+	public AtomEffect(EffectData effectData, ParticleUtils.Loaded loaded, long delay, long interval, int cancel){
+		super(effectData, delay, interval, cancel);
 
 		AtomEffect atomEffect = (AtomEffect)loaded.getEffect();
 		coreCoordinates = Arrays.copyOf(atomEffect.coreCoordinates, atomEffect.coreCoordinates.length);

@@ -3,15 +3,26 @@ package avatar.util.particles.effects;
 
 import avatar.Avatar;
 import avatar.util.misc.Vector;
+import avatar.util.particles.effectData.EffectData;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitTask;
 
 public abstract class AbstractEffect {
 
 	protected EffectData effectData;
+	protected BukkitTask task;
+	private long delay, interval;
+	private int cancel;
 
 	public AbstractEffect(EffectData effectData){
 		this.effectData = effectData;
+	}
+
+	public AbstractEffect(EffectData effectData, long delay, long interval, int cancel){
+		this.effectData = effectData;
+		this.delay = delay;
+		this.interval = interval;
+		this.cancel = cancel;
 	}
 
 	/**
@@ -25,7 +36,7 @@ public abstract class AbstractEffect {
 	 * @return The current instance of the effect to allow chaining of methods.
 	 */
 	public AbstractEffect start() {
-		BukkitTask task = Bukkit.getScheduler().runTaskTimer(Avatar.INSTANCE,
+		task = Bukkit.getScheduler().runTaskTimer(Avatar.INSTANCE,
 
 				new Runnable() {
 					int c = 0;
@@ -34,12 +45,11 @@ public abstract class AbstractEffect {
 					public void run() {
 						play();
 						c++;
-						if (c >= effectData.getCancel())
+						if (c >= cancel)
 							stop();
 					}
 				}
-		, effectData.getInterval(), effectData.getDelay());
-		effectData.setBukkitTask(task);
+		, interval, delay);
 		return this;
 	}
 
@@ -50,7 +60,6 @@ public abstract class AbstractEffect {
 	 *         methods.
 	 */
 	public AbstractEffect stop() {
-		BukkitTask task = effectData.getBukkitTask();
 		if (task == null)
 			return this;
 		try {
@@ -64,7 +73,7 @@ public abstract class AbstractEffect {
 	 * Spawns a particle using the set particle effect.
 	 */
 	protected void playParticle(){
-		effectData.getPlayParticles().playParticles(effectData, effectData.getDisplayAt());
+		effectData.display();
 	}
 
 	public EffectData getEffectData() {

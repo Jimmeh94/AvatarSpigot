@@ -2,7 +2,10 @@ package avatar.commands;
 
 import avatar.Avatar;
 import avatar.util.particles.ParticleUtils;
+import avatar.util.particles.effectData.DisplayProfile;
+import avatar.util.particles.effectData.PlayerBasedEffectData;
 import avatar.util.particles.effects.*;
+import org.bukkit.Particle;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -17,23 +20,19 @@ public class ParticleCommands implements CommandExecutor {
             if(args.length == 1){
                 String effect = args[0];
                 AbstractEffect abstractEffect = null;
-                EffectData effectData = EffectData.builder()
-                        .user(Avatar.INSTANCE.getUserManager().findUserPlayer(player).get())
-                        .center(player.getLocation().clone().add(0, 1, 0))
-                        .taskInfo(0L, 8L, 200)
-                        .playParticles((data, target) -> ParticleUtils.PlayerBased.displayParticles(data))
-                        .build();
+                PlayerBasedEffectData effectData = new PlayerBasedEffectData(player.getEyeLocation(), Avatar.INSTANCE.getUserManager().findUserPlayer(player).get(),
+                        DisplayProfile.builder().amount(50).particle(Particle.FLAME).velocity(0).build());
 
                 switch (effect){
-                    case "atom": abstractEffect = new AtomEffect(effectData, 1, 0.5, 0.0);
+                    case "atom": abstractEffect = new AtomEffect(effectData, ParticleUtils.Loaded.ATOM_3RR_1CR_0Y, 0L, 5L, 50);
                         break;
-                    case "helix": abstractEffect = new HelixEffect(effectData, 7.5, .25, 0.75, 15);
+                    case "helix": abstractEffect = new HelixEffect(effectData, ParticleUtils.Loaded.HELIX_3T_25HS_75R_15L, 0L, 5L, 50);
                         break;
                     case "line": abstractEffect = new LineEffect(effectData, player.getLocation().clone().add(5, 1, 5));
                         break;
-                    case "sphere": abstractEffect = new SphereEffect(effectData, 5.0);
+                    case "sphere": abstractEffect = new SphereEffect(effectData, ParticleUtils.Loaded.SPHERE_2R, 0L, 5L, 50);
                         break;
-                    case "tornado": abstractEffect = new TornadoEffect(effectData, 10, 0.5, 6.5, 50);
+                    case "tornado": abstractEffect = new TornadoEffect(effectData, ParticleUtils.Loaded.TORNADO_7H_3R, 0L, 5L, 50);
                 }
                 abstractEffect.start();
             }

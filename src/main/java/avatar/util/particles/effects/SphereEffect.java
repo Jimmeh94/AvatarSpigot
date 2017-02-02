@@ -1,6 +1,7 @@
 package avatar.util.particles.effects;
 
 import avatar.util.particles.ParticleUtils;
+import avatar.util.particles.effectData.EffectData;
 
 import java.util.Arrays;
 
@@ -20,8 +21,8 @@ public class SphereEffect extends AbstractEffect {
 		init(radius);
 	}
 
-	public SphereEffect(EffectData effectData, ParticleUtils.Loaded loaded){
-		super(effectData);
+	public SphereEffect(EffectData effectData, ParticleUtils.Loaded loaded, long delay, long interval, int cancel){
+		super(effectData, delay, interval, cancel);
 
 		SphereEffect sphereEffect = (SphereEffect)loaded.getEffect();
 		this.sphereCoordinates = Arrays.copyOf(sphereEffect.sphereCoordinates, sphereEffect.sphereCoordinates.length);

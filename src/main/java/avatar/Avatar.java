@@ -15,6 +15,9 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Avatar extends JavaPlugin {
 
+    //TODO test instanced and area particle displaying
+    //TODO test entity targeting and ability/user collision
+
     public static Avatar INSTANCE;
 
     //--- manager ---

@@ -1,6 +1,7 @@
 package avatar.util.particles.effects;
 
 import avatar.util.particles.ParticleUtils;
+import avatar.util.particles.effectData.EffectData;
 
 import java.util.Arrays;
 
@@ -18,8 +19,8 @@ public class TornadoEffect extends AbstractEffect {
 		setLines(lines);
 	}
 
-	public TornadoEffect(EffectData effectData, ParticleUtils.Loaded loaded){
-		super(effectData);
+	public TornadoEffect(EffectData effectData, ParticleUtils.Loaded loaded, long delay, long interval, int cancel){
+		super(effectData, delay, interval, cancel);
 
 		TornadoEffect tornadoEffect = (TornadoEffect)loaded.getEffect();
 		coordinates = Arrays.copyOf(tornadoEffect.coordinates, tornadoEffect.coordinates.length);

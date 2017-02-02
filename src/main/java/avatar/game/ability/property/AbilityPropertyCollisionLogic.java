@@ -2,9 +2,9 @@ package avatar.game.ability.property;
 
 import avatar.Avatar;
 import avatar.game.ability.AbilityStage;
+import avatar.game.ability.property.collision.CollisionBehavior;
 import avatar.game.ability.type.Ability;
 import avatar.game.user.User;
-import avatar.util.misc.AABB;
 import avatar.util.misc.LocationUtils;
 import avatar.util.misc.Vector;
 import org.bukkit.Location;
@@ -51,7 +51,7 @@ public abstract class AbilityPropertyCollisionLogic extends AbilityProperty {
 
     public boolean hasCollided(){
         for(CollisionBehavior behavior: collisionBehaviors){
-            if(behavior.collided)
+            if(behavior.isCollided())
                 return true;
         }
         return false;
@@ -98,7 +98,7 @@ public abstract class AbilityPropertyCollisionLogic extends AbilityProperty {
         if(hasCollided()){
             boolean shouldContinue = true;
             for(CollisionBehavior behavior: collisionBehaviors){
-                if(behavior.collided){
+                if(behavior.isCollided()){
                     shouldContinue = behavior.doCollision();
                 }
             }
@@ -123,11 +123,12 @@ public abstract class AbilityPropertyCollisionLogic extends AbilityProperty {
         protected DomeDirection domeDirection;
         protected List<Location> flatSurface;
 
-        public DomeCollisionLogic(String displayName, Ability ability, double radius, DomeDirection direction) {
-            super(displayName, ability);
+        public DomeCollisionLogic(String displayName, Ability ability, double radius, DomeDirection direction, CollisionBehavior... collisionBehaviors) {
+            super(displayName, ability, collisionBehaviors);
 
             this.radius = radius;
             this.domeDirection = direction;
+            flatSurface = new ArrayList<>();
 
             double copy = new Double(radius);
             while(copy > 0){
@@ -235,8 +236,8 @@ public abstract class AbilityPropertyCollisionLogic extends AbilityProperty {
 
         protected double radius;
 
-        public SphereCollisionLogic(String displayName, Ability ability, double radius) {
-            super(displayName, ability);
+        public SphereCollisionLogic(String displayName, Ability ability, double radius, CollisionBehavior... collisionBehaviors) {
+            super(displayName, ability, collisionBehaviors);
 
             this.radius = radius;
         }
@@ -275,15 +276,11 @@ public abstract class AbilityPropertyCollisionLogic extends AbilityProperty {
 
         @Override
         protected List<Block> collidesBlocks() {
-            //get top left corner, .add(radius, radius, radius) to bottom right
             Location start = ability.getCenter().clone().subtract(radius, radius, radius);
             Location end = ability.getCenter().clone().add(radius, radius, radius);
             List<Location> temp = LocationUtils.getCubeLocations(start, end);
             List<Block> give = new ArrayList<>();
             for(Location location: temp){
-                if(location.distance(ability.getCenter()) > radius)
-                    continue;
-
                 if(!((CollisionBehavior.CollideOnBlock)getBehavior(CollisionBehavior.CollideOnBlock.class)).hasExclusion(location.getBlock().getType())){
                     give.add(location.getBlock());
                 }
@@ -300,18 +297,18 @@ public abstract class AbilityPropertyCollisionLogic extends AbilityProperty {
     //*** Square ***
     public static class CubeCollisionLogic extends AbilityPropertyCollisionLogic {
 
-        private AABB hitbox;
+        private double x, y, z;
 
-        public CubeCollisionLogic(String displayName, Ability ability, double x, double y, double z){
-            super(displayName, ability);
+        public CubeCollisionLogic(String displayName, Ability ability, double x, double y, double z, CollisionBehavior... collisionBehaviors){
+            super(displayName, ability, collisionBehaviors);
 
-            Location temp = ability.getOwner().getEntity().getLocation().add(0, 1, 0);
-            this.hitbox = new AABB(temp.getX() - x/2, temp.getY() - y/2, temp.getZ() - z/2,
-                    temp.getX() + x/2, temp.getY() + y/2, temp.getZ() + z/2);
+            this.x = x == 0 ? 0 : x/2;
+            this.y = y == 0 ? 0: y/2;
+            this.z = z == 0 ? 0: z/2;
         }
 
         public List<Location> getBoxLocations(){
-            return LocationUtils.getCubeLocations(hitbox.getMin(), hitbox.getMax());
+            return LocationUtils.getCubeLocations(ability.getCenter().clone().subtract(x, y, z), ability.getCenter().clone().add(x, y, z));
         }
 
         @Override
@@ -323,8 +320,12 @@ public abstract class AbilityPropertyCollisionLogic extends AbilityProperty {
         public boolean collidesAbility(Ability ability) {
             if(ability.getProperty(CubeCollisionLogic.class).isPresent()){
                 CubeCollisionLogic logic = (CubeCollisionLogic) ability.getProperty(CubeCollisionLogic.class).get();
-                if(this.hitbox.intersects(logic.hitbox)){
-                    return true;
+                for(Location location: getBoxLocations()){
+                    for(Location l: logic.getBoxLocations()){
+                        if(sameBlock(location, l)){
+                            return true;
+                        }
+                    }
                 }
             } else if(ability.getProperty(SphereCollisionLogic.class).isPresent()){
                 SphereCollisionLogic logic = (SphereCollisionLogic) ability.getProperty(SphereCollisionLogic.class).get();
@@ -366,10 +367,6 @@ public abstract class AbilityPropertyCollisionLogic extends AbilityProperty {
                 }
             }
             return give;
-        }
-
-        public void offset(Location oldCenter, Location center) {
-            this.hitbox = hitbox.offset(LocationUtils.getOffsetBetween(oldCenter, center));
         }
     }
 }

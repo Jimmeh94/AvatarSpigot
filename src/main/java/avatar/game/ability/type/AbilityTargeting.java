@@ -7,7 +7,7 @@ import avatar.game.ability.property.AbilityPropertyBoundRange;
 import avatar.game.ability.property.AbilityPropertyCollisionLogic;
 import avatar.game.user.User;
 import avatar.util.misc.LocationUtils;
-import avatar.util.particles.effects.EffectData;
+import avatar.util.particles.effectData.EffectData;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.scheduler.BukkitTask;
@@ -71,6 +71,10 @@ public abstract class AbilityTargeting extends Ability implements Runnable{
         task.cancel();
     }
 
+    public EffectData getEffectData() {
+        return effectData;
+    }
+
     @Override
     public void run(){
         //set the location and check if at target
@@ -78,10 +82,6 @@ public abstract class AbilityTargeting extends Ability implements Runnable{
         //if any of those !validate, stop the ability
         setLocationInfo();
         effectData.setDisplayAt(getCenter());
-        if(this.getCenter().distance(this.getTarget()) <= 0.75){
-            this.cancel(null);
-            return;
-        }
 
         for(AbilityProperty property: properties){
             if(property.checkNow(stage)){
@@ -90,6 +90,11 @@ public abstract class AbilityTargeting extends Ability implements Runnable{
                     return;
                 }
             }
+        }
+
+        if(this.getCenter().distance(this.getTarget()) <= 0.75){
+            this.cancel(null);
+            return;
         }
 
         if(this.stage != AbilityStage.FINISH){
@@ -119,10 +124,6 @@ public abstract class AbilityTargeting extends Ability implements Runnable{
         if(getProperty(AbilityPropertyCollisionLogic.DomeCollisionLogic.class).isPresent()){
             ((AbilityPropertyCollisionLogic.DomeCollisionLogic)getProperty(AbilityPropertyCollisionLogic.DomeCollisionLogic.class)
                     .get()).adjustSurface(LocationUtils.getOffsetBetween(oldCenter, center));
-        }
-
-        if(getProperty(AbilityPropertyCollisionLogic.CubeCollisionLogic.class).isPresent()){
-            ((AbilityPropertyCollisionLogic.CubeCollisionLogic)getProperty(AbilityPropertyCollisionLogic.CubeCollisionLogic.class).get()).offset(oldCenter, center);
         }
 
         if(!this.area.contains(this.center)){

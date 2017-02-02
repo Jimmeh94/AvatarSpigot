@@ -2,6 +2,7 @@ package avatar.util.particles.effects;
 
 import avatar.util.misc.LocationUtils;
 import avatar.util.misc.Vector;
+import avatar.util.particles.effectData.EffectData;
 import org.bukkit.Location;
 
 public class LineEffect extends AbstractEffect {
@@ -10,6 +11,12 @@ public class LineEffect extends AbstractEffect {
 
     public LineEffect(EffectData effectData, Location target) {
         super(effectData);
+
+        this.target = target;
+    }
+
+    public LineEffect(EffectData effectData, Location target, long delay, long interval, int cancel){
+        super(effectData, delay, interval, cancel);
 
         this.target = target;
     }

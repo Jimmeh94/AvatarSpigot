@@ -1,6 +1,5 @@
 package avatar.game.ability.type;
 
-import avatar.game.ability.AbilityStage;
 import avatar.game.ability.property.AbilityPropertyBoundRange;
 import avatar.game.user.User;
 import avatar.util.misc.LocationUtils;
@@ -18,14 +17,6 @@ public abstract class AbilityTargetingLocation extends AbilityTargeting {
 
     public AbilityTargetingLocation(User owner, double speed, long interval, int history) {
         super(owner, speed, interval, history);
-    }
-
-    @Override
-    public void run(){
-        if(this.stage != AbilityStage.FINISH){
-
-        }
-        super.run();
     }
 
     @Override

@@ -90,7 +90,7 @@ public class AABB {
     }
 
     public String toString() {
-        return "AABB(" + this.min + " to " + this.max + ")";
+        return "AABB( min: " + min.getX() + " " + min.getY() + " " + min.getZ() + " max: " + max.getX() + " " + max.getY() + " " + max.getZ() + ")";
     }
 }
 
