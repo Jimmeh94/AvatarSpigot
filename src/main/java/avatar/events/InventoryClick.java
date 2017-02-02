@@ -12,7 +12,6 @@ public class InventoryClick implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent event){
-        event.setCancelled(true);
         if(event.getClickedInventory() == event.getWhoClicked().getInventory())
             return;
         if(event.getCurrentItem() == null || event.getCurrentItem().getType().equals(Material.AIR))
@@ -20,6 +19,7 @@ public class InventoryClick implements Listener {
 
         String name = event.getClickedInventory().getName();
         if(name.equalsIgnoreCase("Quests")){
+            event.setCancelled(true);
             UserPlayer playerInfo = Avatar.INSTANCE.getUserManager().findUserPlayer(event.getWhoClicked()).get();
 
             for(Quest quest: playerInfo.getQuestManager().getQuests()){

@@ -30,12 +30,15 @@ public class Fireball extends AbilityTargetingLocation {
 
     @Override
     protected void loadProperties(List<AbilityProperty> properties) {
-
         properties.add(new AbilityPropertyCost(null, this, 5, Stats.StatType.CHI));
         properties.add(new AbilityPropertyDuration(null, this, 100));
         properties.add(new AbilityPropertyBoundRange(null, this, 50));
-        properties.add(new AbilityPropertyCollisionLogic.CubeCollisionLogic(null, this, 3, 3, 3, new CollisionBehavior.CollideOnBlock(this,
-                null, new CallbackDestroyBlocks(new PlayerBasedEffectData(getCenter(), (UserPlayer)owner, DisplayProfile.builder().particle(Particle.BLOCK_CRACK).amount(15).build())))));
+        properties.add(new AbilityPropertyCollisionLogic.CubeCollisionLogic(null, this, 1, 1, 1,
+                        new CollisionBehavior.CollideOnBlock(this, null,
+                                new CallbackDestroyBlocks(
+                                        new PlayerBasedEffectData(getCenter(), (UserPlayer)owner, DisplayProfile.builder().particle(Particle.BLOCK_CRACK).amount(15).build())
+                                )
+                        )));
     }
 
     @Override

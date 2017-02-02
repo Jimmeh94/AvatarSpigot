@@ -1,5 +1,7 @@
 package avatar.game.ability.property.collision;
 
+import avatar.Avatar;
+import avatar.util.misc.BlockReplacement;
 import avatar.util.particles.effectData.EffectData;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -19,6 +21,7 @@ public class CallbackDestroyBlocks implements CollisionCallback {
                 effectData.setDisplayAt(block.getLocation());
                 effectData.getActiveDisplayProfile().setData(new MaterialData(block.getType()));
                 effectData.display();
+                Avatar.INSTANCE.getBlockManager().add(new BlockReplacement(block, 7));
                 block.setType(Material.AIR);
             }
         }

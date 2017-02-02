@@ -19,6 +19,7 @@ public abstract class EffectData {
         this.center = center.clone();
         this.displayAt = displayAt.clone();
         this.displayProfiles = displayProfiles;
+        activeDisplayProfile = displayProfiles[0];
     }
 
     public DisplayProfile[] getDisplayProfiles() {

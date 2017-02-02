@@ -9,6 +9,8 @@ import avatar.game.chat.channel.ChatChannel;
 import avatar.game.dialogue.core.Dialogue;
 import avatar.game.dialogue.core.DialogueReference;
 import avatar.game.quest.PlayerQuestManager;
+import avatar.game.user.hotbar.DefaultHotbar;
+import avatar.game.user.hotbar.HotbarSetup;
 import avatar.game.user.scoreboard.Scoreboard;
 import avatar.game.user.stats.IStatsPreset;
 import avatar.manager.ListenerManager;
@@ -24,9 +26,6 @@ import java.util.UUID;
 
 public class UserPlayer extends User {
 
-    private ParticleUtils.ParticleModifier particleModifier = ParticleUtils.ParticleModifier.NORMAL;
-    private Optional<Location> lastBlockLocation = Optional.empty();
-
     private PlayerQuestManager questManager;
 
     private Dialogue currentDialogue;
@@ -35,6 +34,9 @@ public class UserPlayer extends User {
     private Title title;
     private ChatColorTemplate chatColorTemplate = ChatColorTemplate.GRAY;
     private ChatChannel chatChannel;
+    private ParticleUtils.ParticleModifier particleModifier = ParticleUtils.ParticleModifier.NORMAL;
+    private Optional<Location> lastBlockLocation = Optional.empty();
+    private HotbarSetup hotbarSetup;
 
     public UserPlayer(UUID user) {
         super(user);
@@ -56,6 +58,8 @@ public class UserPlayer extends User {
             enterArea(area.get(), false);
 
         scoreboard.init();
+
+        hotbarSetup = new DefaultHotbar(getPlayer());
     }
 
     @Override
