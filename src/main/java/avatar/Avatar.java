@@ -2,6 +2,7 @@ package avatar;
 
 import avatar.commands.*;
 import avatar.events.*;
+import avatar.events.custom.PlayerInteract;
 import avatar.game.dialogue.core.DialogueBuilder;
 import avatar.game.quest.builder.QuestBuilder;
 import avatar.manager.*;
@@ -65,6 +66,7 @@ public class Avatar extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new FireSpread(), this);
         getServer().getPluginManager().registerEvents(new PlayerHunger(), this);
         getServer().getPluginManager().registerEvents(new WeatherChange(), this);
+        getServer().getPluginManager().registerEvents(new PlayerInteract(), this);
     }
 
     private void registerCommands() {

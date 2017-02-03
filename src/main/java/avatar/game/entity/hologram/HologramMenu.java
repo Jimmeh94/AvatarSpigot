@@ -18,7 +18,7 @@ public abstract class HologramMenu {
     /**
      * Override this and spawn all armorstands here
      */
-    public abstract void spawnMenu();
+    protected abstract void spawnMenu();
 
     public HologramMenu(UserPlayer owner, double boudningRadius){
         this.owner = owner;
@@ -26,6 +26,8 @@ public abstract class HologramMenu {
         this.center = owner.getPlayer().getLocation().clone();
 
         holograms = new ArrayList<>();
+        owner.setOpenMenu(this);
+        spawnMenu();
     }
 
     protected List<Location> getMenuLocations(){

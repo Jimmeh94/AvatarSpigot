@@ -44,14 +44,15 @@ public class Scoreboard {
         this.preset.takeSnapshot();
 
         Objective objective = owner.getPlayer().getScoreboard().getObjective(DisplaySlot.SIDEBAR);
-        objective.setDisplayName(preset.getScore(0));
-
         for(int i = 0; i < this.preset.getOldSnapshot().size(); i++) {
             objective.getScoreboard().resetScores(this.preset.getOldSnapshot().get(i));
         }
 
         this.preset = preset;
-        updateScoreboard();
+        updatePreset();
+        for(int i = 1; i < this.preset.getOldSnapshot().size(); i++){
+            objective.getScore(this.preset.getScore(i)).setScore(16 - i);
+        }
     }
 
     public void unregisterScoreboard(){

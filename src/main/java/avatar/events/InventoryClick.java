@@ -3,6 +3,8 @@ package avatar.events;
 import avatar.Avatar;
 import avatar.game.quest.Quest;
 import avatar.game.user.UserPlayer;
+import avatar.game.user.menus.ParticleModifierMenu;
+import avatar.game.user.menus.SettingsMenu;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,10 +19,11 @@ public class InventoryClick implements Listener {
         if(event.getCurrentItem() == null || event.getCurrentItem().getType().equals(Material.AIR))
             return;
 
+        UserPlayer playerInfo = Avatar.INSTANCE.getUserManager().findUserPlayer(event.getWhoClicked()).get();
+
         String name = event.getClickedInventory().getName();
         if(name.equalsIgnoreCase("Quests")){
             event.setCancelled(true);
-            UserPlayer playerInfo = Avatar.INSTANCE.getUserManager().findUserPlayer(event.getWhoClicked()).get();
 
             for(Quest quest: playerInfo.getQuestManager().getQuests()){
                 if(event.getCurrentItem().equals(quest.getItemRepresentation())){
@@ -29,6 +32,13 @@ public class InventoryClick implements Listener {
                     return;
                 }
             }
+        } else if(name.equalsIgnoreCase("Particle Settings")){
+            event.setCancelled(true);
+            ParticleModifierMenu.handle(event.getSlot(), playerInfo);
+            playerInfo.getPlayer().closeInventory();
+        } else if(name.equalsIgnoreCase("Settings")){
+            event.setCancelled(true);
+            SettingsMenu.handle(event.getSlot(), playerInfo);
         }
 
     }

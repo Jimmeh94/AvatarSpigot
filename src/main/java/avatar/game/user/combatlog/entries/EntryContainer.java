@@ -1,4 +1,4 @@
-package avatar.game.combatlog.entries;
+package avatar.game.user.combatlog.entries;
 
 import java.util.ArrayList;
 import java.util.List;

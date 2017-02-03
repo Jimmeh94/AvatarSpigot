@@ -50,8 +50,9 @@ public class Fireball extends AbilityTargetingLocation {
 
     @Override
     protected void display() {
-        //ball itself at displayAt
-        //need a trail of particles behind it
+        //display ball
+        //display fire trail
+        //display smoke trail
 
         effectData.setActiveDisplayProfile(effectData.getDisplayProfiles()[0]);
         sphereEffect.play();

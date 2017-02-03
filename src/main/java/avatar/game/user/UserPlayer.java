@@ -8,6 +8,7 @@ import avatar.game.chat.ChatColorTemplate;
 import avatar.game.chat.channel.ChatChannel;
 import avatar.game.dialogue.core.Dialogue;
 import avatar.game.dialogue.core.DialogueReference;
+import avatar.game.entity.hologram.HologramMenu;
 import avatar.game.quest.PlayerQuestManager;
 import avatar.game.user.hotbar.DefaultHotbar;
 import avatar.game.user.hotbar.HotbarSetup;
@@ -16,7 +17,9 @@ import avatar.game.user.stats.IStatsPreset;
 import avatar.manager.ListenerManager;
 import avatar.util.directional.LocationUtils;
 import avatar.util.particles.ParticleUtils;
+import avatar.util.text.Messager;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -37,6 +40,7 @@ public class UserPlayer extends User {
     private ParticleUtils.ParticleModifier particleModifier = ParticleUtils.ParticleModifier.NORMAL;
     private Optional<Location> lastBlockLocation = Optional.empty();
     private HotbarSetup hotbarSetup;
+    private HologramMenu openMenu;
 
     public UserPlayer(UUID user) {
         super(user);
@@ -59,7 +63,7 @@ public class UserPlayer extends User {
 
         scoreboard.init();
 
-        hotbarSetup = new DefaultHotbar(getPlayer());
+        hotbarSetup = new DefaultHotbar(this);
     }
 
     @Override
@@ -74,7 +78,19 @@ public class UserPlayer extends User {
         setCurrentDialogue(reference.getDialogue(getPlayer()));
         startDialogue();
     }
-    
+
+    public HotbarSetup getHotbarSetup() {
+        return hotbarSetup;
+    }
+
+    public void setOpenMenu(HologramMenu openMenu) {
+        this.openMenu = openMenu;
+    }
+
+    public HologramMenu getOpenMenu() {
+        return openMenu;
+    }
+
     @Override
     public void tick(){
         super.tick();
@@ -132,6 +148,7 @@ public class UserPlayer extends User {
         super.cleanUp();
 
         chatChannel.removeMember(this);
+        scoreboard.unregisterScoreboard();
     }
 
     public void removeDialogue() {
@@ -184,6 +201,7 @@ public class UserPlayer extends User {
 
     public void setParticleModifier(ParticleUtils.ParticleModifier particleModifier) {
         this.particleModifier = particleModifier;
+        Messager.sendMessage(getPlayer(), ChatColor.GRAY + "Particle settings set to " + particleModifier.toString(), Optional.of(Messager.Prefix.SUCCESS));
     }
 
     public void setLastBlockLocation(Location lastBlockLocation) {
@@ -208,5 +226,9 @@ public class UserPlayer extends User {
 
     public void setChatColorTemplate(ChatColorTemplate chatColorTemplate) {
         this.chatColorTemplate = chatColorTemplate;
+    }
+
+    public Scoreboard getScoreboard() {
+        return scoreboard;
     }
 }

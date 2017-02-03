@@ -93,6 +93,8 @@ public abstract class Ability{
         stage = AbilityStage.UPDATE;
 
         Bukkit.getServer().getPluginManager().callEvent(new AbilityEvent.PostFire(this, ListenerManager.getDefaultCause()));
+
+        owner.getCombatLogger().setLastShot();
     }
 
 

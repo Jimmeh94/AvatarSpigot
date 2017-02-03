@@ -5,7 +5,7 @@ import avatar.game.user.UserPlayer;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ScoreboardPreset {
+public abstract class ScoreboardPreset {
 
     private List<String> scores = new ArrayList<>();
     private UserPlayer owner;
@@ -20,7 +20,7 @@ public class ScoreboardPreset {
         this.owner = owner;
     }
 
-    public void updateScores(){} //if scores need to be updated on a timer, event, etc
+    public abstract void updateScores(); //if scores need to be updated on a timer, event, etc
 
     public List<String> getScores(){
         return scores;

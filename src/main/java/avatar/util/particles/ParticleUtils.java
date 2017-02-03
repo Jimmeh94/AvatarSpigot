@@ -143,6 +143,11 @@ public class ParticleUtils {
         public double getFactor() {
             return factor;
         }
+
+        @Override
+        public String toString(){
+            return super.toString().toLowerCase() + " (" + factor * 100 + "%)";
+        }
     }
 
 }

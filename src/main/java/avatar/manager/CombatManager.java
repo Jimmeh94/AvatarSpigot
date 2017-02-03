@@ -1,8 +1,8 @@
 package avatar.manager;
 
 import avatar.Avatar;
-import avatar.game.combatlog.EntityCombatLogger;
-import avatar.game.combatlog.entries.CombatEntry;
+import avatar.game.user.combatlog.EntityCombatLogger;
+import avatar.game.user.combatlog.entries.CombatEntry;
 import avatar.game.user.User;
 
 import java.util.Optional;

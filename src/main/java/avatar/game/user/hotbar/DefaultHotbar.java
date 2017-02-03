@@ -1,8 +1,9 @@
 package avatar.game.user.hotbar;
 
+import avatar.game.user.UserPlayer;
+import avatar.game.user.menus.SettingsMenu;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
-import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
@@ -20,15 +21,30 @@ public class DefaultHotbar extends HotbarSetup {
      * 8: pvp mode (go into combat mode)
      */
 
-    public DefaultHotbar(Player player) {
+    public DefaultHotbar(UserPlayer player) {
         super(player);
     }
 
     @Override
-    protected void setup(Player player) {
+    public void handle(int slot) {
+        switch (slot){
+            case 0:
+                break;
+            case 2: owner.getQuestManager().displayQuestMenu();
+                break;
+            case 4:
+                break;
+            case 6: new SettingsMenu(owner);
+                break;
+            case 8: ;
+        }
+    }
+
+    @Override
+    protected void setup() {
         ItemStack itemStack = new ItemStack(Material.ARMOR_STAND);
         ItemMeta itemMeta = itemStack.getItemMeta();
-        itemMeta.setDisplayName(ChatColor.GREEN + player.getDisplayName());
+        itemMeta.setDisplayName(ChatColor.GREEN + owner.getPlayer().getDisplayName());
         itemStack.setItemMeta(itemMeta);
         mapping.put(0, itemStack.clone());
 

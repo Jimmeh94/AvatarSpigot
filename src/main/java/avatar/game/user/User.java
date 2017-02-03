@@ -3,7 +3,7 @@ package avatar.game.user;
 
 import avatar.Avatar;
 import avatar.game.area.Area;
-import avatar.game.combatlog.EntityCombatLogger;
+import avatar.game.user.combatlog.EntityCombatLogger;
 import avatar.game.user.stats.IStatsPreset;
 import avatar.game.user.stats.Stats;
 import avatar.game.user.stats.presets.DefaultBenderPreset;
@@ -30,7 +30,7 @@ public class User {
     public User(UUID user, IStatsPreset preset){
         this.user = user;
         stats = new Stats(preset, this);
-        combatLogger = new EntityCombatLogger(user);
+        combatLogger = new EntityCombatLogger(this);
 
         Avatar.INSTANCE.getUserManager().add(this);
     }
