@@ -18,6 +18,7 @@ public class CombatPreset extends ScoreboardPreset {
 
         strings.add(ChatColor.BOLD + "Server Name");
         strings.add("==============");
+        strings.add(ChatColor.BLACK.toString());
         strings.add(owner.getPresentArea().getDisplayName());
         strings.add(ChatColor.RED.toString());
         strings.add("In combat!");

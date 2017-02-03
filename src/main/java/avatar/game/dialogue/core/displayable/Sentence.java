@@ -10,7 +10,7 @@ import java.util.Optional;
 
 public class Sentence implements Displayable {
     /*
-     * This is text presented by the server/NPC to a player
+     * This is text presented by the server/npc to a player
      */
 
     private List<String> sentences;

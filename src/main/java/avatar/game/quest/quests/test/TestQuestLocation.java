@@ -40,7 +40,7 @@ public class TestQuestLocation implements IQuestInitiator{
                 .condition(new ClickDialogueChoice("test.with"))
                 .buildCheckpoint();
 
-        Area test2 = Avatar.INSTANCE.getAreaManager().getAreaByReference(AreaReferences.TEST2).get();
+        Area test2 = Avatar.INSTANCE.getAreaManager().getAreaByReference(AreaReferences.SPAWN).get();
         checkpointBuilder.description("Reach Test2")
                 .targetLocation(test2.getCenter())
                 .condition(new ReachArea(test2))

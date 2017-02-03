@@ -9,6 +9,7 @@ import java.util.Optional;
 public class Messager {
 
     public static void sendMessage(Player player, String text, Optional<Prefix> prefix){
+        player.sendMessage(" ");
         if(prefix.isPresent()){
             player.sendMessage(prefix.get().getText() + text);
         } else {

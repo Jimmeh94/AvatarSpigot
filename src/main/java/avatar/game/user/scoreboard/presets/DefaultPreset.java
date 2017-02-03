@@ -31,6 +31,7 @@ public class DefaultPreset extends ScoreboardPreset {
 
         strings.add(ChatColor.BOLD + "Server Name");
         strings.add("==============");
+        strings.add(ChatColor.BLACK.toString());
         strings.add(owner.getPresentArea().getDisplayName());
         strings.add(ChatColor.RED.toString());
         strings.add("Bounty: 0");

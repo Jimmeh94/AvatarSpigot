@@ -6,6 +6,7 @@ import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_11_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class ClientHologram extends Hologram {
@@ -18,12 +19,15 @@ public class ClientHologram extends Hologram {
     private boolean placeHeadOnLowestStand = false;
     private HologramInteraction interaction;
 
-    public ClientHologram(Location spawnAt, List<Player> displayTo, List<String> name, HologramInteraction interaction) {
+    public ClientHologram(Location spawnAt, List<Player> displayTo, HologramInteraction interaction, String... name) {
         super();
 
         this.spawnAt = spawnAt;
         this.displayTo = displayTo;
         this.interaction = interaction;
+        stands = new ArrayList<>();
+
+        //TODO setup stands
 
         Avatar.INSTANCE.getHologramManager().add(this);
     }

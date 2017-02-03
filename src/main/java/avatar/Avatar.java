@@ -25,6 +25,7 @@ public class Avatar extends JavaPlugin {
     private EconomyManager economyManager;
     private BlockManager blockManager;
     private HologramManager hologramManager;
+    private EntityManager entityManager;
 
     //misc
     private final int combatInterval = 5; //how many seconds out of combat needed to be switched to out of combat
@@ -43,6 +44,7 @@ public class Avatar extends JavaPlugin {
         economyManager = new EconomyManager();
         blockManager = new BlockManager();
         hologramManager = new HologramManager();
+        entityManager = new EntityManager();
 
         registerListeners();
         registerCommands();
@@ -67,6 +69,11 @@ public class Avatar extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new PlayerHunger(), this);
         getServer().getPluginManager().registerEvents(new WeatherChange(), this);
         getServer().getPluginManager().registerEvents(new PlayerInteract(), this);
+        getServer().getPluginManager().registerEvents(new EntityDamage(), this);
+        getServer().getPluginManager().registerEvents(new EntitySpawn(), this);
+        getServer().getPluginManager().registerEvents(new InventoryDrop(), this);
+        getServer().getPluginManager().registerEvents(new InventoryMove(), this);
+        getServer().getPluginManager().registerEvents(new InventoryPickUp(), this);
     }
 
     private void registerCommands() {
@@ -80,6 +87,7 @@ public class Avatar extends JavaPlugin {
     @Override
     public void onDisable(){
         hologramManager.removeHolograms();
+        entityManager.clearAll();
 
         getLogger().info(">> " + getDescription().getName() + " v" + getDescription().getVersion() + " disabled! <<");
     }
@@ -118,5 +126,9 @@ public class Avatar extends JavaPlugin {
 
     public HologramManager getHologramManager() {
         return hologramManager;
+    }
+
+    public EntityManager getEntityManager() {
+        return entityManager;
     }
 }

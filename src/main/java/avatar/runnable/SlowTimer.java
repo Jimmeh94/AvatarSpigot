@@ -14,5 +14,8 @@ public class SlowTimer extends CoreTimer {
     protected void runTask() {
         //Checks the block replacements
         Avatar.INSTANCE.getBlockManager().tick();
+
+        //Remove unneeded NPC's
+        Avatar.INSTANCE.getEntityManager().tick();
     }
 }

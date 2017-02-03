@@ -9,10 +9,9 @@ public enum AreaReferences {
     //List children first, then parent after
 
     //Children of GLOBAL
-    TEST(new Area.AreaCircle(new Location(Bukkit.getWorlds().get(0), 50, 50, 50), 10, 256), "Test Area", null),
-    TEST2(new Area.AreaRectangle(new Location(Bukkit.getWorlds().get(0), 75, 50, 75), new Location(Bukkit.getWorlds().get(0), 100, 50, 100), 256),
-            "Test 2", new ChatChannel(ChatChannel.Type.AREA, "Test2")),
-    GLOBAL(null, "Global Wilderness", ChatChannel.GLOBAL, TEST, TEST2);
+    SPAWN(new Area.AreaCircle(new Location(Bukkit.getWorlds().get(0), -811.5, 4, 303.5), 11, 256),
+            "Spawn", new ChatChannel(ChatChannel.Type.AREA, null)),
+    GLOBAL(null, "Global Wilderness", ChatChannel.GLOBAL, SPAWN);
     //--------------------
 
     private Area.AreaShape shape;
@@ -25,21 +24,6 @@ public enum AreaReferences {
         this.displayName = displayName;
         this.chatChannel = chatChannel;
         this.children = children;
-    }
-
-    public AreaReferences setShape(Area.AreaShape shape) {
-        this.shape = shape;
-        return this;
-    }
-
-    public AreaReferences setDisplayName(String displayName) {
-        this.displayName = displayName;
-        return this;
-    }
-
-    public AreaReferences setChildren(AreaReferences[] children) {
-        this.children = children;
-        return this;
     }
 
     public Area.AreaShape getShape() {
