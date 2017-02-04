@@ -67,9 +67,16 @@ public class PlayerEvents implements Listener {
         } else {
             Optional<EnvironmentInteractable> e = Avatar.INSTANCE.getServerEIManager().find(event.getRightClicked().getLocation());
             if(e.isPresent()){
+                e.get().handle(Avatar.INSTANCE.getUserManager().findUserPlayer(event.getPlayer()).get());
                 Bukkit.getPluginManager().callEvent(new EnvironmentEvent.ServerInteractable(e.get(), ListenerManager.getDefaultCause()));
             }
         }
+    }
+
+    @EventHandler
+    public void onTeleport(PlayerTeleportEvent event){
+            Avatar.INSTANCE.getUserManager().findUserPlayer(event.getPlayer()).get()
+                    .enterArea(Avatar.INSTANCE.getAreaManager().getAreaByContainedLocation(event.getTo()).get(), true);
     }
 
 }

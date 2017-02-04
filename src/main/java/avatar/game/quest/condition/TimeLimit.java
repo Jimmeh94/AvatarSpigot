@@ -44,9 +44,13 @@ public class TimeLimit extends Condition{
 
     @Override
     public void displayWarningMessage() {
+        if(displayedWarning){
+            return;
+        }
         if(shouldSendWarningMessage()) {
             setLastWarningMessage();
             Messager.sendMessage(getPlayer(), ChatColor.GRAY + "Time limit expired! Checkpoint reloaded!", Optional.of(Messager.Prefix.ERROR));
         }
+        super.displayWarningMessage();
     }
 }

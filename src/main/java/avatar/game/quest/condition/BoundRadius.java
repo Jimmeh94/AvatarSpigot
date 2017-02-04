@@ -39,10 +39,14 @@ public class BoundRadius extends Condition{
 
     @Override
     public void displayWarningMessage() {
+        if(displayedWarning){
+            return;
+        }
         if(shouldSendWarningMessage()){
             setLastWarningMessage();
             Messager.sendMessage(getPlayer(), ChatColor.GRAY + "You're outside of the quest region! Go back to continue the quest!", Optional.of(Messager.Prefix.ERROR));
         }
+        super.displayWarningMessage();
     }
 
 }

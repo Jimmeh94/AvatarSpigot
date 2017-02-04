@@ -1,5 +1,6 @@
 package avatar.game.quest;
 
+import avatar.game.quest.condition.BoundArea;
 import avatar.game.quest.condition.Condition;
 import avatar.game.quest.condition.ReachArea;
 import avatar.util.directional.PlayerDirection;
@@ -142,6 +143,12 @@ public class Checkpoint {
 
         if(hasCondition(ReachArea.class)){
             targetLocation = Optional.of(((ReachArea)getCondition(ReachArea.class)).getTrackerLocation(player.getLocation()));
+        } else if(hasCondition(BoundArea.class)){
+            BoundArea boundArea = (BoundArea) getCondition(BoundArea.class);
+            if(!boundArea.isValid()){
+                targetLocation = Optional.of(boundArea.getTrackerLocation(player.getLocation()));
+                send = boundArea.getOutofBoundsMessage();
+            } else targetLocation = Optional.empty();
         }
 
         if (targetLocation.isPresent()) {

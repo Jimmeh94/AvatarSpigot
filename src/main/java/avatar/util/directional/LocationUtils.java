@@ -148,30 +148,32 @@ public class LocationUtils {
         List<Location> threshold = new ArrayList<>();
 
         int xCoefficient = first.getBlockX() > second.getBlockX() ? -1 : 1, zCoefficient = first.getBlockZ() > second.getBlockZ() ? -1 : 1;
-        int deltaX = Math.max(first.getBlockX(), second.getBlockX()) - Math.min(first.getBlockX(), second.getBlockX());
-        int deltaZ = Math.max(first.getBlockZ(), second.getBlockZ()) - Math.min(first.getBlockZ(), second.getBlockZ());
+
+        Vector.Vector3D temp = getOffsetBetween(first, second);
+        double deltaX = temp.x;
+        double deltaZ = temp.z;
 
         Location current = first.clone();
         threshold.add(current);
 
         for(int i = 0; i < deltaX; i++){
             current = current.add(xCoefficient, 0, 0);
-            threshold.add(current);
+            threshold.add(current.clone());
         }
         for(int i = 0; i < deltaZ; i++){
             current = current.add(0, 0, zCoefficient);
-            threshold.add(current);
+            threshold.add(current.clone());
         }
 
         xCoefficient *= -1;
         zCoefficient *= -1;
         for(int i = 0; i < deltaX; i++){
             current = current.add(xCoefficient, 0, 0);
-            threshold.add(current);
+            threshold.add(current.clone());
         }
         for(int i = 0; i < deltaZ; i++){
             current = current.add(0, 0, zCoefficient);
-            threshold.add(current);
+            threshold.add(current.clone());
         }
 
         threshold.add(second);

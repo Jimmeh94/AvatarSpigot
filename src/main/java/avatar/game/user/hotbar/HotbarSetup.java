@@ -21,6 +21,9 @@ public abstract class HotbarSetup {
     }
 
     private void apply(){
+        for(int i = 0; i < 9; i++){
+            owner.getPlayer().getInventory().clear(i);
+        }
         for(Map.Entry<Integer, ItemStack> entry: mapping.entrySet()){
             owner.getPlayer().getInventory().setItem(entry.getKey(), entry.getValue());
         }

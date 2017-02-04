@@ -15,7 +15,7 @@ public abstract class Condition {
     private Player player;
     private Long lastWarningMessage;
     private Location startLocation;
-    protected boolean valid;
+    protected boolean valid, displayedWarning = false;
 
     /**
      * Called every game timer iteration
@@ -43,7 +43,9 @@ public abstract class Condition {
     /*
      * Warning message should be sent to the player if they are being reset
      */
-    public void displayWarningMessage(){};
+    public void displayWarningMessage(){
+        displayedWarning = true;
+    }
 
     public void setPlayer(Player player) {
         this.player = player;

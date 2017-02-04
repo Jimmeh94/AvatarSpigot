@@ -1,16 +1,10 @@
 package avatar.game.quest.condition;
 
-import avatar.Avatar;
-import avatar.events.custom.AreaEvent;
 import avatar.game.area.Area;
-import avatar.util.text.Messager;
 import org.bukkit.ChatColor;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
+import org.bukkit.Location;
 
-import java.util.Optional;
-
-public class BoundArea extends Condition implements Listener{
+public class BoundArea extends Condition{
 
     /*
      * Quest checkpoint condition in which the checkpoint can only be complete if
@@ -33,27 +27,50 @@ public class BoundArea extends Condition implements Listener{
     }
 
     @Override
-    public void setAdditionalStartInfo() {
-        Avatar.INSTANCE.getServer().getPluginManager().registerEvents(this, Avatar.INSTANCE);
+    protected void unregister() {
+
     }
 
-    @Override
-    protected void unregister() {
-        AreaEvent.Exit.getHandlerList().unregister(this);
-    }
 
     @Override
     public void displayWarningMessage() {
+        //May not have a need for this since the tracker is updated with the same thing
+        /*if(displayedWarning){
+            return;
+        }
+
         if(shouldSendWarningMessage()){
             setLastWarningMessage();
             Messager.sendMessage(getPlayer(), ChatColor.GRAY + "You're outside of the quest region! Go back to " + bound.getDisplayName() + " continue the quest!", Optional.of(Messager.Prefix.ERROR));
         }
+        super.displayWarningMessage();*/
     }
 
-    @EventHandler
-    public void handle(AreaEvent.Exit exit) throws Exception {
-        if(exit.getArea() == bound){
-            valid = false;
+    @Override
+    public boolean isValid(){
+        if(bound.contains(getPlayer().getLocation())){
+            //displayedWarning = false;
+            return true;
+        } else return false;
+    }
+
+    public String getOutofBoundsMessage() {
+        return ChatColor.WHITE + "Return to " + bound.getDisplayName() + " to continue this quest";
+    }
+
+    public Location getTrackerLocation(Location player) {
+        Location give = null;
+
+        for(Location location: bound.getShape().getOutline()){
+            if(give == null){
+                give = location.clone();
+            } else {
+                if(player.distance(location) < player.distance(give)){
+                    give = location.clone();
+                }
+            }
         }
+
+        return give;
     }
 }

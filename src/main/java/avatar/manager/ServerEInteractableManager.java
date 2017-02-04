@@ -3,6 +3,7 @@ package avatar.manager;
 import avatar.game.entity.hologram.environment.EnvironmentInteractable;
 import avatar.game.entity.hologram.environment.ScrollEI;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 
 import java.util.Optional;
@@ -24,17 +25,20 @@ public class ServerEInteractableManager extends Manager<EnvironmentInteractable>
     }
 
     //when a chunk loads, spawn all EI's in that chunk
-    public void load(int x, int z){
+    public void load(Chunk chunk){
         for(EnvironmentInteractable e: objects){
-            if(e.getReference().getX() == x && e.getReference().getZ() == z){
+            //System.out.println("e: " + e.getReference().getLocation().getChunk().getX() + " " + e.getReference().getLocation().getChunk().getZ());
+            //System.out.println("chunk: " + chunk.getX() + " " + chunk.getZ());
+            if(e.getReference().getLocation().getChunk() == chunk){
+              //  System.out.println("chunk");
                 e.spawn();
             }
         }
     }
 
-    public void unload(int x, int z){
+    public void unload(Chunk chunk){
         for(EnvironmentInteractable e: objects){
-            if(e.getReference().getX() == x && e.getReference().getZ() == z){
+            if(e.getReference().getLocation().getChunk() == chunk){
                 e.remove();
             }
         }
@@ -45,27 +49,16 @@ public class ServerEInteractableManager extends Manager<EnvironmentInteractable>
     }
 
     public enum ServerEIReference{
-        DEMO(new Location(Bukkit.getWorlds().get(0), -814, 6, 367),  -51, 22);
+        DEMO(new Location(Bukkit.getWorlds().get(0), -814, 6, 367));
 
         private Location location;
-        private int x, z;
 
-        ServerEIReference(Location location, int x, int z) {
+        ServerEIReference(Location location) {
             this.location = location;
-            this.x = x;
-            this.z = z;
         }
 
         public Location getLocation() {
             return location;
-        }
-
-        public int getX() {
-            return x;
-        }
-
-        public int getZ() {
-            return z;
         }
     }
 }

@@ -10,12 +10,12 @@ public class ChunkEvents implements Listener {
 
     @EventHandler
     public void onLoad(ChunkLoadEvent event){
-        Avatar.INSTANCE.getServerEIManager().load(event.getChunk().getX(), event.getChunk().getZ());
+        Avatar.INSTANCE.getServerEIManager().load(event.getChunk());
     }
 
     @EventHandler
     public void onUnload(ChunkUnloadEvent event){
-        Avatar.INSTANCE.getServerEIManager().unload(event.getChunk().getX(), event.getChunk().getZ());
+        Avatar.INSTANCE.getServerEIManager().unload(event.getChunk());
     }
 
 }

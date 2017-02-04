@@ -9,6 +9,7 @@ import avatar.game.quest.QuestReference;
 import avatar.game.quest.Reward;
 import avatar.game.quest.builder.CheckpointBuilder;
 import avatar.game.quest.builder.QuestBuilder;
+import avatar.game.quest.condition.BoundArea;
 import avatar.game.quest.condition.InteractEI;
 import avatar.game.quest.condition.ReachArea;
 import avatar.game.user.UserPlayer;
@@ -29,16 +30,17 @@ public class DemoQuest implements IQuestInitiator{
 
         QuestBuilder questBuilder = Avatar.INSTANCE.getQuestBuilder();
         CheckpointBuilder checkpointBuilder = questBuilder.getCheckpointBuilder();
-
         Area test2 = Avatar.INSTANCE.getAreaManager().getAreaByReference(AreaReferences.SOUTHERN_BRIDGES).get();
+
         checkpointBuilder.description("Investigate the southern bridges")
                 .targetLocation(Optional.<Location>empty())
                 .condition(new ReachArea(test2))
                 .buildCheckpoint();
 
-        checkpointBuilder.description("Look for a clue near the bridges")
+        checkpointBuilder.description("Look for a clue")
                 .targetLocation(Optional.<Location>empty())
                 .condition(new InteractEI(ServerEInteractableManager.ServerEIReference.DEMO))
+                .condition(new BoundArea(test2))
                 .buildCheckpoint();
 
         Quest quest = questBuilder.name("Helping Your Elders").description("Help the old man find his glasses").level(1).setReference(reference).checkpoints()
