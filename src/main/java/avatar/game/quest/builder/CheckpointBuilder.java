@@ -34,8 +34,8 @@ public class CheckpointBuilder {
         return this;
     }
 
-    public CheckpointBuilder targetLocation(Location t){
-        targetLocation = Optional.of(t);
+    public CheckpointBuilder targetLocation(Optional<Location> t){
+        targetLocation = t;
         return this;
     }
 
@@ -45,8 +45,8 @@ public class CheckpointBuilder {
     }
 
     public CheckpointBuilder buildCheckpoint(){
-        if(targetLocation.isPresent() && description.isPresent()){
-            checkpoints.add(new Checkpoint(targetLocation.get(), description.get(), conditions.toArray(new Condition[]{})));
+        if(description.isPresent()){
+            checkpoints.add(new Checkpoint(targetLocation, description.get(), conditions.toArray(new Condition[]{})));
             reset();
         }
         return this;

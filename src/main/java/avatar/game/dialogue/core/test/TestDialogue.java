@@ -21,7 +21,7 @@ public class TestDialogue implements IDialogueInitiator{
         return dialogueBuilder.stringID("test")
                 .addDisplayable(new Sentence("[Old Man] Will you help me?"))
                 .addDisplayable(new ChoiceWheel(
-                        new Choice("Yes I will", "Get quest", IDialogueInitiator.getIDPrefix(dialogueBuilder) + "yes", player, new GiveQuest(QuestReference.TEST), new DisplayDialogue(){
+                        new Choice("Yes I will", "Get quest", IDialogueInitiator.getIDPrefix(dialogueBuilder) + "yes", player, new GiveQuest(QuestReference.DEMO), new DisplayDialogue(){
                             @Override
                             public Dialogue buildToDisplay(Player player) {
                                 return dialogueBuilder.stringID("testYes").addDisplayable(new Sentence("Oh thank you!")).build(player);
@@ -41,7 +41,7 @@ public class TestDialogue implements IDialogueInitiator{
                                         .addDisplayable(new Sentence(("I lost some candy in my van... ;)")))
                                         .addDisplayable(new ChoiceWheel(
                                                 new Choice("Sure, I loooooove candy", "Get quest", IDialogueInitiator.getIDPrefix(dialogueBuilder)+ "sure", player,
-                                                        new GiveQuest(QuestReference.TEST), new DisplayDialogue(){
+                                                        new GiveQuest(QuestReference.DEMO), new DisplayDialogue(){
                                                     @Override
                                                     public Dialogue buildToDisplay(Player player) {
                                                         return dialogueBuilder.stringID("testYes").addDisplayable(new Sentence("Oh thank you!")).build(player);

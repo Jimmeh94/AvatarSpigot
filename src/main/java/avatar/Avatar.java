@@ -2,7 +2,6 @@ package avatar;
 
 import avatar.commands.*;
 import avatar.events.*;
-import avatar.events.custom.PlayerInteract;
 import avatar.game.dialogue.core.DialogueBuilder;
 import avatar.game.quest.builder.QuestBuilder;
 import avatar.manager.*;
@@ -15,6 +14,7 @@ public class Avatar extends JavaPlugin {
     //TODO test instanced and area particle displaying
     //TODO test entity targeting and ability/user collision
     //TODO block replacement needs to replace metadeta too
+    //TODO handle checkpoint/quest resetting
 
     public static Avatar INSTANCE;
 
@@ -26,6 +26,7 @@ public class Avatar extends JavaPlugin {
     private BlockManager blockManager;
     private HologramManager hologramManager;
     private EntityManager entityManager;
+    private ServerEInteractableManager serverEIManager;
 
     //misc
     private final int combatInterval = 5; //how many seconds out of combat needed to be switched to out of combat
@@ -45,6 +46,7 @@ public class Avatar extends JavaPlugin {
         blockManager = new BlockManager();
         hologramManager = new HologramManager();
         entityManager = new EntityManager();
+        serverEIManager = new ServerEInteractableManager();
 
         registerListeners();
         registerCommands();
@@ -59,21 +61,11 @@ public class Avatar extends JavaPlugin {
     }
 
     private void registerListeners() {
-        getServer().getPluginManager().registerEvents(new PlayerJoin(), this);
-        getServer().getPluginManager().registerEvents(new PlayerQuit(), this);
-        getServer().getPluginManager().registerEvents(new InventoryClick(), this);
-        getServer().getPluginManager().registerEvents(new PlayerChat(), this);
-        getServer().getPluginManager().registerEvents(new PlayerInteractAtEntity(), this);
-        getServer().getPluginManager().registerEvents(new LeafDecay(), this);
-        getServer().getPluginManager().registerEvents(new FireSpread(), this);
-        getServer().getPluginManager().registerEvents(new PlayerHunger(), this);
-        getServer().getPluginManager().registerEvents(new WeatherChange(), this);
-        getServer().getPluginManager().registerEvents(new PlayerInteract(), this);
-        getServer().getPluginManager().registerEvents(new EntityDamage(), this);
-        getServer().getPluginManager().registerEvents(new EntitySpawn(), this);
-        getServer().getPluginManager().registerEvents(new InventoryDrop(), this);
-        getServer().getPluginManager().registerEvents(new InventoryMove(), this);
-        getServer().getPluginManager().registerEvents(new InventoryPickUp(), this);
+        getServer().getPluginManager().registerEvents(new PlayerEvents(), this);
+        getServer().getPluginManager().registerEvents(new ChunkEvents(), this);
+        getServer().getPluginManager().registerEvents(new EntityEvents(), this);
+        getServer().getPluginManager().registerEvents(new InventoryEvents(), this);
+        getServer().getPluginManager().registerEvents(new WorldEvents(), this);
     }
 
     private void registerCommands() {
@@ -88,6 +80,7 @@ public class Avatar extends JavaPlugin {
     public void onDisable(){
         hologramManager.removeHolograms();
         entityManager.clearAll();
+        serverEIManager.unloadAll();
 
         getLogger().info(">> " + getDescription().getName() + " v" + getDescription().getVersion() + " disabled! <<");
     }
@@ -130,5 +123,9 @@ public class Avatar extends JavaPlugin {
 
     public EntityManager getEntityManager() {
         return entityManager;
+    }
+
+    public ServerEInteractableManager getServerEIManager() {
+        return serverEIManager;
     }
 }

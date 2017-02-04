@@ -1,6 +1,7 @@
 package avatar.game.quest.menu;
 
 import avatar.game.quest.Quest;
+import avatar.game.quest.QuestReference;
 import avatar.game.user.UserPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.inventory.Inventory;
@@ -50,9 +51,9 @@ public class QuestMenu {
         return Optional.empty();
     }
 
-    public Optional<Quest> findClickedQuest(String id) {
+    public Optional<Quest> findClickedQuest(QuestReference id) {
         for(Quest quest: owner.getQuestManager().getQuests()){
-            if(quest.getID().equalsIgnoreCase(id)){
+            if(quest.getReference() == id){
                 return Optional.of(quest);
             }
         }

@@ -1,10 +1,12 @@
 package avatar.events;
 
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityDamageByEntityEvent;
 
-public class EntitySpawn implements Listener {
+public class EntityEvents implements Listener {
 
-   /* public EntitySpawn(){
+     /* public EntitySpawn(){
 
         Iterator<Entity> iterator = Bukkit.getWorld("world").getEntities().iterator();
         while(iterator.hasNext()) {
@@ -20,5 +22,10 @@ public class EntitySpawn implements Listener {
             event.setCancelled(true);
         }
     }*/
+
+    @EventHandler
+    public void onDamage(EntityDamageByEntityEvent event){
+        event.setCancelled(true);
+    }
 
 }

@@ -4,9 +4,7 @@ import avatar.Avatar;
 import avatar.events.custom.QuestEvent;
 import avatar.game.user.UserPlayer;
 import avatar.manager.ListenerManager;
-import avatar.util.directional.PlayerDirection;
 import avatar.util.text.AltCodes;
-import avatar.util.text.Action;
 import avatar.util.text.Title;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -25,18 +23,18 @@ public class Quest {
     private String title, description;
     private UserPlayer owner;
     private int recommendedLvl = 0;
-    String id;
+    private QuestReference reference;
     private boolean active = false;
     private List<Checkpoint> checkpoints;
     private int currentCheckpoint = 0;
     private ItemStack itemRepresentation;
     private Reward reward;
 
-    public Quest(String title, String description, int lvl, String id, List<Checkpoint> checkpoints, Material itemType, Reward reward, UserPlayer userPlayer){
+    public Quest(String title, String description, int lvl, QuestReference reference, List<Checkpoint> checkpoints, Material itemType, Reward reward, UserPlayer userPlayer){
         this.title = ChatColor.GOLD +title;
         this.description = ChatColor.WHITE + description;
         recommendedLvl = lvl;
-        this.id = id;
+        this.reference = reference;
         this.checkpoints = checkpoints;
         this.itemRepresentation = new ItemStack(itemType);
         this.reward = reward;
@@ -99,19 +97,11 @@ public class Quest {
                 return true;
             }
         }
-        //update tracker
-        //get distance from player to target, get arrow direction, send message
-        if (checkpoints.get(currentCheckpoint).getTargetLocation().isPresent()) {
-            int distance = getTrackerDistance();
-            Action.send(owner.getPlayer(), ChatColor.GRAY + checkpoints.get(currentCheckpoint).getDescription().get() + " " +
-                    ChatColor.GOLD + String.valueOf(distance) + " "
-                    + PlayerDirection.getDesiredDirection(owner.getPlayer(), checkpoints.get(currentCheckpoint).getTargetLocation().get()));
-        }
-        return false;
-    }
 
-    protected int getTrackerDistance(){
-        return checkpoints.get(currentCheckpoint).getTrackerDistance();
+        //update tracker
+        checkpoints.get(currentCheckpoint).printActionMessage();
+
+        return false;
     }
 
     public Reward getReward() {
@@ -128,7 +118,7 @@ public class Quest {
         active = false;
     }
 
-    public String getID(){return id;}
+    public QuestReference getReference(){return reference;}
 
     public String getTitle() {
         return title;

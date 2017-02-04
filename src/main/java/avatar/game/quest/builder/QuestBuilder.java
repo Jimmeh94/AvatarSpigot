@@ -2,6 +2,7 @@ package avatar.game.quest.builder;
 
 import avatar.game.quest.Checkpoint;
 import avatar.game.quest.Quest;
+import avatar.game.quest.QuestReference;
 import avatar.game.quest.Reward;
 import avatar.game.user.UserPlayer;
 import org.bukkit.Material;
@@ -20,7 +21,7 @@ public class QuestBuilder {
     private String title, description;
     private List<Checkpoint> checkpoints;
     private int lvl = 1;
-    private String id;
+    private QuestReference id;
     private Material itemType;
     private Reward reward;
     private UserPlayer owner;
@@ -55,7 +56,7 @@ public class QuestBuilder {
         return this;
     }
 
-    public QuestBuilder setID(String id){
+    public QuestBuilder setReference(QuestReference id){
         this.id = id;
         return this;
     }

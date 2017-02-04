@@ -8,10 +8,16 @@ public enum AreaReferences {
 
     //List children first, then parent after
 
-    //Children of GLOBAL
+    //Children of GLOBAL ----
+    SOUTHERN_BRIDGES(new Area.AreaRectangle(new Location(Bukkit.getWorlds().get(0), -828, 1, 360), new Location(Bukkit.getWorlds().get(0), -794, 1, 370), 50),
+            "Southern Bridges", null, null),
+
+    //Children of SPAWN ----
     SPAWN(new Area.AreaCircle(new Location(Bukkit.getWorlds().get(0), -811.5, 4, 303.5), 11, 256),
-            "Spawn", new ChatChannel(ChatChannel.Type.AREA, null)),
-    GLOBAL(null, "Global Wilderness", ChatChannel.GLOBAL, SPAWN);
+            "Spawn", new ChatChannel(ChatChannel.Type.AREA, "Spawn"), null),
+    //----------------------
+
+    GLOBAL(null, "Global Wilderness", ChatChannel.GLOBAL, SPAWN, SOUTHERN_BRIDGES);
     //--------------------
 
     private Area.AreaShape shape;

@@ -2,6 +2,8 @@ package avatar.game.quest;
 
 import avatar.game.quest.condition.Condition;
 import avatar.game.quest.condition.ReachArea;
+import avatar.util.directional.PlayerDirection;
+import avatar.util.text.Action;
 import avatar.util.text.Messager;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -23,6 +25,12 @@ public class Checkpoint {
     private List<Condition> conditions;
     private boolean complete = false;
 
+    public Checkpoint(Optional<Location> location, String description, Condition... conditions){
+        targetLocation = location;
+        this.description = Optional.of(description);
+        this.conditions = Arrays.asList(conditions);
+    }
+
     public boolean isCompleted(){
         return this.complete;
     }
@@ -42,15 +50,6 @@ public class Checkpoint {
         for(Condition condition: conditions){
             condition.reset();
         }
-    }
-
-    public Checkpoint(Location location, String description, Condition... conditions){
-        if(location != null)
-            targetLocation = Optional.of(location);
-        if(description != null)
-            this.description = Optional.of(description);
-        if(conditions != null)
-            this.conditions = Arrays.asList(conditions);
     }
 
     /*
@@ -116,14 +115,41 @@ public class Checkpoint {
             condition.setPlayer(player);
     }
 
-    public int getTrackerDistance() {
-        int distance = (int) getTargetLocation().get().distance(player.getLocation());
+    private int getTrackerDistance() {
+        return (int) getTargetLocation().get().distance(player.getLocation());
+    }
 
-        for(Condition condition: conditions){
-            if(condition instanceof ReachArea){
-                return ((ReachArea)condition).getTrackerDistance(distance);
+    private boolean hasCondition(Class<? extends Condition> condition){
+        for(Condition c: conditions){
+            if(c.getClass().equals(condition)){
+                return true;
             }
         }
-        return distance;
+        return false;
+    }
+
+    private Condition getCondition(Class<? extends Condition> condition){
+        for(Condition c: conditions){
+            if(c.getClass().equals(condition)){
+                return c;
+            }
+        }
+        return null;
+    }
+
+    public void printActionMessage() {
+        String send = ChatColor.WHITE + getDescription().get();
+
+        if(hasCondition(ReachArea.class)){
+            targetLocation = Optional.of(((ReachArea)getCondition(ReachArea.class)).getTrackerLocation(player.getLocation()));
+        }
+
+        if (targetLocation.isPresent()) {
+            int distance = getTrackerDistance();
+            send += " " + ChatColor.GOLD + String.valueOf(distance) + " "
+                    + PlayerDirection.getDesiredDirection(getPlayer(), getTargetLocation().get());
+        }
+
+        Action.send(player, send);
     }
 }

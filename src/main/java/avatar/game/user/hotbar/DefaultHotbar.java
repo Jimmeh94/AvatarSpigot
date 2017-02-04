@@ -48,7 +48,7 @@ public class DefaultHotbar extends HotbarSetup {
         itemStack.setItemMeta(itemMeta);
         mapping.put(0, itemStack.clone());
 
-        itemStack = new ItemStack(Material.BOOK_AND_QUILL);
+        itemStack = new ItemStack(Material.BOOK);
         itemMeta = itemStack.getItemMeta();
         itemMeta.setDisplayName(ChatColor.GRAY + "Journal");
         itemStack.setItemMeta(itemMeta);

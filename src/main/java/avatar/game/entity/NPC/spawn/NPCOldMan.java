@@ -4,18 +4,15 @@ import avatar.Avatar;
 import avatar.game.entity.npc.NPCVillager;
 import avatar.game.quest.quests.test.DemoQuest;
 import avatar.game.user.UserPlayer;
-import avatar.util.text.Messager;
-import org.bukkit.ChatColor;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 
-import java.util.Optional;
+public class NPCOldMan extends NPCVillager {
 
-public class NPCConcernedCitizen extends NPCVillager {
-
-    public NPCConcernedCitizen(Location location) {
-        super(Villager.Profession.LIBRARIAN, "Concerned Citizen", location);
+    public NPCOldMan() {
+        super(Villager.Profession.NITWIT, "Old Man", new Location(Bukkit.getWorlds().get(0), -858.5, 5, 350.5, -135f, 0f));
     }
 
     @Override
@@ -23,7 +20,7 @@ public class NPCConcernedCitizen extends NPCVillager {
         UserPlayer userPlayer = Avatar.INSTANCE.getUserManager().findUserPlayer(player).get();
 
         if(userPlayer.getQuestManager().canTakeQuest(DemoQuest.reference)){
-            Messager.sendMessage(player, ChatColor.GRAY + "[Concerned Citizen] I heard the old man to my left needs help!", Optional.<Messager.Prefix>empty());
+            userPlayer.getQuestManager().add(DemoQuest.reference.getQuest(userPlayer));
         }
     }
 }

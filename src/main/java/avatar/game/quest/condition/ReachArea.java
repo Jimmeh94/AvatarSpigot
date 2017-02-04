@@ -49,14 +49,19 @@ public class ReachArea extends Condition implements Listener{
         }
     }
 
-    public int getTrackerDistance(int distance) {
-        if(targetArea.getShape().isYWithinBounds(getPlayer().getLocation().getY())){
-            Location use = targetArea.getCenter();
-            use.setY(getPlayer().getLocation().getY());
-            distance = (int) use.distance(getPlayer().getLocation());
+    public Location getTrackerLocation(Location player) {
+        Location give = null;
+
+        for(Location location: targetArea.getShape().getOutline()){
+            if(give == null){
+                give = location.clone();
+            } else {
+                if(player.distance(give) > player.distance(location)){
+                    give = location.clone();
+                }
+            }
         }
 
-        distance -= targetArea.getShape().getRadius();
-        return distance;
+        return give;
     }
 }

@@ -38,16 +38,16 @@ public class PlayerQuestManager {
         owner.getPlayer().openInventory(owner.getQuestManager().getQuestMenu().getMenu());
     }
 
-    public boolean has(String id){
+    public boolean has(QuestReference id){
         for(Quest quest: ownedQuests){
-            if(quest.getID().equals(id)){
+            if(quest.getReference().equals(id)){
                 return true;
             }
         }
         return false;
     }
 
-    public boolean hasCompleted(String id){return completed.contains(id);}
+    public boolean hasCompleted(QuestReference id){return completed.contains(id.getID());}
 
     public UserPlayer getOwner() {
         return owner;
@@ -57,29 +57,34 @@ public class PlayerQuestManager {
         return questMenu;
     }
 
-    public void add(QuestReference reference) {
-        Quest quest = reference.getQuest(owner);
+    public boolean canTakeQuest(QuestReference reference){
         if(ownedQuests.size() == 54){
             Messager.sendMessage(owner.getPlayer(), ChatColor.GRAY + "You can only have up to 54 quests at a time!", Optional.of(Messager.Prefix.ERROR));
-            return;
-        } else if(!has(quest.getID()) && !hasCompleted(quest.getID())){
-            Messager.sendMessage(owner.getPlayer(), ChatColor.GRAY + "Quest added: " + quest.getTitle(), Optional.of(Messager.Prefix.SUCCESS));
-            ownedQuests.add(quest);
-        }
+            return false;
+        } else if(has(reference)){
+            return false;
+        } else if(hasCompleted(reference)) {
+            return false;
+        } else return true;
+    }
+
+    public void add(Quest quest) {
+        Messager.sendMessage(owner.getPlayer(), ChatColor.GRAY + "Quest added: " + quest.getTitle(), Optional.of(Messager.Prefix.SUCCESS));
+        ownedQuests.add(quest);
     }
 
     public void setActiveQuest(QuestReference reference){
         String id = reference.getID();
         Quest quest = null;
         for(Quest q: ownedQuests){
-            if(q.getID().equals(id)) {
+            if(q.getReference().equals(id)) {
                 quest = q;
             }
         }
 
         if(quest != null && !quest.isActive()){
             Optional<Quest> temp = getActiveQuest();
-            if(temp.isPresent() && temp.get().getID() != quest.getID()){
+            if(temp.isPresent() && temp.get().getReference() != quest.getReference()){
                 temp.get().toggleActive();
             }
             quest.toggleActive();
@@ -99,7 +104,7 @@ public class PlayerQuestManager {
         Optional<Quest> quest = getActiveQuest();
         if(quest.isPresent()){
             if(quest.get().tick()) {
-                completed.add(quest.get().getID());
+                completed.add(quest.get().getReference().getID());
                 ownedQuests.remove(quest.get());
             }
         }

@@ -2,6 +2,7 @@ package avatar.game.dialogue.core.actions;
 
 import avatar.Avatar;
 import avatar.game.quest.QuestReference;
+import avatar.game.user.UserPlayer;
 import org.bukkit.entity.Player;
 
 public class GiveQuest extends DialogueAction {
@@ -14,6 +15,9 @@ public class GiveQuest extends DialogueAction {
 
     @Override
     public void doWork(Player player) {
-        Avatar.INSTANCE.getUserManager().findUserPlayer(player).get().getQuestManager().add(questID);
+        UserPlayer userPlayer = Avatar.INSTANCE.getUserManager().findUserPlayer(player).get();
+
+        if(userPlayer.getQuestManager().canTakeQuest(questID))
+            userPlayer.getQuestManager().add(questID.getQuest(userPlayer));
     }
 }

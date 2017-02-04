@@ -31,6 +31,7 @@ public abstract class NPCVillager extends NPC{
 
         EntityVillager villager1 = ((CraftVillager)getEntity()).getHandle();
         ((CraftVillager) getEntity()).setProfession(profession);
+        villager1.setSilent(true);
 
         Object goalSelector = villager1.goalSelector;
         LinkedHashSet goalB = (LinkedHashSet) NMSUtils.getPrivateField("b", PathfinderGoalSelector.class, goalSelector);

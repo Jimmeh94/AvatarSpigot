@@ -38,8 +38,10 @@ public class Area {
         this.reference = reference;
         abilityManager = new AbilityManager();
 
-        for(AreaReferences r: reference.getChildren()){
-            children.add(new Area(r));
+        if(reference.getChildren() != null) {
+            for (AreaReferences r : reference.getChildren()) {
+                children.add(new Area(r));
+            }
         }
     }
 
@@ -92,25 +94,6 @@ public class Area {
         return false;
     }
 
-    public boolean hasChildThatContains(Location location){
-        for(Area area: children){
-            if(area.contains(location))
-                return true;
-        }
-        return false;
-    }
-
-    public Optional<Area> getChildThatContains(Location location){
-        if(!this.contains(location))
-            return Optional.empty();
-        for(Area area: children){
-            if(area.contains(location)){
-                return area.getChildThatContains(location);
-            }
-        }
-        return Optional.of(this);
-    }
-
     public Optional<Area> getChild(AreaReferences reference){
         for(Area area: children){
             if(area.is(reference))
@@ -119,36 +102,35 @@ public class Area {
         return Optional.empty();
     }
 
-    public List<Area> getChildren() {
-        return children;
-    }
-
     public Location getCenter(){return shape.getCenter();}
 
     public boolean is(AreaReferences reference){return this.reference == reference;}
 
-    public boolean contains(Location location){
-        boolean has;
+    /**
+     * We assume you've checked Area#contains(location) and that it returned true
+     * @param location
+     * @return
+     */
+    public Area getAreaThatContains(Location location) {
+        Area give = this;
 
-        if(shape != null && getCenter() != null){
-            double x1 = location.getX(), x2 = shape.center.getX();
-            double z1 = location.getZ(), z2 = shape.center.getZ();
-            double y = location.getY();
-
-            has = LocationUtils.getDistance(x1, x2) <= shape.radius && LocationUtils.getDistance(z1, z2) <= shape.radius
-                    && y >= shape.center.getY() && y <= shape.center.getY() + shape.getHeight();
-
-            if(!has) //parent doesn't contain this location, no need searching children
-                return false;
-        } else has = true; //This means it's a global area
-
-        if(!has) {
-            for (Area area : children) {
-                has = area.contains(location);
-            }
+        for(Area area: children){
+            if(area.contains(location))
+                give = area.getAreaThatContains(location);
         }
 
-        return has;
+        return give;
+    }
+
+    public boolean contains(Location location){
+
+        //if this isn't a global area
+        if(shape != null){
+            return shape.contains(location);
+        }
+
+        //means this is a global area
+        return true;
     }
 
     /**
@@ -208,29 +190,16 @@ public class Area {
         return players;
     }
 
-    /**
-     * We assume you've checked Area#contains(location) and that it returned true
-     * @param location
-     * @return
-     */
-    public Area getAreaThatContains(Location location) {
-        Area give = this;
-
-        for(Area area: children){
-            if(area.contains(location))
-                give = area.getAreaThatContains(location);
-        }
-
-        return give;
-    }
-
     public AreaShape getShape() {
         return shape;
     }
 
     public static abstract class AreaShape {
-        private Location center;
+        protected Location center;
         protected double height, radius;
+
+        //For quest checkpoint objectives of reaching an area
+        protected List<Location> outline;
 
         public AreaShape(Location center, double height, double radius){
             this.center = center;
@@ -253,12 +222,37 @@ public class Area {
         public boolean isYWithinBounds(double y){
             return center.getY() <= y && y <= (center.getY() + height);
         }
+
+        public abstract boolean contains(Location location);
+
+        protected abstract void generateOutline();
+
+        public List<Location> getOutline() {
+            return outline;
+        }
     }
 
     public static class AreaCircle extends AreaShape{
 
         public AreaCircle(Location center, double radius, double height) {
             super(center, height, radius);
+
+            generateOutline();
+        }
+
+        @Override
+        public boolean contains(Location location) {
+            double x1 = location.getX(), x2 = center.getX();
+            double z1 = location.getZ(), z2 = center.getZ();
+            double y = location.getY();
+
+            return LocationUtils.getDistance(x1, x2) <= radius && LocationUtils.getDistance(z1, z2) <= radius
+                    && y >= center.getY() && y <= center.getY() + getHeight();
+        }
+
+        @Override
+        protected void generateOutline() {
+            outline = LocationUtils.getCircleOutline(center, radius, false);
         }
     }
 
@@ -271,6 +265,7 @@ public class Area {
 
             this.first = firstCorner;
             this.second = secondCorner;
+            generateOutline();
         }
 
         public Location getFirst() {
@@ -279,6 +274,23 @@ public class Area {
 
         public Location getSecond() {
             return second;
+        }
+
+        @Override
+        public boolean contains(Location location) {
+            double xMax = Math.max(first.getX(), second.getX());
+            double xMin = Math.min(first.getX(), second.getX());
+            double zMax = Math.max(first.getZ(), second.getZ());
+            double zMin = Math.min(first.getZ(), second.getZ());
+
+            return xMin <= location.getX() && xMax >= location.getX() &&
+                    zMin <= location.getZ() && zMax >= location.getZ() &&
+                    center.getY() <= location.getY() && center.getY() + height >= location.getY();
+        }
+
+        @Override
+        protected void generateOutline() {
+            outline = LocationUtils.getSquareOutline(first, second);
         }
     }
 

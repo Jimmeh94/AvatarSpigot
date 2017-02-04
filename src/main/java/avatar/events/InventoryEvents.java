@@ -9,8 +9,11 @@ import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.InventoryMoveItemEvent;
+import org.bukkit.event.inventory.InventoryPickupItemEvent;
+import org.bukkit.event.player.PlayerDropItemEvent;
 
-public class InventoryClick implements Listener {
+public class InventoryEvents implements Listener {
 
     @EventHandler
     public void onClick(InventoryClickEvent event){
@@ -41,6 +44,21 @@ public class InventoryClick implements Listener {
             SettingsMenu.handle(event.getSlot(), playerInfo);
         }
 
+    }
+
+    @EventHandler
+    public void onDrop(PlayerDropItemEvent event){
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onMove(InventoryMoveItemEvent event){
+        event.setCancelled(true);
+    }
+
+    @EventHandler
+    public void onPickUp(InventoryPickupItemEvent event){
+        event.setCancelled(true);
     }
 
 }
