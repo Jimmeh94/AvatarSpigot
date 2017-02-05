@@ -1,6 +1,6 @@
-package avatar.game.dialogue.core.displayable;
+package avatar.game.dialogue.displayable;
 
-import avatar.game.dialogue.core.conditions.Condition;
+import avatar.game.dialogue.conditions.Condition;
 import avatar.manager.DialogueManager;
 import org.bukkit.entity.Player;
 

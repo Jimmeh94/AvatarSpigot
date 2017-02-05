@@ -1,6 +1,6 @@
-package avatar.game.dialogue.core;
+package avatar.game.dialogue;
 
-import avatar.game.dialogue.core.displayable.Displayable;
+import avatar.game.dialogue.displayable.Displayable;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -16,6 +16,7 @@ public class DialogueBuilder {
 
     private List<Displayable> dialogue = new ArrayList<>();
     private String stringID = null;
+    private Dialogue.Data data;
 
     public DialogueBuilder stringID(String stringID){this.stringID = stringID; return this;}
 
@@ -25,9 +26,14 @@ public class DialogueBuilder {
     }
 
     public Dialogue build(Player player){
-        Dialogue give = new Dialogue(new ArrayList<>(dialogue), new String(stringID), player);
+        Dialogue give = new Dialogue(new ArrayList<>(dialogue), new String(stringID), player, data);
         reset();
         return give;
+    }
+
+    public DialogueBuilder data(Dialogue.Data data){
+        this.data = data;
+        return this;
     }
 
     private void reset(){
@@ -35,7 +41,7 @@ public class DialogueBuilder {
         stringID = null;
     }
 
-    public String getStringID() {
-        return stringID;
+    public String getPrefixID() {
+        return stringID + ".";
     }
 }

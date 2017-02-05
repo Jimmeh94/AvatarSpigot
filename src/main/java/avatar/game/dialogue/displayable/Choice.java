@@ -1,9 +1,9 @@
-package avatar.game.dialogue.core.displayable;
+package avatar.game.dialogue.displayable;
 
 import avatar.Avatar;
 import avatar.events.custom.DialogueEvent;
-import avatar.game.dialogue.core.actions.DialogueAction;
-import avatar.game.dialogue.core.conditions.Condition;
+import avatar.game.dialogue.actions.DialogueAction;
+import avatar.game.dialogue.conditions.Condition;
 import avatar.game.user.UserPlayer;
 import avatar.manager.DialogueManager;
 import avatar.manager.ListenerManager;
@@ -42,7 +42,7 @@ public class Choice{
 
     public boolean handle() {
         Optional<UserPlayer> temp = Avatar.INSTANCE.getUserManager().findUserPlayer(this.player);
-        if(temp.isPresent() && temp.get().getCurrentDialogue() != null && temp.get().getCurrentDialogue().hasChoiceID(this.id)) {
+        if(temp.isPresent() && temp.get().getDialogueManager().getCurrentDialogue() != null && temp.get().getDialogueManager().getCurrentDialogue().hasChoiceID(this.id)) {
             if(conditions != null){
                 for(Condition condition: conditions){
                     if(!condition.isValid(player)){
@@ -51,7 +51,7 @@ public class Choice{
                     }
                 }
             }
-            Avatar.INSTANCE.getUserManager().findUserPlayer(player).get().removeDialogue();
+            Avatar.INSTANCE.getUserManager().findUserPlayer(player).get().getDialogueManager().removeDialogue();
 
             //if all condition are valid, continue with action
             for (DialogueAction action : this.actions)

@@ -111,7 +111,7 @@ public class Quest {
     private void completeQuest(){
         Title.sendBoth(owner.getPlayer(), ChatColor.GOLD + getTitle(), ChatColor.GREEN + "Completed", 2, 3, 2);
         if(reward != null)
-            reward.giveAward(owner.getPlayer());
+            reward.giveReward(owner.getPlayer());
 
         Avatar.INSTANCE.getServer().getPluginManager().callEvent(new QuestEvent.Complete(ListenerManager.getDefaultCause(), owner, this));
 

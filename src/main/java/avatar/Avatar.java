@@ -2,7 +2,7 @@ package avatar;
 
 import avatar.commands.*;
 import avatar.events.*;
-import avatar.game.dialogue.core.DialogueBuilder;
+import avatar.game.dialogue.DialogueBuilder;
 import avatar.game.quest.builder.QuestBuilder;
 import avatar.manager.*;
 import avatar.runnable.GameTimer;
@@ -10,6 +10,13 @@ import avatar.runnable.SlowTimer;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public class Avatar extends JavaPlugin {
+
+    /**
+     * Transparent Blocks
+     * Coin bag full: dark_oak_leaves
+     * Coin bag empty: something else
+     * Scroll: acacia leaves
+     */
 
     //TODO test instanced and area particle displaying
     //TODO test entity targeting and ability/user collision
@@ -26,7 +33,6 @@ public class Avatar extends JavaPlugin {
     private BlockManager blockManager;
     private HologramManager hologramManager;
     private EntityManager entityManager;
-    private ServerEInteractableManager serverEIManager;
 
     //misc
     private final int combatInterval = 5; //how many seconds out of combat needed to be switched to out of combat
@@ -46,7 +52,6 @@ public class Avatar extends JavaPlugin {
         blockManager = new BlockManager();
         hologramManager = new HologramManager();
         entityManager = new EntityManager();
-        serverEIManager = new ServerEInteractableManager();
 
         registerListeners();
         registerCommands();
@@ -62,7 +67,6 @@ public class Avatar extends JavaPlugin {
 
     private void registerListeners() {
         getServer().getPluginManager().registerEvents(new PlayerEvents(), this);
-        getServer().getPluginManager().registerEvents(new ChunkEvents(), this);
         getServer().getPluginManager().registerEvents(new EntityEvents(), this);
         getServer().getPluginManager().registerEvents(new InventoryEvents(), this);
         getServer().getPluginManager().registerEvents(new WorldEvents(), this);
@@ -80,7 +84,6 @@ public class Avatar extends JavaPlugin {
     public void onDisable(){
         hologramManager.removeHolograms();
         entityManager.clearAll();
-        serverEIManager.unloadAll();
 
         getLogger().info(">> " + getDescription().getName() + " v" + getDescription().getVersion() + " disabled! <<");
     }
@@ -123,9 +126,5 @@ public class Avatar extends JavaPlugin {
 
     public EntityManager getEntityManager() {
         return entityManager;
-    }
-
-    public ServerEInteractableManager getServerEIManager() {
-        return serverEIManager;
     }
 }

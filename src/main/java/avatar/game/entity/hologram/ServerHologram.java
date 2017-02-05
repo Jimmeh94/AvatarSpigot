@@ -21,11 +21,6 @@ public class ServerHologram extends Hologram{
             stands.get(i).teleport(spawn);
             stands.get(i).setCustomNameVisible(true);
             stands.get(i).setCustomName(name[i]);
-            /*NBTTagCompound nbtTagCompound = entityArmorStand.getNBTTag();
-            if(nbtTagCompound == null){
-                nbtTagCompound = new NBTTagCompound();
-            }
-            nbtTagCompound.setBoolean("Invulnerable", true);*/
         }
     }
 

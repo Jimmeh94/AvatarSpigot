@@ -1,4 +1,4 @@
-package avatar.game.dialogue.core.conditions;
+package avatar.game.dialogue.conditions;
 
 import org.bukkit.entity.Player;
 

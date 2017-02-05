@@ -1,6 +1,6 @@
 package avatar.manager;
 
-import avatar.game.dialogue.core.displayable.ChoiceWheel;
+import avatar.game.dialogue.displayable.ChoiceWheel;
 
 import java.util.Iterator;
 import java.util.List;

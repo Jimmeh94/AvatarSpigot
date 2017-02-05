@@ -34,4 +34,13 @@ public enum QuestReference {
     public String getID() {
         return id;
     }
+
+    public static QuestReference find(String id) {
+        for(QuestReference reference: QuestReference.values()){
+            if(reference.id.equals(id)){
+                return reference;
+            }
+        }
+        return null;
+    }
 }

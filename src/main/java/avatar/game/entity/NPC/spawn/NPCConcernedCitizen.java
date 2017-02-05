@@ -4,6 +4,7 @@ import avatar.Avatar;
 import avatar.game.entity.npc.NPCVillager;
 import avatar.game.quest.quests.test.DemoQuest;
 import avatar.game.user.UserPlayer;
+import avatar.util.misc.Qualifier;
 import avatar.util.text.Messager;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -14,16 +15,22 @@ import java.util.Optional;
 
 public class NPCConcernedCitizen extends NPCVillager {
 
+    private Qualifier qualifier;
+
     public NPCConcernedCitizen(Location location) {
         super(Villager.Profession.LIBRARIAN, "Concerned Citizen", location);
+
+        this.qualifier = new Qualifier(Qualifier.What.QUEST, Qualifier.When.BEFORE, DemoQuest.reference.getID());
     }
 
     @Override
     public void onInteraction(Player player) {
         UserPlayer userPlayer = Avatar.INSTANCE.getUserManager().findUserPlayer(player).get();
 
-        if(userPlayer.getQuestManager().canTakeQuest(DemoQuest.reference)){
+        if(qualifier.valid(userPlayer) && userPlayer.getQuestManager().canTakeQuest(DemoQuest.reference)){
             Messager.sendMessage(player, ChatColor.GRAY + "[Concerned Citizen] I heard the old man to my left needs help!", Optional.<Messager.Prefix>empty());
+        } else {
+            Messager.sendMessage(player, ChatColor.GRAY + "[Concerned Citizen] It's nice of you to have helped him!", Optional.<Messager.Prefix>empty());
         }
     }
 }

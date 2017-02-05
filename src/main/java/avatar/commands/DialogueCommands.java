@@ -1,7 +1,7 @@
 package avatar.commands;
 
 import avatar.Avatar;
-import avatar.game.dialogue.core.DialogueReference;
+import avatar.game.dialogue.DialogueReference;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -18,7 +18,7 @@ public class DialogueCommands implements CommandExecutor {
                 if(args[0].equalsIgnoreCase("test")){
                     Optional<DialogueReference> optional = DialogueReference.getReference(args[0]);
                     if(optional.isPresent())
-                        Avatar.INSTANCE.getUserManager().findUserPlayer(player).get().giveDialogue(optional.get());
+                        Avatar.INSTANCE.getUserManager().findUserPlayer(player).get().getDialogueManager().giveDialogue(optional.get());
                 }
             }
         }

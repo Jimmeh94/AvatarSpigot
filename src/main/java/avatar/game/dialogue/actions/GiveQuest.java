@@ -1,4 +1,4 @@
-package avatar.game.dialogue.core.actions;
+package avatar.game.dialogue.actions;
 
 import avatar.Avatar;
 import avatar.game.quest.QuestReference;

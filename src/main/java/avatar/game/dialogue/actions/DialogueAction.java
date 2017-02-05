@@ -1,4 +1,4 @@
-package avatar.game.dialogue.core.actions;
+package avatar.game.dialogue.actions;
 
 import org.bukkit.entity.Player;
 

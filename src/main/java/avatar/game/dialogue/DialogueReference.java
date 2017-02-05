@@ -1,13 +1,13 @@
-package avatar.game.dialogue.core;
+package avatar.game.dialogue;
 
-import avatar.game.dialogue.core.test.TestDialogue;
+import avatar.game.dialogue.test.DemoDialogue;
 import org.bukkit.entity.Player;
 
 import java.util.Optional;
 
 public enum DialogueReference {
 
-    TEST("test", new TestDialogue());
+    DEMO("test", new DemoDialogue());
 
     private String id;
     private IDialogueInitiator clazz;

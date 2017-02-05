@@ -1,20 +1,17 @@
 package avatar.game.user;
 
 import avatar.Avatar;
-import avatar.events.custom.DialogueEvent;
 import avatar.game.area.Area;
 import avatar.game.area.AreaReferences;
 import avatar.game.chat.ChatColorTemplate;
 import avatar.game.chat.channel.ChatChannel;
-import avatar.game.dialogue.core.Dialogue;
-import avatar.game.dialogue.core.DialogueReference;
+import avatar.game.dialogue.PlayerDialogueManager;
 import avatar.game.entity.hologram.HologramMenu;
 import avatar.game.quest.PlayerQuestManager;
 import avatar.game.user.hotbar.DefaultHotbar;
 import avatar.game.user.hotbar.HotbarSetup;
 import avatar.game.user.scoreboard.Scoreboard;
 import avatar.game.user.stats.IStatsPreset;
-import avatar.manager.ListenerManager;
 import avatar.util.directional.LocationUtils;
 import avatar.util.particles.ParticleUtils;
 import avatar.util.text.Messager;
@@ -30,8 +27,8 @@ import java.util.UUID;
 public class UserPlayer extends User {
 
     private PlayerQuestManager questManager;
+    private PlayerDialogueManager dialogueManager;
 
-    private Dialogue currentDialogue;
     private Account account;
     private Scoreboard scoreboard;
     private Title title;
@@ -54,6 +51,7 @@ public class UserPlayer extends User {
         title = Title.TEST;
         account = new Account(this);
         questManager = new PlayerQuestManager(this);
+        dialogueManager = new PlayerDialogueManager(this);
         setChatChannel(ChatChannel.GLOBAL);
         scoreboard = new Scoreboard(this);
 
@@ -74,9 +72,8 @@ public class UserPlayer extends User {
             scoreboard.updateScoreboard();
     }
 
-    public void giveDialogue(DialogueReference reference){
-        setCurrentDialogue(reference.getDialogue(getPlayer()));
-        startDialogue();
+    public PlayerDialogueManager getDialogueManager() {
+        return dialogueManager;
     }
 
     public HotbarSetup getHotbarSetup() {
@@ -151,16 +148,6 @@ public class UserPlayer extends User {
         scoreboard.unregisterScoreboard();
     }
 
-    public void removeDialogue() {
-        currentDialogue = null;
-    }
-
-    public void startDialogue() {
-        currentDialogue.displayNext();
-
-        Bukkit.getPluginManager().callEvent(new DialogueEvent.Displayed(ListenerManager.getDefaultCause(), this));
-    }
-
     //--- Getters ---
 
     public Player getPlayer(){return Bukkit.getPlayer(getUUID());}
@@ -171,10 +158,6 @@ public class UserPlayer extends User {
 
     public Optional<Location> getLastBlockLocation() {
         return lastBlockLocation;
-    }
-
-    public Dialogue getCurrentDialogue() {
-        return currentDialogue;
     }
 
     public Account getAccount() {
@@ -208,10 +191,6 @@ public class UserPlayer extends User {
         this.lastBlockLocation = Optional.of(lastBlockLocation);
     }
 
-    public UserPlayer setCurrentDialogue(Dialogue currentDialogue) {
-        this.currentDialogue = currentDialogue;
-        return this;
-    }
 
     public void setTitle(Title title) {
         this.title = title;

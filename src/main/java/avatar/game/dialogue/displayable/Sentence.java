@@ -1,4 +1,4 @@
-package avatar.game.dialogue.core.displayable;
+package avatar.game.dialogue.displayable;
 
 import avatar.util.text.Messager;
 import org.bukkit.entity.Player;

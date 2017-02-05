@@ -56,7 +56,7 @@ public class DemoQuest implements IQuestInitiator{
         }
 
         @Override
-        public void giveAward(Player player) {
+        public void giveReward(Player player) {
             player.getInventory().addItem(new ItemStack(Material.ACACIA_DOOR));
         }
     }

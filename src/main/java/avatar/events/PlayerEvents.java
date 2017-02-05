@@ -1,13 +1,11 @@
 package avatar.events;
 
 import avatar.Avatar;
-import avatar.events.custom.EnvironmentEvent;
-import avatar.game.entity.hologram.environment.EnvironmentInteractable;
 import avatar.game.entity.npc.NPC;
 import avatar.game.user.UserPlayer;
-import avatar.manager.ListenerManager;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
@@ -52,6 +50,12 @@ public class PlayerEvents implements Listener {
 
         UserPlayer userPlayer = Avatar.INSTANCE.getUserManager().findUserPlayer(event.getPlayer()).get();
 
+        Material type = event.getClickedBlock().getType();
+        if(type == Material.LEAVES_2){
+            //Leaves 2 is dark oak and acacia
+            if(type.)
+        }
+
         if(event.getItem() != null){
             userPlayer.getHotbarSetup().handle(userPlayer.getPlayer().getInventory().getHeldItemSlot());
         }
@@ -64,12 +68,6 @@ public class PlayerEvents implements Listener {
         Optional<NPC> npc = Avatar.INSTANCE.getEntityManager().find(event.getRightClicked());
         if(npc.isPresent()){
             npc.get().onInteract(event.getPlayer());
-        } else {
-            Optional<EnvironmentInteractable> e = Avatar.INSTANCE.getServerEIManager().find(event.getRightClicked().getLocation());
-            if(e.isPresent()){
-                e.get().handle(Avatar.INSTANCE.getUserManager().findUserPlayer(event.getPlayer()).get());
-                Bukkit.getPluginManager().callEvent(new EnvironmentEvent.ServerInteractable(e.get(), ListenerManager.getDefaultCause()));
-            }
         }
     }
 

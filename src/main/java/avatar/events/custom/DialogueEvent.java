@@ -1,6 +1,6 @@
 package avatar.events.custom;
 
-import avatar.game.dialogue.core.Dialogue;
+import avatar.game.dialogue.Dialogue;
 import avatar.game.user.UserPlayer;
 import org.bukkit.event.HandlerList;
 
@@ -12,7 +12,7 @@ public abstract class DialogueEvent extends CustomEvent {
     public DialogueEvent(String cause, UserPlayer userPlayer) {
         super(cause);
 
-        this.dialogue = userPlayer.getCurrentDialogue();
+        this.dialogue = userPlayer.getDialogueManager().getCurrentDialogue();
         this.userPlayer = userPlayer;
     }
 

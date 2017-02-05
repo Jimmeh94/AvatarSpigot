@@ -10,6 +10,6 @@ public interface Reward {
 
     String getDescription();
 
-    void giveAward(Player player);
+    void giveReward(Player player);
 
 }

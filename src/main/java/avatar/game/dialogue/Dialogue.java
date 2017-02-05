@@ -1,7 +1,8 @@
-package avatar.game.dialogue.core;
+package avatar.game.dialogue;
 
-import avatar.game.dialogue.core.displayable.ChoiceWheel;
-import avatar.game.dialogue.core.displayable.Displayable;
+import avatar.Avatar;
+import avatar.game.dialogue.displayable.ChoiceWheel;
+import avatar.game.dialogue.displayable.Displayable;
 import avatar.util.text.Messager;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -23,11 +24,13 @@ public class Dialogue {
     private Player player;
     private String dialogueID;
     private boolean used = false;
+    private Data data;
 
-    public Dialogue(List<Displayable> displayables, String string, Player player){
+    public Dialogue(List<Displayable> displayables, String string, Player player, Data data){
         this.dialogue = displayables;
         dialogueID = String.valueOf(string);
         this.player = player;
+        this.data = data;
     }
 
     public Player getPlayer() {
@@ -48,7 +51,7 @@ public class Dialogue {
     }
 
     /**
-     * Don't directly call this to display a player's dialogue. Use UserPlayer#startDialogue
+     * Don't directly call this to display a player's dialogue. Use UserPlayer#dialogueManager().startDialogue
      */
     public void displayNext(){
         Messager.sendMessage(player, ChatColor.GRAY + "=================================== ", Optional.empty());
@@ -57,6 +60,10 @@ public class Dialogue {
         }
         Messager.sendMessage(player, ChatColor.GRAY + "=================================== ", Optional.empty());
         Messager.sendMessage(player, ChatColor.GRAY + " ", Optional.<Messager.Prefix>empty());
+
+        if(data == Data.UNIQUE){
+            Avatar.INSTANCE.getUserManager().findUserPlayer(player).get().getDialogueManager().completedDialogue(dialogueID);
+        }
     }
 
     public void setUsed(boolean used) {
@@ -65,5 +72,12 @@ public class Dialogue {
 
     public boolean isUsed() {
         return used;
+    }
+
+    public enum Data{
+        //Unique can't be repeated
+
+        REPEATABLE,
+        UNIQUE
     }
 }
