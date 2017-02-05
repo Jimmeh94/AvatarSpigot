@@ -13,4 +13,8 @@ public class BlockManager extends Manager<BlockReplacement> {
         }
     }
 
+    public void replaceAll(){
+        objects.forEach(BlockReplacement::replace);
+    }
+
 }

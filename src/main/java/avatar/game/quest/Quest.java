@@ -4,9 +4,11 @@ import avatar.Avatar;
 import avatar.events.custom.QuestEvent;
 import avatar.game.user.UserPlayer;
 import avatar.manager.ListenerManager;
+import avatar.util.misc.Items;
 import avatar.util.text.AltCodes;
 import avatar.util.text.Title;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -160,5 +162,9 @@ public class Quest {
 
     public ItemStack getItemRepresentation() {
         return itemRepresentation;
+    }
+
+    public void checkItemForQuestItem(Location location, Items items) {
+        checkpoints.get(currentCheckpoint).checkItemForQuestItem(location, items);
     }
 }

@@ -1,13 +1,11 @@
 package avatar.game.quest.condition;
 
 import avatar.Avatar;
-import avatar.events.custom.AreaEvent;
 import avatar.game.area.Area;
 import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 
-public class ReachArea extends Condition implements Listener{
+public class ReachArea extends Condition{
 
     /*
      * Simply a condition to where a player must reach a location
@@ -28,25 +26,16 @@ public class ReachArea extends Condition implements Listener{
     }
 
     @Override
-    public void setAdditionalStartInfo() {
-        Avatar.INSTANCE.getServer().getPluginManager().registerEvents(this, Avatar.INSTANCE);
-    }
-
-    @Override
      protected void unregister() {
-        AreaEvent.Enter.getHandlerList().unregister(this);
+
     }
 
     @EventHandler
-    public void handle(AreaEvent.Enter event) throws Exception {
-        if(event.getArea() == this.targetArea){
-            if(event.getUser().isPlayer()){
-                if(event.getUser().getUUID().equals(this.getPlayer().getUniqueId())){
-                    valid = true;
-                    unregisterListener();
-                }
-            }
+    public boolean isValid() {
+        if(Avatar.INSTANCE.getUserManager().findUserPlayer(getPlayer()).get().getPresentArea() == targetArea){
+            valid = true;
         }
+        return valid;
     }
 
     public Location getTrackerLocation(Location player) {

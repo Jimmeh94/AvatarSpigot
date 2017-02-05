@@ -10,10 +10,13 @@ import avatar.game.quest.Reward;
 import avatar.game.quest.builder.CheckpointBuilder;
 import avatar.game.quest.builder.QuestBuilder;
 import avatar.game.quest.condition.BoundArea;
-import avatar.game.quest.condition.InteractEI;
+import avatar.game.quest.condition.ItemInteract;
 import avatar.game.quest.condition.ReachArea;
 import avatar.game.user.UserPlayer;
-import avatar.manager.ServerEInteractableManager;
+import avatar.util.misc.Items;
+import avatar.util.text.Messager;
+import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -39,7 +42,13 @@ public class DemoQuest implements IQuestInitiator{
 
         checkpointBuilder.description("Look for a clue")
                 .targetLocation(Optional.<Location>empty())
-                .condition(new InteractEI(ServerEInteractableManager.ServerEIReference.DEMO))
+                .condition(new ItemInteract(Items.SCROLL, new Location(Bukkit.getWorlds().get(0), -814, 6, 367), new Items.ItemCallback() {
+                    @Override
+                    public void handle(UserPlayer userPlayer) {
+                        Messager.sendMessage(userPlayer.getPlayer(), ChatColor.GRAY.toString() + ChatColor.ITALIC +
+                                "Brother, we've stolen the old man's glasses! This is the last time he calls us ugly! Meet me at the garden!", Optional.<Messager.Prefix>empty());
+                    }
+                }))
                 .condition(new BoundArea(test2))
                 .buildCheckpoint();
 

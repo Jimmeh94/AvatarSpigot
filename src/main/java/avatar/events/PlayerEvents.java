@@ -3,10 +3,13 @@ package avatar.events;
 import avatar.Avatar;
 import avatar.game.entity.npc.NPC;
 import avatar.game.user.UserPlayer;
+import avatar.util.misc.BlockReplacement;
+import avatar.util.misc.Items;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
+import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.*;
@@ -44,16 +47,23 @@ public class PlayerEvents implements Listener {
         event.setCancelled(true);
     }
 
-    @EventHandler
+    @EventHandler(priority = EventPriority.LOWEST)
     public void onInteract(PlayerInteractEvent event){
         event.setCancelled(true);
 
         UserPlayer userPlayer = Avatar.INSTANCE.getUserManager().findUserPlayer(event.getPlayer()).get();
 
-        Material type = event.getClickedBlock().getType();
-        if(type == Material.LEAVES_2){
-            //Leaves 2 is dark oak and acacia
-            if(type.)
+        if(event.getClickedBlock() != null) {
+            Optional<Items> optional = Items.find(event.getClickedBlock().getType(), event.getClickedBlock().getData());
+            if(optional.isPresent()){
+                Avatar.INSTANCE.getBlockManager().add(new BlockReplacement(event.getClickedBlock(), 20));
+                event.getClickedBlock().setType(Material.AIR);
+
+                userPlayer.getQuestManager().checkItemForQuestItem(event.getClickedBlock().getLocation(), optional.get());
+                //do certain thing based on what item it is
+
+                return;
+            }
         }
 
         if(event.getItem() != null){

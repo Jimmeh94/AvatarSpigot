@@ -20,8 +20,9 @@ public class Avatar extends JavaPlugin {
 
     //TODO test instanced and area particle displaying
     //TODO test entity targeting and ability/user collision
-    //TODO block replacement needs to replace metadeta too
     //TODO handle checkpoint/quest resetting
+    //TODO figure out why clicking old man is happening twice, interact event happning twice
+    //TODO fix dialogue displaying spacing and add nice display for ItemInteract quest condition in demo quest
 
     public static Avatar INSTANCE;
 
@@ -84,6 +85,7 @@ public class Avatar extends JavaPlugin {
     public void onDisable(){
         hologramManager.removeHolograms();
         entityManager.clearAll();
+        blockManager.replaceAll();
 
         getLogger().info(">> " + getDescription().getName() + " v" + getDescription().getVersion() + " disabled! <<");
     }

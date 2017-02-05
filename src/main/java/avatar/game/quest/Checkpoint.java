@@ -2,8 +2,10 @@ package avatar.game.quest;
 
 import avatar.game.quest.condition.BoundArea;
 import avatar.game.quest.condition.Condition;
+import avatar.game.quest.condition.ItemInteract;
 import avatar.game.quest.condition.ReachArea;
 import avatar.util.directional.PlayerDirection;
+import avatar.util.misc.Items;
 import avatar.util.text.Action;
 import avatar.util.text.Messager;
 import org.bukkit.ChatColor;
@@ -158,5 +160,13 @@ public class Checkpoint {
         }
 
         Action.send(player, send);
+    }
+
+    public void checkItemForQuestItem(Location location, Items items) {
+        for(Condition condition: conditions){
+            if(condition instanceof ItemInteract){
+                ((ItemInteract)condition).handle(location, items);
+            }
+        }
     }
 }

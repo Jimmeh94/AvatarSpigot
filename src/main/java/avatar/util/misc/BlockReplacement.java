@@ -12,6 +12,7 @@ public class BlockReplacement {
     private BlockState blockState;
     private int howLong;
     private long whenReplaced;
+    private byte data;
 
     public BlockReplacement(Block block, int howLong){
         replace = block.getType();
@@ -19,10 +20,12 @@ public class BlockReplacement {
         blockState = block.getState();
         this.howLong = howLong;
         whenReplaced = System.currentTimeMillis();
+        data = block.getData();
     }
 
     public void replace(){
         where.getBlock().setType(replace);
+        where.getBlock().setData(data);
     }
 
     public boolean shouldReplace(){

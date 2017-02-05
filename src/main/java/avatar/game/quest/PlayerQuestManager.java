@@ -2,8 +2,10 @@ package avatar.game.quest;
 
 import avatar.game.quest.menu.QuestMenu;
 import avatar.game.user.UserPlayer;
+import avatar.util.misc.Items;
 import avatar.util.text.Messager;
 import org.bukkit.ChatColor;
+import org.bukkit.Location;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -112,5 +114,17 @@ public class PlayerQuestManager {
 
     public List<Quest> getQuests() {
         return ownedQuests;
+    }
+
+    /**
+     * We have to do it this way because the 'main' PlayerInteractEvent listener would always be checked
+     * before a quest condition PlayerInteractEvent listener
+     * @param location
+     * @param items
+     */
+    public void checkItemForQuestItem(Location location, Items items) {
+        if(getActiveQuest().isPresent()){
+            getActiveQuest().get().checkItemForQuestItem(location, items);
+        }
     }
 }
