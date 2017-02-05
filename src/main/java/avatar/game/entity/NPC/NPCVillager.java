@@ -14,6 +14,10 @@ import java.util.LinkedHashSet;
 
 public abstract class NPCVillager extends NPC{
 
+    /**
+     * Profession that causes double interactions: NITWIT
+     */
+
     private Villager.Profession profession;
     private String name;
     private Location location;

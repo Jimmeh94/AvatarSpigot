@@ -59,7 +59,6 @@ public class Dialogue {
             displayable.display(player);
         }
         Messager.sendMessage(player, ChatColor.GRAY + "=================================== ", Optional.empty());
-        Messager.sendMessage(player, ChatColor.GRAY + " ", Optional.<Messager.Prefix>empty());
 
         if(data == Data.UNIQUE){
             Avatar.INSTANCE.getUserManager().findUserPlayer(player).get().getDialogueManager().completedDialogue(dialogueID);

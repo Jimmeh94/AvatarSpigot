@@ -1,6 +1,7 @@
 package avatar.game.dialogue.displayable;
 
 import avatar.util.text.Messager;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class Sentence implements Displayable {
     @Override
     public void display(Player player) {
         for(String text: sentences) {
-                Messager.sendMessage(player, text, Optional.<Messager.Prefix>empty());
+                Messager.sendMessage(player, ChatColor.GRAY + text, Optional.<Messager.Prefix>empty());
         }
     }
 

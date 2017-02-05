@@ -20,7 +20,7 @@ public class NPCOldMan extends NPCVillager {
     private Qualifier during, after;
 
     public NPCOldMan() {
-        super(Villager.Profession.NITWIT, "Old Man", new Location(Bukkit.getWorlds().get(0), -858.5, 5, 350.5, -135f, 0f));
+        super(Villager.Profession.FARMER, "Old Man", new Location(Bukkit.getWorlds().get(0), -858.5, 5, 350.5, -135f, 0f));
 
         during = new Qualifier(Qualifier.What.QUEST, Qualifier.When.DURING, DemoQuest.reference.getID());
         after = new Qualifier(Qualifier.What.QUEST, Qualifier.When.AFTER, DemoQuest.reference.getID());

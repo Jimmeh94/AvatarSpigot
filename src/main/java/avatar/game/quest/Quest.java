@@ -57,9 +57,12 @@ public class Quest {
         temp.add(ChatColor.GRAY + "Objectives:");
         temp.add(" ");
         for(Checkpoint checkpoint: checkpoints){
+            //This will only add quest objectives that have either been completed or that is the current one
             if(checkpoint.isCompleted()){
                 temp.add(ChatColor.GREEN + AltCodes.FILLED_CIRCLE.getSign() + " " + checkpoint.getDescription().get());
-            } else temp.add(ChatColor.GRAY + AltCodes.FILLED_CIRCLE.getSign() + " " + checkpoint.getDescription().get());
+            } else if(checkpoints.indexOf(checkpoint) == currentCheckpoint){
+                temp.add(ChatColor.GRAY + AltCodes.FILLED_CIRCLE.getSign() + " " + checkpoint.getDescription().get());
+            }
             temp.add(" ");
         }
         if(active){
@@ -88,11 +91,11 @@ public class Quest {
             Avatar.INSTANCE.getServer().getPluginManager().callEvent(new QuestEvent.CheckpointComplete(ListenerManager.getDefaultCause(), owner, this, checkpoints.get(currentCheckpoint)));
 
             checkpoints.get(currentCheckpoint).deactivate();
-            setLore();
             currentCheckpoint++;
 
             if (currentCheckpoint <= checkpoints.size() - 1) {
                 checkpoints.get(currentCheckpoint).start();
+                setLore();
             } else {
                 completeQuest();
                 setLore();

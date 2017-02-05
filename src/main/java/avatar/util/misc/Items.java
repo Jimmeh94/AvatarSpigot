@@ -7,7 +7,8 @@ import java.util.Optional;
 
 public enum Items {
 
-    SCROLL(Material.LEAVES_2, (byte)4);
+    SCROLL(Material.LEAVES_2, (byte)4),
+    COIN_BAG_FULL(Material.LEAVES_2, (byte)5);
 
     private Material material;
     private byte data;

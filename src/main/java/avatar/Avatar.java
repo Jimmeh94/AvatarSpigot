@@ -21,8 +21,9 @@ public class Avatar extends JavaPlugin {
     //TODO test instanced and area particle displaying
     //TODO test entity targeting and ability/user collision
     //TODO handle checkpoint/quest resetting
-    //TODO figure out why clicking old man is happening twice, interact event happning twice
-    //TODO fix dialogue displaying spacing and add nice display for ItemInteract quest condition in demo quest
+    //TODO interact event happening twice
+    //TODO add nice display for ItemInteract quest condition in demo quest
+    //TODO work with unique dialogue settings. Want the dialogue to not be dispalyable after certain choice is choosen
 
     public static Avatar INSTANCE;
 

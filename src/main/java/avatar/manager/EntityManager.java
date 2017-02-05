@@ -9,9 +9,13 @@ import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.entity.Entity;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public class EntityManager extends Manager<NPC>{
+
+    private List<Entity> toCheck = new CopyOnWriteArrayList<>();
 
     public EntityManager(){
         World world = Bukkit.getWorlds().get(0);
@@ -46,10 +50,24 @@ public class EntityManager extends Manager<NPC>{
     }
 
     public void tick() {
+        Optional<NPC> optional;
+        for(Entity entity: toCheck){
+            optional = find(entity);
+            if(!optional.isPresent()){
+                entity.remove();
+                toCheck.remove(entity);
+            }
+        }
+
         for(NPC npc: objects){
             if(!isValidNPC(npc)){
                 remove(npc);
             }
         }
+    }
+
+    //Since we can't check if an entity should spawn until after it spawns, we can use this
+    public void addEntityToCheck(Entity entity){
+        toCheck.add(entity);
     }
 }
