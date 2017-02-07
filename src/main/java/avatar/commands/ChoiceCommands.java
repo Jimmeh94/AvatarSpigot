@@ -1,9 +1,10 @@
 package avatar.commands;
 
-import avatar.manager.DialogueManager;
+import avatar.Avatar;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 public class ChoiceCommands implements CommandExecutor {
 
@@ -15,9 +16,7 @@ public class ChoiceCommands implements CommandExecutor {
             if(args.length == 0){
                 return true;
             } else {
-                int groupID = Integer.valueOf(args[0].split("\\.")[0]);
-                String choiceID = args[0].split("\\.")[1] + "." + args[0].split("\\.")[2];
-                DialogueManager.callCallback(groupID, choiceID);
+                Avatar.INSTANCE.getUserManager().findUserPlayer((Player)sender).get().getDialogueManager().handleChoice(args[0]);
             }
         }
 

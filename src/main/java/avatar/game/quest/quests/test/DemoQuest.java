@@ -10,6 +10,7 @@ import avatar.game.quest.Reward;
 import avatar.game.quest.builder.CheckpointBuilder;
 import avatar.game.quest.builder.QuestBuilder;
 import avatar.game.quest.condition.BoundArea;
+import avatar.game.quest.condition.ClickDialogueChoice;
 import avatar.game.quest.condition.ItemInteract;
 import avatar.game.quest.condition.ReachArea;
 import avatar.game.user.UserPlayer;
@@ -45,11 +46,23 @@ public class DemoQuest implements IQuestInitiator{
                 .condition(new ItemInteract(Items.SCROLL, new Location(Bukkit.getWorlds().get(0), -814, 6, 367), new Items.ItemCallback() {
                     @Override
                     public void handle(UserPlayer userPlayer) {
+                        Messager.sendMessage(userPlayer.getPlayer(), Items.getScrollPrefixMessage(), Optional.<Messager.Prefix>empty());
                         Messager.sendMessage(userPlayer.getPlayer(), ChatColor.GRAY.toString() + ChatColor.ITALIC +
                                 "Brother, we've stolen the old man's glasses! This is the last time he calls us ugly! Meet me at the garden!", Optional.<Messager.Prefix>empty());
                     }
                 }))
                 .condition(new BoundArea(test2))
+                .buildCheckpoint();
+
+        checkpointBuilder.description("Find the thieves in the garden")
+                .targetLocation(Optional.<Location>empty())
+                .condition(new ReachArea(Avatar.INSTANCE.getAreaManager().getAreaByReference(AreaReferences.GARDEN).get()))
+                .buildCheckpoint();
+
+        checkpointBuilder.description("Negotiate with the thieves or kill them")
+                .targetLocation(Optional.<Location>empty())
+                .condition(new BoundArea(Avatar.INSTANCE.getAreaManager().getAreaByReference(AreaReferences.GARDEN).get()))
+                .condition(new ClickDialogueChoice(""))
                 .buildCheckpoint();
 
         Quest quest = questBuilder.name("Helping Your Elders").description("Help the old man find his glasses").level(1).setReference(reference).checkpoints()

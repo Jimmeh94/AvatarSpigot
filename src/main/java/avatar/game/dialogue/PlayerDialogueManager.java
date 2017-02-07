@@ -29,7 +29,7 @@ public class PlayerDialogueManager {
     }
 
     public void giveDialogue(DialogueReference reference){
-        setCurrentDialogue(reference.getDialogue(getOwner().getPlayer()));
+        setCurrentDialogue(reference.getDialogue(getOwner()));
         startDialogue();
     }
 
@@ -54,5 +54,11 @@ public class PlayerDialogueManager {
 
     public boolean hasCompleted(String id){
         return completed.contains(id);
+    }
+
+    public void handleChoice(String arg) {
+        if(currentDialogue != null){
+            currentDialogue.handleChoice(arg);
+        }
     }
 }

@@ -1,11 +1,19 @@
 package avatar.util.misc;
 
 import avatar.game.user.UserPlayer;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 
 import java.util.Optional;
 
 public enum Items {
+
+    /**
+     * Transparent Blocks
+     * Coin bag full: dark_oak_leaves
+     * Coin bag empty: something else
+     * Scroll: acacia leaves
+     */
 
     SCROLL(Material.LEAVES_2, (byte)4),
     COIN_BAG_FULL(Material.LEAVES_2, (byte)5);
@@ -36,5 +44,9 @@ public enum Items {
      */
     public interface ItemCallback{
         void handle(UserPlayer userPlayer);
+    }
+
+    public static String getScrollPrefixMessage(){
+        return ChatColor.GRAY + ChatColor.ITALIC.toString() + "     The scroll reads...     ";
     }
 }

@@ -1,8 +1,10 @@
 package avatar;
 
 import avatar.commands.*;
-import avatar.events.*;
-import avatar.game.dialogue.DialogueBuilder;
+import avatar.events.EntityEvents;
+import avatar.events.InventoryEvents;
+import avatar.events.PlayerEvents;
+import avatar.events.WorldEvents;
 import avatar.game.quest.builder.QuestBuilder;
 import avatar.manager.*;
 import avatar.runnable.GameTimer;
@@ -11,19 +13,13 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 public class Avatar extends JavaPlugin {
 
-    /**
-     * Transparent Blocks
-     * Coin bag full: dark_oak_leaves
-     * Coin bag empty: something else
-     * Scroll: acacia leaves
-     */
-
     //TODO test instanced and area particle displaying
     //TODO test entity targeting and ability/user collision
+
     //TODO handle checkpoint/quest resetting
-    //TODO interact event happening twice
-    //TODO add nice display for ItemInteract quest condition in demo quest
-    //TODO work with unique dialogue settings. Want the dialogue to not be dispalyable after certain choice is choosen
+    //TODO work with unique dialogue settings. Want the dialogue to not be dispalyable after certain choice is chosen
+
+    //TODO figure out the screen tint effect Sky Bounds has when you enter combat (/toggles, called World Border Warning feature)
 
     public static Avatar INSTANCE;
 
@@ -39,7 +35,6 @@ public class Avatar extends JavaPlugin {
     //misc
     private final int combatInterval = 5; //how many seconds out of combat needed to be switched to out of combat
     private final QuestBuilder questBuilder = new QuestBuilder();
-    private final DialogueBuilder dialogueBuilder = new DialogueBuilder();
     private GameTimer gameTimer;
     private SlowTimer slowTimer;
 
@@ -113,10 +108,6 @@ public class Avatar extends JavaPlugin {
 
     public QuestBuilder getQuestBuilder() {
         return questBuilder;
-    }
-
-    public DialogueBuilder getDialogueBuilder() {
-        return dialogueBuilder;
     }
 
     public BlockManager getBlockManager() {

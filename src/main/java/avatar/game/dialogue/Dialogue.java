@@ -1,17 +1,17 @@
 package avatar.game.dialogue;
 
 import avatar.Avatar;
-import avatar.game.dialogue.displayable.ChoiceWheel;
+import avatar.game.dialogue.displayable.Choice;
 import avatar.game.dialogue.displayable.Displayable;
+import avatar.game.user.UserPlayer;
 import avatar.util.text.Messager;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-public class Dialogue {
+public abstract class Dialogue {
 
     /*
      * Container for whole conversation, both sentences and actions
@@ -20,20 +20,23 @@ public class Dialogue {
      * should be another Dialogue, using the DisplayDialogue DialogueAction as part of that particular Choice
      */
 
-    private List<Displayable> dialogue = new ArrayList<>();
-    private Player player;
+    protected List<Displayable> initialDialogue = new ArrayList<>();
+    private UserPlayer player;
     private String dialogueID;
     private boolean used = false;
     private Data data;
 
-    public Dialogue(List<Displayable> displayables, String string, Player player, Data data){
-        this.dialogue = displayables;
-        dialogueID = String.valueOf(string);
+    protected abstract void setupInitialDialogue();
+
+    public Dialogue(String id, UserPlayer player, Data data){
+        dialogueID = String.valueOf(id);
         this.player = player;
         this.data = data;
+
+        setupInitialDialogue();
     }
 
-    public Player getPlayer() {
+    public UserPlayer getPlayer() {
         return player;
     }
 
@@ -41,27 +44,32 @@ public class Dialogue {
         return dialogueID;
     }
 
-    public boolean hasChoiceID(String id){
-        for(Displayable displayable: dialogue){
-            if(displayable instanceof ChoiceWheel && ((ChoiceWheel) displayable).hasID(id)){
-                return true;
+
+    public void handleChoice(String id){
+        int choice = Integer.valueOf(id.split("\\.")[1]);
+        if(initialDialogue.size() > choice){
+            if(initialDialogue.get(choice) instanceof Choice){
+                ((Choice)initialDialogue.get(choice)).handle();
             }
         }
-        return false;
+    }
+
+    protected String getChoiceID(){
+        return getDialogueID() + "." + initialDialogue.size();
     }
 
     /**
      * Don't directly call this to display a player's dialogue. Use UserPlayer#dialogueManager().startDialogue
      */
     public void displayNext(){
-        Messager.sendMessage(player, ChatColor.GRAY + "=================================== ", Optional.empty());
-        for(Displayable displayable: dialogue){
-            displayable.display(player);
+        Messager.sendMessage(player.getPlayer(), ChatColor.GRAY + "=================================== ", Optional.empty());
+        for(Displayable displayable: initialDialogue){
+            displayable.display(player.getPlayer());
         }
-        Messager.sendMessage(player, ChatColor.GRAY + "=================================== ", Optional.empty());
+        Messager.sendMessage(player.getPlayer(), ChatColor.GRAY + "=================================== ", Optional.empty());
 
         if(data == Data.UNIQUE){
-            Avatar.INSTANCE.getUserManager().findUserPlayer(player).get().getDialogueManager().completedDialogue(dialogueID);
+            Avatar.INSTANCE.getUserManager().findUserPlayer(player.getPlayer()).get().getDialogueManager().completedDialogue(dialogueID);
         }
     }
 
