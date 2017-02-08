@@ -3,10 +3,9 @@ package avatar.game.quest.quests.test;
 import avatar.Avatar;
 import avatar.game.area.Area;
 import avatar.game.area.AreaReferences;
-import avatar.game.quest.IQuestInitiator;
-import avatar.game.quest.Quest;
-import avatar.game.quest.QuestReference;
-import avatar.game.quest.Reward;
+import avatar.game.entity.npc.nms.CustomZombie;
+import avatar.game.entity.npc.nms.EntityTypes;
+import avatar.game.quest.*;
 import avatar.game.quest.builder.CheckpointBuilder;
 import avatar.game.quest.builder.QuestBuilder;
 import avatar.game.quest.condition.BoundArea;
@@ -57,6 +56,15 @@ public class DemoQuest implements IQuestInitiator{
         checkpointBuilder.description("Find the thieves in the garden")
                 .targetLocation(Optional.<Location>empty())
                 .condition(new ReachArea(Avatar.INSTANCE.getAreaManager().getAreaByReference(AreaReferences.GARDEN).get()))
+                .completeAction(new ICheckpointCompleteAction() {
+                    @Override
+                    public void doAction(UserPlayer userPlayer) {
+                        Area area = Avatar.INSTANCE.getAreaManager().getAreaByReference(AreaReferences.GARDEN).get();
+                        Location use = area.getCenter().clone();
+                        use.setY(userPlayer.getPlayer().getLocation().getY());
+                        EntityTypes.spawnEntity(new CustomZombie(area.getCenter().getWorld()), use);
+                    }
+                })
                 .buildCheckpoint();
 
         checkpointBuilder.description("Negotiate with the thieves or kill them")

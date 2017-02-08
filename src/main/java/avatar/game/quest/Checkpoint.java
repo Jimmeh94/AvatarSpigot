@@ -1,5 +1,6 @@
 package avatar.game.quest;
 
+import avatar.Avatar;
 import avatar.game.quest.condition.BoundArea;
 import avatar.game.quest.condition.Condition;
 import avatar.game.quest.condition.ItemInteract;
@@ -27,15 +28,23 @@ public class Checkpoint {
     private Optional<String> description = Optional.empty();
     private List<Condition> conditions;
     private boolean complete = false;
+    private ICheckpointCompleteAction completeAction;
 
-    public Checkpoint(Optional<Location> location, String description, Condition... conditions){
+    public Checkpoint(Optional<Location> location, String description, ICheckpointCompleteAction checkpointCompleteAction, Condition... conditions){
         targetLocation = location;
         this.description = Optional.of(description);
+        this.completeAction = checkpointCompleteAction;
         this.conditions = Arrays.asList(conditions);
     }
 
     public boolean isCompleted(){
         return this.complete;
+    }
+
+    public void doCompleteAction(){
+        if(completeAction != null){
+            completeAction.doAction(Avatar.INSTANCE.getUserManager().findUserPlayer(player).get());
+        }
     }
 
     public void deactivate(){

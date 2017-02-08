@@ -90,6 +90,7 @@ public class Quest {
 
             Avatar.INSTANCE.getServer().getPluginManager().callEvent(new QuestEvent.CheckpointComplete(ListenerManager.getDefaultCause(), owner, this, checkpoints.get(currentCheckpoint)));
 
+            checkpoints.get(currentCheckpoint).doCompleteAction();
             checkpoints.get(currentCheckpoint).deactivate();
             currentCheckpoint++;
 
@@ -107,10 +108,6 @@ public class Quest {
         checkpoints.get(currentCheckpoint).printActionMessage();
 
         return false;
-    }
-
-    public Reward getReward() {
-        return reward;
     }
 
     private void completeQuest(){

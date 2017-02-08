@@ -1,6 +1,7 @@
 package avatar.game.quest.builder;
 
 import avatar.game.quest.Checkpoint;
+import avatar.game.quest.ICheckpointCompleteAction;
 import avatar.game.quest.condition.Condition;
 import org.bukkit.Location;
 
@@ -22,6 +23,12 @@ public class CheckpointBuilder {
     private Optional<String> description = Optional.empty();
     private List<Condition> conditions = new ArrayList<>();
     private List<Checkpoint> checkpoints = new ArrayList<>();
+    private ICheckpointCompleteAction completeAction;
+
+    public CheckpointBuilder completeAction(ICheckpointCompleteAction completeAction){
+        this.completeAction = completeAction;
+        return this;
+    }
 
     public List<Checkpoint> finish(){
         List<Checkpoint> temp = new ArrayList<>(checkpoints);
@@ -46,7 +53,7 @@ public class CheckpointBuilder {
 
     public CheckpointBuilder buildCheckpoint(){
         if(description.isPresent()){
-            checkpoints.add(new Checkpoint(targetLocation, description.get(), conditions.toArray(new Condition[]{})));
+            checkpoints.add(new Checkpoint(targetLocation, description.get(), completeAction, conditions.toArray(new Condition[]{})));
             reset();
         }
         return this;

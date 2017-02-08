@@ -3,6 +3,7 @@ package avatar.game.entity.hologram;
 import avatar.Avatar;
 import net.minecraft.server.v1_11_R1.*;
 import org.bukkit.Location;
+import org.bukkit.craftbukkit.v1_11_R1.CraftWorld;
 import org.bukkit.craftbukkit.v1_11_R1.entity.CraftPlayer;
 import org.bukkit.entity.Player;
 
@@ -19,15 +20,26 @@ public class ClientHologram extends Hologram {
     private boolean placeHeadOnLowestStand = false;
     private HologramInteraction interaction;
 
-    public ClientHologram(Location spawnAt, List<Player> displayTo, HologramInteraction interaction, String... name) {
+    public ClientHologram(Location spawnLocation, List<Player> displayTo, HologramInteraction interaction, String... name) {
         super();
 
-        this.spawnAt = spawnAt;
+        this.spawnAt = spawnLocation;
         this.displayTo = displayTo;
         this.interaction = interaction;
         stands = new ArrayList<>();
 
-        //TODO setup stands
+        for(int i = 0; i < name.length; i++){
+            stands.add(new EntityArmorStand(((CraftWorld) spawnLocation.getWorld()).getHandle()));
+            stands.get(i).setLocation(spawnLocation.getX(), spawnLocation.getY() - (0.25 * i), spawnLocation.getZ(), spawnLocation.getYaw(), spawnLocation.getPitch());
+            stands.get(i).setInvisible(true);
+            stands.get(i).setCustomNameVisible(true);
+            stands.get(i).setCustomName(name[i]);
+            /*NBTTagCompound nbtTagCompound = stands.get(i).getNBTTagCompound();
+            if(nbtTagCompound == null){
+                nbtTagCompound = new NBTTagCompound();
+            }
+            nbtTagCompound.setBoolean("Invulnerable", true);*/
+        }
 
         Avatar.INSTANCE.getHologramManager().add(this);
     }
