@@ -12,7 +12,7 @@ public enum EntityTypes {
     //NAME("Entity name", Entity ID, customClass.class)
     CUSTOM_ZOMBIE("Zombie", 54, CustomZombie.class);
 
-    private EntityTypes(String s, int i, Class<? extends Entity> custom){
+    EntityTypes(String s, int i, Class<? extends Entity> custom){
         addToMaps(custom, s, i);
     }
 
@@ -22,7 +22,7 @@ public enum EntityTypes {
     }
 
     private static void addToMaps(Class c, String s, int id){
-        ((Map)NMSUtils.getPrivateField("c", net.minecraft.server.v1_11_R1.EntityTypes.class, null)).put(s, c);
+        ((Map) NMSUtils.getPrivateField("c", net.minecraft.server.v1_11_R1.EntityTypes.class, null)).put(s, c);
         ((Map)NMSUtils.getPrivateField("d", net.minecraft.server.v1_11_R1.EntityTypes.class, null)).put(c, s);
         ((Map)NMSUtils.getPrivateField("f", net.minecraft.server.v1_11_R1.EntityTypes.class, null)).put(c, Integer.valueOf(id));
     }

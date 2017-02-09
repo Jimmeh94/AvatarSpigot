@@ -1,6 +1,8 @@
 package avatar.game.quest.condition;
 
+import avatar.Avatar;
 import avatar.game.area.Area;
+import avatar.game.user.UserPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 
@@ -12,9 +14,15 @@ public class BoundArea extends Condition{
      */
 
     private Area bound;
+    private LeaveAreaAction leaveAreaAction;
 
     public BoundArea(Area bound){
+        this(bound, null);
+    }
+
+    public BoundArea(Area bound, LeaveAreaAction leaveAreaAction){
         this.bound = bound;
+        this.leaveAreaAction = leaveAreaAction;
     }
 
     @Override
@@ -72,5 +80,17 @@ public class BoundArea extends Condition{
         }
 
         return give;
+    }
+
+    public void doLeavingAction(){
+        if(leaveAreaAction != null){
+            leaveAreaAction.doAction(Avatar.INSTANCE.getUserManager().findUserPlayer(getPlayer()).get(), bound);
+        }
+    }
+
+    public interface LeaveAreaAction{
+
+        //Use for things like removing a player from an instance
+        void doAction(UserPlayer userPlayer, Area area);
     }
 }

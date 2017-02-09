@@ -2,36 +2,51 @@ package avatar.game.area;
 
 import avatar.game.ability.type.Ability;
 import avatar.game.user.User;
+import avatar.util.misc.PlayerHiding;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class Instance {
+public abstract class Instance {
 
     private List<User> members;
     private List<Ability> abilities;
     private int capacity;
+    protected Area area;
 
-    public Instance(){
-        this(-1);
+    public Instance(Area area){
+        this(area, -1);
     }
 
-    public Instance(int capacity){
+    public Instance(Area area, int capacity){
         members = new ArrayList<>();
         abilities = new ArrayList<>();
         this.capacity = capacity;
+        this.area = area;
+    }
+
+    public Area getArea() {
+        return area;
     }
 
     public void addUser(User user){
+        if(capacity > -1){
+            if(members.size() == capacity)
+                return;
+        }
         members.add(user);
 
-        //make only visible to other users
+        if(user.isPlayer()){
+            PlayerHiding.instance(this);
+        }
     }
 
     public void removeUser(User user){
         members.remove(user);
 
-        //make visible to all others besides this.members members
+        if(user.isPlayer()){
+            PlayerHiding.instance(this);
+        }
     }
 
     public boolean hasUser(User user){

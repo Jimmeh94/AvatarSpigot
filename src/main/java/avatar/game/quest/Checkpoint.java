@@ -99,6 +99,9 @@ public class Checkpoint {
             if(!condition.isValid()){
                 condition.displayWarningMessage();
                 valid = false;
+                if(condition instanceof BoundArea){
+                    ((BoundArea)condition).doLeavingAction();
+                }
             }
         }
 

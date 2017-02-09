@@ -49,8 +49,8 @@ public class Area {
         return abilityManager;
     }
 
-    public void addInstance(User user){
-        instances.add(new Instance());
+    public void addInstance(Instance instance, User user){
+        instances.add(instance);
         instances.get(instances.size() - 1).addUser(user);
     }
 
