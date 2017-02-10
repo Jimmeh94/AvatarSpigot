@@ -1,8 +1,10 @@
 package avatar.game.entity.npc.nms;
 
+import avatar.Avatar;
+import avatar.game.user.User;
+import avatar.game.user.stats.presets.DefaultBenderPreset;
 import avatar.util.misc.NMSUtils;
-import net.minecraft.server.v1_11_R1.EntityZombie;
-import net.minecraft.server.v1_11_R1.PathfinderGoalSelector;
+import net.minecraft.server.v1_11_R1.*;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.craftbukkit.v1_11_R1.CraftWorld;
@@ -28,8 +30,13 @@ public class CustomZombie extends EntityZombie{
         targetC.clear();
 
         setPosition(where.getX(), where.getY(), where.getZ());
-        //Avatar.INSTANCE.getEntityManager().add(this);
+
+        //Add invisibility for 1 second so in case this is instanced, it won't blip in and out on
+        //players' screens
+        this.addEffect(new MobEffect(MobEffects.INVISIBILITY, 1));
+
         ((CraftWorld) world).getHandle().addEntity(this, CreatureSpawnEvent.SpawnReason.CUSTOM);
+        Avatar.INSTANCE.getUserManager().add(new User(this.getUniqueID(), new DefaultBenderPreset()));
         System.out.println("Zombie");
     }
 }

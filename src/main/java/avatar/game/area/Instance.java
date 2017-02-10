@@ -2,7 +2,7 @@ package avatar.game.area;
 
 import avatar.game.ability.type.Ability;
 import avatar.game.user.User;
-import avatar.util.misc.PlayerHiding;
+import avatar.util.misc.EntityHiding;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +37,7 @@ public abstract class Instance {
         members.add(user);
 
         if(user.isPlayer()){
-            PlayerHiding.instance(this);
+            EntityHiding.instance(this);
         }
     }
 
@@ -45,7 +45,7 @@ public abstract class Instance {
         members.remove(user);
 
         if(user.isPlayer()){
-            PlayerHiding.instance(this);
+            EntityHiding.instance(this);
         }
     }
 

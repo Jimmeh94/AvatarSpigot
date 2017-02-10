@@ -51,7 +51,9 @@ public class Area {
 
     public void addInstance(Instance instance, User user){
         instances.add(instance);
-        instances.get(instances.size() - 1).addUser(user);
+
+        if(user != null)
+            instances.get(instances.size() - 1).addUser(user);
     }
 
     public boolean isInstanced(User user){
@@ -192,6 +194,10 @@ public class Area {
 
     public AreaShape getShape() {
         return shape;
+    }
+
+    public Instance getInstance(int i) {
+        return instances.get(0);
     }
 
     public static abstract class AreaShape {
