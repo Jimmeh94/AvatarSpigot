@@ -69,12 +69,12 @@ public class DemoQuest implements IQuestInitiator{
                 .condition(new BoundArea(Avatar.INSTANCE.getAreaManager().getAreaByReference(AreaReferences.GARDEN).get(), new BoundArea.LeaveAreaAction() {
                     @Override
                     public void doAction(UserPlayer userPlayer, Area area) {
-                        if(area.isInstanced(userPlayer)){
+                        if (area.isInstanced(userPlayer)) {
                             area.getInstance(userPlayer).get().removeUser(userPlayer);
                         }
                     }
                 }))
-                .condition(new ClickDialogueChoice(""))
+                .condition(new ClickDialogueChoice("demoBrothersInquire.Compromise"))
                 .buildCheckpoint();
 
         Quest quest = questBuilder.name("Helping Your Elders").description("Help the old man find his glasses").level(1).setReference(reference).checkpoints()

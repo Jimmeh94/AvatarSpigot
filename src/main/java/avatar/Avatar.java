@@ -5,6 +5,7 @@ import avatar.events.EntityEvents;
 import avatar.events.InventoryEvents;
 import avatar.events.PlayerEvents;
 import avatar.events.WorldEvents;
+import avatar.game.entity.npc.nms.CustomEntities;
 import avatar.game.quest.builder.QuestBuilder;
 import avatar.manager.*;
 import avatar.runnable.GameTimer;
@@ -54,6 +55,8 @@ public class Avatar extends JavaPlugin {
         registerCommands();
         registerRunnables();
 
+        CustomEntities.registerEntities();
+
         getLogger().info(">> " + getDescription().getName() + " v" + getDescription().getVersion() + " enabled! <<");
     }
 
@@ -82,6 +85,8 @@ public class Avatar extends JavaPlugin {
         hologramManager.removeHolograms();
         entityManager.clearAll();
         blockManager.replaceAll();
+
+        CustomEntities.unregisterEntities();
 
         getLogger().info(">> " + getDescription().getName() + " v" + getDescription().getVersion() + " disabled! <<");
     }
