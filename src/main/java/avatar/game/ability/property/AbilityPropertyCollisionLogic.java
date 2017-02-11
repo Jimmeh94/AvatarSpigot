@@ -57,6 +57,11 @@ public abstract class AbilityPropertyCollisionLogic extends AbilityProperty {
         return false;
     }
 
+    @Override
+    public void reset() {
+
+    }
+
     public boolean sameBlock(Location one, Location two){
         return one.getBlockX() == two.getBlockX() && one.getBlockY() == two.getBlockY() && one.getBlockZ() == two.getBlockZ();
     }

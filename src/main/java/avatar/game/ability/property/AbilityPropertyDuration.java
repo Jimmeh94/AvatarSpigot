@@ -36,6 +36,11 @@ public class AbilityPropertyDuration extends AbilityProperty {
     }
 
     @Override
+    public void reset() {
+        cycleCounter = 0;
+    }
+
+    @Override
     public String getFailMessage() {
         return null;
     }

@@ -57,11 +57,19 @@ public class UserManager extends Manager<User> {
         return give;
     }
 
-    public void tickHologramMenus() {
+    private void tickHologramMenus() {
         for(User user: objects){
             if(user.isPlayer()){
                 ((UserPlayer)user).tickHologramMenu();
             }
+        }
+    }
+
+    public void slowTick() {
+        tickHologramMenus();
+        for(User user: objects){
+            user.getStats().regen();
+            user.getCombatLogger().tickInCombat();
         }
     }
 }

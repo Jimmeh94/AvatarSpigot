@@ -2,6 +2,7 @@ package avatar.game.user;
 
 
 import avatar.Avatar;
+import avatar.game.ability.UserAbilityManager;
 import avatar.game.area.Area;
 import avatar.game.user.combatlog.EntityCombatLogger;
 import avatar.game.user.stats.IStatsPreset;
@@ -21,7 +22,7 @@ public class User {
     private Stats stats;
     private Area presentArea;
     private EntityCombatLogger combatLogger;
-    private Long lastRun = System.currentTimeMillis();
+    private UserAbilityManager userAbilityManager;
 
     public User(UUID user){
         this(user, new DefaultBenderPreset());
@@ -33,6 +34,8 @@ public class User {
         combatLogger = new EntityCombatLogger(this);
 
         Avatar.INSTANCE.getUserManager().add(this);
+
+        userAbilityManager = new UserAbilityManager(this);
     }
 
     public boolean canBeAttacked(){return combatLogger.canReceiveDamage();}
@@ -93,14 +96,11 @@ public class User {
         return Bukkit.getEntity(user);
     }
 
-    public void tick() {
-        //combat logger
-        if((System.currentTimeMillis() - lastRun)/1000 >= 1) {
-                getCombatLogger().tickInCombat();
-            lastRun = System.currentTimeMillis();
-        }
+    public UserAbilityManager getUserAbilityManager() {
+        return userAbilityManager;
+    }
 
-        //stat regen
+    public void tick() {
 
     }
 }

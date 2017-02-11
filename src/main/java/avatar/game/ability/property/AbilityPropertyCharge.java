@@ -14,7 +14,7 @@ public class AbilityPropertyCharge extends AbilityProperty implements Runnable{
         super(displayName, ability, AbilityStage.REQUIREMENT_CHECK);
 
         this.duration = duration;
-        this.countdown = duration;
+        this.countdown = new Integer(duration);
     }
 
     public void stop(){
@@ -33,6 +33,12 @@ public class AbilityPropertyCharge extends AbilityProperty implements Runnable{
     @Override
     public boolean validate() {
         return false;
+    }
+
+    @Override
+    public void reset() {
+        charged = false;
+        countdown = duration;
     }
 
     @Override

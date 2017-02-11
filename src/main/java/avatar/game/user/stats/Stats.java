@@ -46,6 +46,20 @@ public class Stats {
         return stats;
     }
 
+    public void regen() {
+        if(getStat(StatType.REGENERATION_HEALTH).isPresent()){
+            getStat(StatType.HEALTH).get().add(getStat(StatType.REGENERATION_HEALTH).get().getCurrent());
+        }
+
+        if(getStat(StatType.REGENERATION_CHI).isPresent()){
+            getStat(StatType.CHI).get().add(getStat(StatType.REGENERATION_CHI).get().getCurrent());
+        }
+
+        if(getStat(StatType.REGENERATION_STAMINA).isPresent()){
+            getStat(StatType.STAMINA).get().add(getStat(StatType.REGENERATION_STAMINA).get().getCurrent());
+        }
+    }
+
     //------------------------------------------------------
 
     public enum StatType{
@@ -207,6 +221,18 @@ public class Stats {
 
         public boolean canAfford(int cost) {
             return current >= cost;
+        }
+
+        public void subtract(double cost) {
+            current -= cost;
+
+            valueCheck();
+        }
+
+        public void add(double amount){
+            current += amount;
+
+            valueCheck();
         }
 
         public void subtract(int cost) {

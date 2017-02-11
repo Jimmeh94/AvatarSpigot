@@ -1,6 +1,7 @@
 package avatar.game.user;
 
 import avatar.Avatar;
+import avatar.game.ability.abilities.fire.Fireball;
 import avatar.game.area.Area;
 import avatar.game.area.AreaReferences;
 import avatar.game.chat.ChatColorTemplate;
@@ -8,7 +9,6 @@ import avatar.game.chat.channel.ChatChannel;
 import avatar.game.dialogue.PlayerDialogueManager;
 import avatar.game.entity.hologram.HologramMenu;
 import avatar.game.quest.PlayerQuestManager;
-import avatar.game.user.hotbar.CombatHotbar;
 import avatar.game.user.hotbar.DefaultHotbar;
 import avatar.game.user.hotbar.HotbarSetup;
 import avatar.game.user.scoreboard.Scoreboard;
@@ -20,6 +20,7 @@ import avatar.util.text.Messager;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
 import java.util.List;
@@ -39,7 +40,6 @@ public class UserPlayer extends User {
     private Optional<Location> lastBlockLocation = Optional.empty();
     private DefaultHotbar passiveHotbar;
     private HotbarSetup currentSetup;
-    private CombatHotbar combatHotbar;
     private HologramMenu openMenu;
     private Settings settings;
 
@@ -67,9 +67,10 @@ public class UserPlayer extends User {
         settings = new Settings(this);
 
         passiveHotbar = new DefaultHotbar(this);
-        combatHotbar = new CombatHotbar(this);
         currentSetup = passiveHotbar;
         currentSetup.apply();
+
+        getUserAbilityManager().add(4, new Fireball(this, 1, 5L));
     }
 
     @Override
@@ -160,6 +161,11 @@ public class UserPlayer extends User {
 
     public Player getPlayer(){return Bukkit.getPlayer(getUUID());}
 
+    @Override
+    public Entity getEntity(){
+        return getPlayer();
+    }
+
     public Optional<Location> getLastBlockLocation() {
         return lastBlockLocation;
     }
@@ -220,9 +226,13 @@ public class UserPlayer extends User {
         }
     }
 
+    public HotbarSetup getCurrentSetup() {
+        return currentSetup;
+    }
+
     public void swapHotbars() {
         if(currentSetup == passiveHotbar){
-            currentSetup = combatHotbar;
+            currentSetup = getUserAbilityManager().getCombatHotbar();
             getScoreboard().setPreset(new CombatPreset((this)));
         } else {
             if(getCombatLogger().isInCombat()){

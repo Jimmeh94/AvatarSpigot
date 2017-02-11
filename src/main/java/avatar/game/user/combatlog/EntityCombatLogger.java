@@ -5,6 +5,7 @@ import avatar.game.user.User;
 import avatar.game.user.UserPlayer;
 import avatar.game.user.combatlog.entries.CombatEntry;
 import avatar.game.user.combatlog.entries.EntryContainer;
+import avatar.game.user.hotbar.DefaultHotbar;
 import avatar.game.user.scoreboard.presets.CombatPreset;
 import avatar.util.text.Messager;
 import org.bukkit.ChatColor;
@@ -77,8 +78,13 @@ public class EntityCombatLogger {
     private void enterCombat(){
         inCombat = true;
         if(user.isPlayer()) {
+            UserPlayer userPlayer = ((UserPlayer)user);
             Messager.sendMessage(((UserPlayer) user).getPlayer(), ChatColor.GRAY + "Entered combat!", Optional.of(Messager.Prefix.INFO));
-            ((UserPlayer)user).getScoreboard().setPreset(new CombatPreset(((UserPlayer)user)));
+            userPlayer.getScoreboard().setPreset(new CombatPreset(((UserPlayer)user)));
+
+            if(userPlayer.getCurrentSetup() instanceof DefaultHotbar){
+                userPlayer.swapHotbars();
+            }
         }
     }
 

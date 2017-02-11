@@ -26,33 +26,10 @@ import java.util.List;
 
 public class Fireball extends AbilityTargetingLocation {
 
-    public static ItemStack getRepresentation(UserPlayer userPlayer){
-        ItemStack give = new ItemStack(Material.BLAZE_POWDER);
-        ItemMeta itemMeta = give.getItemMeta();
-        List<String> lore = new ArrayList<>();
-
-        lore.add(" ");
-        lore.add(ChatColor.GRAY + "Element: " + ChatColor.RED + "Fire");
-        lore.add(" ");
-        lore.add(ChatColor.GRAY + ChatColor.ITALIC.toString() + "Fires a single fireball towards the target location");
-        lore.add(" ");
-        lore.add(ChatColor.GRAY + "Properties:");
-        lore.add(ChatColor.GOLD + AltCodes.BULLET_POINT.getSign() + " " + ChatColor.GRAY + "Cost: " + ChatColor.AQUA + "5 energy");
-        lore.add(ChatColor.GOLD + AltCodes.BULLET_POINT.getSign() + " " + ChatColor.GRAY + "Duration: 25 seconds");
-        lore.add(ChatColor.GOLD + AltCodes.BULLET_POINT.getSign() + " " + ChatColor.GRAY + "Range: 50");
-
-        itemMeta.setLore(lore);
-        itemMeta.setDisplayName(ChatColor.RED + "Fireball");
-        give.setItemMeta(itemMeta);
-        return give;
-    }
-
     private SphereEffect sphereEffect;
 
     public Fireball(User owner,double speed, long interval) {
         super(owner, speed, interval, 5);
-
-        sphereEffect = new SphereEffect(effectData, ParticleUtils.Loaded.SPHERE_025R, 0L, 0L, -1);
     }
 
     @Override
@@ -61,16 +38,23 @@ public class Fireball extends AbilityTargetingLocation {
         properties.add(new AbilityPropertyDuration(null, this, 100));
         properties.add(new AbilityPropertyBoundRange(null, this, 50));
         properties.add(new AbilityPropertyCollisionLogic.CubeCollisionLogic(null, this, 1, 1, 1,
-                        new CollisionBehavior.CollideOnBlock(this, null,
-                                new CallbackDestroyBlocks(
-                                        new PlayerBasedEffectData(getCenter(), (UserPlayer)owner, DisplayProfile.builder().particle(Particle.BLOCK_CRACK).amount(15).build())
-                                )
-                        )));
+                new CollisionBehavior.CollideOnBlock(this, null,
+                        new CallbackDestroyBlocks(
+                                new PlayerBasedEffectData(getCenter(), (UserPlayer) owner, DisplayProfile.builder().particle(Particle.BLOCK_CRACK).amount(15).build())
+                        )
+                )));
+    }
+
+    @Override
+    public void setPrefireData(){
+        super.setPrefireData();
+
+        sphereEffect = new SphereEffect(effectData, ParticleUtils.Loaded.SPHERE_025R, 0L, 0L, -1);
     }
 
     @Override
     protected EffectData setEffectData() {
-        return new PlayerBasedEffectData(getCenter(), (UserPlayer)owner, DisplayProfile.builder().particle(Particle.FLAME).amount(50).build(),
+        return new PlayerBasedEffectData(getCenter().clone(), (UserPlayer)owner, DisplayProfile.builder().particle(Particle.FLAME).amount(50).build(),
                 DisplayProfile.builder().particle(Particle.FLAME).particleOffsets(0.15, 0.15, 0.15).amount(75).build(),
                 DisplayProfile.builder().particle(Particle.SMOKE_LARGE).particleOffsets(0.2, 0.2, 0.2).amount(100).build());
     }
@@ -92,5 +76,27 @@ public class Fireball extends AbilityTargetingLocation {
             effectData.adjustDisplayProfile(vector3D);
             effectData.display();
         }
+    }
+
+    @Override
+    public ItemStack getItemRepresentation(){
+        ItemStack give = new ItemStack(Material.BLAZE_POWDER);
+        ItemMeta itemMeta = give.getItemMeta();
+        List<String> lore = new ArrayList<>();
+
+        lore.add(" ");
+        lore.add(ChatColor.GRAY + "Element: " + ChatColor.RED + "Fire");
+        lore.add(" ");
+        lore.add(ChatColor.GRAY + ChatColor.ITALIC.toString() + "Fires a single fireball towards the target location");
+        lore.add(" ");
+        lore.add(ChatColor.GRAY + "Properties:");
+        lore.add(ChatColor.GOLD + AltCodes.BULLET_POINT.getSign() + " " + ChatColor.GRAY + "Cost: " + ChatColor.AQUA + "5 energy");
+        lore.add(ChatColor.GOLD + AltCodes.BULLET_POINT.getSign() + " " + ChatColor.GRAY + "Duration: 25 seconds");
+        lore.add(ChatColor.GOLD + AltCodes.BULLET_POINT.getSign() + " " + ChatColor.GRAY + "Range: 50");
+
+        itemMeta.setLore(lore);
+        itemMeta.setDisplayName(ChatColor.RED + "Fireball");
+        give.setItemMeta(itemMeta);
+        return give;
     }
 }

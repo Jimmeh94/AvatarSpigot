@@ -15,6 +15,7 @@ public class DefaultBenderPreset implements IStatsPreset {
 
         stats.add(new Stats.Stat(Stats.StatType.HEALTH, owner, 100));
         stats.add(new Stats.Stat(Stats.StatType.CHI, owner, 100));
+        stats.add(new Stats.Stat(Stats.StatType.REGENERATION_CHI, owner, 1));
 
         return stats;
     }

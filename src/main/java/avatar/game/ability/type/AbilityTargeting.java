@@ -50,9 +50,15 @@ public abstract class AbilityTargeting extends Ability implements Runnable{
         }
 
         this.speed = speed;
-        this.target = setInitialTarget();
-
         effectData = setEffectData();
+    }
+
+    @Override
+    public void setPrefireData(){
+        super.setPrefireData();
+        this.target = setInitialTarget();
+        effectData.setCenter(getCenter().clone());
+        effectData.setDisplayAt(effectData.getCenter().clone());
     }
 
     @Override
@@ -65,7 +71,7 @@ public abstract class AbilityTargeting extends Ability implements Runnable{
     }
 
     @Override
-    public void cancel(String cause){
+    public void cancel(AbilityProperty cause){
         super.cancel(cause);
 
         task.cancel();
@@ -86,7 +92,7 @@ public abstract class AbilityTargeting extends Ability implements Runnable{
         for(AbilityProperty property: properties){
             if(property.checkNow(stage)){
                 if(!property.validate()){
-                    this.cancel(property.getFailMessage());
+                    this.cancel(property);
                     return;
                 }
             }

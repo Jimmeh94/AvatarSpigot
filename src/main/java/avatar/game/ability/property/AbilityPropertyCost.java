@@ -32,11 +32,24 @@ public class AbilityPropertyCost extends AbilityProperty {
         User user = this.ability.getOwner();
         if(user.getStats().hasStat(costType)){
             if(user.getStats().getStat(costType).get().canAfford(cost)){
-                user.getStats().getStat(costType).get().subtract(cost);
                 return true;
             }
         }
         return false;
+    }
+
+    @Override
+    public void reset() {
+
+    }
+
+    public void takeCost(){
+        User user = this.ability.getOwner();
+        if(user.getStats().hasStat(costType)){
+            if(user.getStats().getStat(costType).get().canAfford(cost)){
+                user.getStats().getStat(costType).get().subtract(cost);
+            }
+        }
     }
 
     @Override

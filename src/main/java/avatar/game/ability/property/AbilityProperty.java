@@ -15,6 +15,7 @@ public abstract class AbilityProperty{
     protected AbilityStage checkWhen;
 
     public abstract boolean validate();
+    public abstract void reset();
 
     public AbilityProperty(String displayName, Ability ability, AbilityStage checkWhen){
         this.displayName = displayName;

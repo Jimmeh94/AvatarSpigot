@@ -14,6 +14,11 @@ public abstract class AbilityPropertyStat extends AbilityProperty {
         this.type = type;
     }
 
+    @Override
+    public void reset() {
+
+    }
+
     //*** Adjust ***
     public static class Adjust extends AbilityPropertyStat {
 
