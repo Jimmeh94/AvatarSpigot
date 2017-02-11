@@ -13,10 +13,7 @@ import avatar.game.user.hotbar.HotbarSetup;
 import avatar.game.user.scoreboard.Scoreboard;
 import avatar.game.user.stats.IStatsPreset;
 import avatar.util.directional.LocationUtils;
-import avatar.util.particles.ParticleUtils;
-import avatar.util.text.Messager;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -34,10 +31,10 @@ public class UserPlayer extends User {
     private Title title;
     private ChatColorTemplate chatColorTemplate = ChatColorTemplate.GRAY;
     private ChatChannel chatChannel;
-    private ParticleUtils.ParticleModifier particleModifier = ParticleUtils.ParticleModifier.NORMAL;
     private Optional<Location> lastBlockLocation = Optional.empty();
     private HotbarSetup hotbarSetup;
     private HologramMenu openMenu;
+    private Settings settings;
 
     public UserPlayer(UUID user) {
         super(user);
@@ -60,6 +57,7 @@ public class UserPlayer extends User {
             enterArea(area.get(), false);
 
         scoreboard.init();
+        settings = new Settings(this);
 
         hotbarSetup = new DefaultHotbar(this);
     }
@@ -152,10 +150,6 @@ public class UserPlayer extends User {
 
     public Player getPlayer(){return Bukkit.getPlayer(getUUID());}
 
-    public ParticleUtils.ParticleModifier getParticleModifier() {
-        return particleModifier;
-    }
-
     public Optional<Location> getLastBlockLocation() {
         return lastBlockLocation;
     }
@@ -180,12 +174,11 @@ public class UserPlayer extends User {
         return title;
     }
 
-    //--- Setters ---
-
-    public void setParticleModifier(ParticleUtils.ParticleModifier particleModifier) {
-        this.particleModifier = particleModifier;
-        Messager.sendMessage(getPlayer(), ChatColor.GRAY + "Particle settings set to " + particleModifier.toString(), Optional.of(Messager.Prefix.SUCCESS));
+    public Settings getSettings(){
+        return settings;
     }
+
+    //--- Setters ---
 
     public void setLastBlockLocation(Location lastBlockLocation) {
         this.lastBlockLocation = Optional.of(lastBlockLocation);
@@ -209,5 +202,11 @@ public class UserPlayer extends User {
 
     public Scoreboard getScoreboard() {
         return scoreboard;
+    }
+
+    public void tickHologramMenu() {
+        if(openMenu != null){
+            openMenu.tick();
+        }
     }
 }

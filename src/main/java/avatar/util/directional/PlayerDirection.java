@@ -19,23 +19,23 @@ public class PlayerDirection {
             rotation += 360.0;
         }
         if (0 <= rotation && rotation < 22.5) {
-            return "n";
-        } else if (22.5 <= rotation && rotation < 67.5) {
-            return "ne";
-        } else if (67.5 <= rotation && rotation < 112.5) {
-            return "e";
-        } else if (112.5 <= rotation && rotation < 157.5) {
-            return "se";
-        } else if (157.5 <= rotation && rotation < 202.5) {
             return "s";
-        } else if (202.5 <= rotation && rotation < 247.5) {
+        } else if (22.5 <= rotation && rotation < 67.5) {
             return "sw";
-        } else if (247.5 <= rotation && rotation < 292.5) {
+        } else if (67.5 <= rotation && rotation < 112.5) {
             return "w";
-        } else if (292.5 <= rotation && rotation < 337.5) {
+        } else if (112.5 <= rotation && rotation < 157.5) {
             return "nw";
-        } else if (337.5 <= rotation && rotation < 360.0) {
+        } else if (157.5 <= rotation && rotation < 202.5) {
             return "n";
+        } else if (202.5 <= rotation && rotation < 247.5) {
+            return "ne";
+        } else if (247.5 <= rotation && rotation < 292.5) {
+            return "e";
+        } else if (292.5 <= rotation && rotation < 337.5) {
+            return "se";
+        } else if (337.5 <= rotation && rotation < 360.0) {
+            return "s";
         } else {
             return null;
         }

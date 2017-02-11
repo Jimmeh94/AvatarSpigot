@@ -13,15 +13,15 @@ public class ParticleModifierMenu {
 
     public static void handle(int slot, UserPlayer player){
         switch (slot){
-            case 0: player.setParticleModifier(ParticleUtils.ParticleModifier.LOW);
+            case 0: player.getSettings().setParticleModifier(ParticleUtils.ParticleModifier.LOW);
                 break;
-            case 2: player.setParticleModifier(ParticleUtils.ParticleModifier.MEDIUM);
+            case 2: player.getSettings().setParticleModifier(ParticleUtils.ParticleModifier.MEDIUM);
                 break;
-            case 4: player.setParticleModifier(ParticleUtils.ParticleModifier.NORMAL);
+            case 4: player.getSettings().setParticleModifier(ParticleUtils.ParticleModifier.NORMAL);
                 break;
-            case 6: player.setParticleModifier(ParticleUtils.ParticleModifier.HIGH);
+            case 6: player.getSettings().setParticleModifier(ParticleUtils.ParticleModifier.HIGH);
                 break;
-            case 8: player.setParticleModifier(ParticleUtils.ParticleModifier.EXTREME);
+            case 8: player.getSettings().setParticleModifier(ParticleUtils.ParticleModifier.EXTREME);
         }
     }
 

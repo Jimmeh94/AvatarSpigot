@@ -56,4 +56,12 @@ public class UserManager extends Manager<User> {
 
         return give;
     }
+
+    public void tickHologramMenus() {
+        for(User user: objects){
+            if(user.isPlayer()){
+                ((UserPlayer)user).tickHologramMenu();
+            }
+        }
+    }
 }

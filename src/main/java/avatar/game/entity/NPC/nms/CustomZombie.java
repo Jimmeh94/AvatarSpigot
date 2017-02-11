@@ -33,10 +33,9 @@ public class CustomZombie extends EntityZombie{
 
         //Add invisibility for 1 second so in case this is instanced, it won't blip in and out on
         //players' screens
-        this.addEffect(new MobEffect(MobEffects.INVISIBILITY, 1));
+        //this.addEffect(new MobEffect(MobEffects.INVISIBILITY, 1));
 
         ((CraftWorld) world).getHandle().addEntity(this, CreatureSpawnEvent.SpawnReason.CUSTOM);
         Avatar.INSTANCE.getUserManager().add(new User(this.getUniqueID(), new DefaultBenderPreset()));
-        System.out.println("Zombie");
     }
 }

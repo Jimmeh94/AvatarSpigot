@@ -1,6 +1,7 @@
 package avatar.util.directional;
 
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -8,6 +9,15 @@ import java.util.Arrays;
 import java.util.List;
 
 public class MenuGeneration {
+
+    public static boolean hasEnoughRoom(Player player){
+        for(Location location: LocationUtils.getCubeLocations(player.getLocation().clone().subtract(3,-2,3), player.getLocation().clone().add(3, 3, 3))){
+            if(location.getBlock().getType() != Material.AIR){
+                return false;
+            }
+        }
+        return true;
+    }
 
     public static List<Location> getRelativeLocations(int needed, Player player){
         //n = -z, s = z, w = -x, e = x

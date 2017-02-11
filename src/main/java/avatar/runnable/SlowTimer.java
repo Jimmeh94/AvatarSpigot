@@ -17,5 +17,7 @@ public class SlowTimer extends CoreTimer {
 
         //Remove unneeded NPC's
         Avatar.INSTANCE.getEntityManager().tick();
+
+        Avatar.INSTANCE.getUserManager().tickHologramMenus();
     }
 }

@@ -10,8 +10,10 @@ import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.block.Action;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.*;
+import org.bukkit.util.Vector;
 
 import java.util.Optional;
 
@@ -51,6 +53,22 @@ public class PlayerEvents implements Listener {
         event.setCancelled(true);
 
         UserPlayer userPlayer = Avatar.INSTANCE.getUserManager().findUserPlayer(event.getPlayer()).get();
+
+        //Client Hologram interaction
+        if(event.getAction() == Action.LEFT_CLICK_AIR){
+            if(userPlayer.getOpenMenu() != null) {
+                Vector vector = event.getPlayer().getLocation().getDirection();
+                Location temp = event.getPlayer().getLocation().clone();
+                for (int x = 0; x <= 3; x++) {
+                    if(userPlayer.getOpenMenu().getHologram(temp).isPresent()){
+                        userPlayer.getOpenMenu().getHologram(temp).get().onInteract(event.getPlayer());
+                        userPlayer.getOpenMenu().closeMenu();
+                        return;
+                    }
+                    temp.add(vector.getX(), vector.getY(), vector.getZ());
+                }
+            }
+        }
 
         if(event.getClickedBlock() != null) {
             Optional<Items> optional = Items.find(event.getClickedBlock().getType(), event.getClickedBlock().getData());

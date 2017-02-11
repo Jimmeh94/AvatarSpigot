@@ -20,7 +20,7 @@ public class ClientHologram extends Hologram {
     private boolean placeHeadOnLowestStand = false;
     private HologramInteraction interaction;
 
-    public ClientHologram(Location spawnLocation, List<Player> displayTo, HologramInteraction interaction, String... name) {
+    public ClientHologram(Location spawnLocation, List<Player> displayTo, List<String> name, HologramInteraction interaction) {
         super();
 
         this.spawnAt = spawnLocation;
@@ -28,17 +28,12 @@ public class ClientHologram extends Hologram {
         this.interaction = interaction;
         stands = new ArrayList<>();
 
-        for(int i = 0; i < name.length; i++){
+        for(int i = 0; i < name.size(); i++){
             stands.add(new EntityArmorStand(((CraftWorld) spawnLocation.getWorld()).getHandle()));
             stands.get(i).setLocation(spawnLocation.getX(), spawnLocation.getY() - (0.25 * i), spawnLocation.getZ(), spawnLocation.getYaw(), spawnLocation.getPitch());
             stands.get(i).setInvisible(true);
             stands.get(i).setCustomNameVisible(true);
-            stands.get(i).setCustomName(name[i]);
-            /*NBTTagCompound nbtTagCompound = stands.get(i).getNBTTagCompound();
-            if(nbtTagCompound == null){
-                nbtTagCompound = new NBTTagCompound();
-            }
-            nbtTagCompound.setBoolean("Invulnerable", true);*/
+            stands.get(i).setCustomName(name.get(i));
         }
 
         Avatar.INSTANCE.getHologramManager().add(this);
@@ -47,7 +42,8 @@ public class ClientHologram extends Hologram {
     @Override
     public boolean hasLocation(Location location){
         for(EntityArmorStand entityArmorStand: stands){
-            if(entityArmorStand.locX == location.getX() && entityArmorStand.locY == location.getY() && entityArmorStand.locZ == location.getZ()){
+            Location temp = entityArmorStand.getBukkitEntity().getLocation();
+            if(temp.getBlockX() == location.getBlockX() && temp.getBlockZ() == location.getBlockZ()){
                 return true;
             }
         }

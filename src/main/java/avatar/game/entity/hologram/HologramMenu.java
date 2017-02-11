@@ -13,29 +13,34 @@ public abstract class HologramMenu {
     protected UserPlayer owner;
     protected List<ClientHologram> holograms;
     protected Location center;
-    protected double boudningRadius;
+    protected double boundingRadius;
 
     /**
      * Override this and spawn all armorstands here
      */
     protected abstract void spawnMenu();
 
-    public HologramMenu(UserPlayer owner, double boudningRadius){
+    public HologramMenu(UserPlayer owner, double boundingRadius){
         this.owner = owner;
-        this.boudningRadius = boudningRadius;
+        this.boundingRadius = boundingRadius;
         this.center = owner.getPlayer().getLocation().clone();
+
+        if(owner.getOpenMenu() != null){
+            owner.getOpenMenu().closeMenu();
+        }
 
         holograms = new ArrayList<>();
         owner.setOpenMenu(this);
         spawnMenu();
     }
 
-    protected List<Location> getMenuLocations(){
-        return MenuGeneration.getRelativeLocations(8, owner.getPlayer());
+    protected List<Location> getMenuLocations(int amount){
+        return MenuGeneration.getRelativeLocations(amount, owner.getPlayer());
     }
 
     public void closeMenu(){
         holograms.forEach(ClientHologram::remove);
+        owner.setOpenMenu(null);
     }
 
     public Optional<ClientHologram> getHologram(Location location){
@@ -47,4 +52,9 @@ public abstract class HologramMenu {
         return Optional.empty();
     }
 
+    public void tick(){
+        if(owner.getPlayer().getLocation().distance(center) > boundingRadius){
+            closeMenu();
+        }
+    }
 }

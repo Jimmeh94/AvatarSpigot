@@ -103,7 +103,7 @@ public class ParticleUtils {
 
 
     public static void displayParticles(EffectData effectData, UserPlayer userPlayer){
-        double factor = userPlayer.getParticleModifier().factor;
+        double factor = userPlayer.getSettings().getParticleModifier().factor;
 
         if(effectData.getDisplayAt() == null){
             if(effectData.getCenter() == null){
