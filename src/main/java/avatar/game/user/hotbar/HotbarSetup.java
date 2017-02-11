@@ -17,10 +17,9 @@ public abstract class HotbarSetup {
         mapping = new HashMap<>();
         this.owner = player;
         setup();
-        apply();
     }
 
-    private void apply(){
+    public void apply(){
         for(int i = 0; i < 9; i++){
             owner.getPlayer().getInventory().clear(i);
         }

@@ -14,11 +14,38 @@ import avatar.util.particles.effectData.DisplayProfile;
 import avatar.util.particles.effectData.EffectData;
 import avatar.util.particles.effectData.PlayerBasedEffectData;
 import avatar.util.particles.effects.SphereEffect;
+import avatar.util.text.AltCodes;
+import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.Particle;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Fireball extends AbilityTargetingLocation {
+
+    public static ItemStack getRepresentation(UserPlayer userPlayer){
+        ItemStack give = new ItemStack(Material.BLAZE_POWDER);
+        ItemMeta itemMeta = give.getItemMeta();
+        List<String> lore = new ArrayList<>();
+
+        lore.add(" ");
+        lore.add(ChatColor.GRAY + "Element: " + ChatColor.RED + "Fire");
+        lore.add(" ");
+        lore.add(ChatColor.GRAY + ChatColor.ITALIC.toString() + "Fires a single fireball towards the target location");
+        lore.add(" ");
+        lore.add(ChatColor.GRAY + "Properties:");
+        lore.add(ChatColor.GOLD + AltCodes.BULLET_POINT.getSign() + " " + ChatColor.GRAY + "Cost: " + ChatColor.AQUA + "5 energy");
+        lore.add(ChatColor.GOLD + AltCodes.BULLET_POINT.getSign() + " " + ChatColor.GRAY + "Duration: 25 seconds");
+        lore.add(ChatColor.GOLD + AltCodes.BULLET_POINT.getSign() + " " + ChatColor.GRAY + "Range: 50");
+
+        itemMeta.setLore(lore);
+        itemMeta.setDisplayName(ChatColor.RED + "Fireball");
+        give.setItemMeta(itemMeta);
+        return give;
+    }
 
     private SphereEffect sphereEffect;
 

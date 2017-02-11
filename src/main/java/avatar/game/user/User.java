@@ -99,5 +99,8 @@ public class User {
                 getCombatLogger().tickInCombat();
             lastRun = System.currentTimeMillis();
         }
+
+        //stat regen
+
     }
 }

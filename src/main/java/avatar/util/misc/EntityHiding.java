@@ -12,11 +12,13 @@ import org.bukkit.craftbukkit.v1_11_R1.entity.CraftPlayer;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
+import java.util.Optional;
+
 public class EntityHiding {
 
     public static void instance(Instance instance){
         //make all players and entities outside of instance hidden to instanced players
-        //make all instanced players hidden to non-instanced players
+        //make all instanced players and entities hidden to non-instanced players
 
         for(User user: instance.getMembers()){
             if(user.isPlayer()){
@@ -34,6 +36,39 @@ public class EntityHiding {
                         userPlayer.getPlayer().hidePlayer(player);
                     }
                 }
+            }
+        }
+    }
+
+    public static void hidePlayer(Player toHide){
+        UserPlayer userPlayer = Avatar.INSTANCE.getUserManager().findUserPlayer(toHide).get();
+        Optional<Instance> instance = userPlayer.getPresentArea().getInstance(userPlayer);
+        for(Player player: Bukkit.getOnlinePlayers()){
+            if(instance.isPresent()){
+                if(!instance.get().hasUser(Avatar.INSTANCE.getUserManager().findUserPlayer(player).get())){
+                    player.hidePlayer(toHide);
+                    toHide.hidePlayer(player);
+                }
+            } else {
+                player.hidePlayer(toHide);
+                toHide.hidePlayer(player);
+            }
+        }
+    }
+
+    public static void showPlayer(Player toShow){
+        UserPlayer userPlayer = Avatar.INSTANCE.getUserManager().findUserPlayer(toShow).get();
+        Optional<Instance> instance = userPlayer.getPresentArea().getInstance(userPlayer);
+
+        for(Player player: Bukkit.getOnlinePlayers()){
+            if(instance.isPresent()){
+                if(instance.get().hasUser(Avatar.INSTANCE.getUserManager().findUserPlayer(player).get())){
+                    player.showPlayer(toShow);
+                    toShow.showPlayer(player);
+                }
+            } else {
+                player.showPlayer(toShow);
+                toShow.showPlayer(player);
             }
         }
     }

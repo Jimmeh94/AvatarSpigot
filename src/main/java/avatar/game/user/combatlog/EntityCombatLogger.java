@@ -6,7 +6,6 @@ import avatar.game.user.UserPlayer;
 import avatar.game.user.combatlog.entries.CombatEntry;
 import avatar.game.user.combatlog.entries.EntryContainer;
 import avatar.game.user.scoreboard.presets.CombatPreset;
-import avatar.game.user.scoreboard.presets.DefaultPreset;
 import avatar.util.text.Messager;
 import org.bukkit.ChatColor;
 
@@ -89,7 +88,6 @@ public class EntityCombatLogger {
         lastHit = lastShot = null;
         if(user.isPlayer()) {
             Messager.sendMessage(((UserPlayer) user).getPlayer(), ChatColor.GRAY + "Out of combat!", Optional.of(Messager.Prefix.INFO));
-            ((UserPlayer)user).getScoreboard().setPreset(new DefaultPreset(((UserPlayer) user)));
         }
     }
 

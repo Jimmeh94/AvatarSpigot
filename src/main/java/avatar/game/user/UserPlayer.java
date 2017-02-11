@@ -8,12 +8,17 @@ import avatar.game.chat.channel.ChatChannel;
 import avatar.game.dialogue.PlayerDialogueManager;
 import avatar.game.entity.hologram.HologramMenu;
 import avatar.game.quest.PlayerQuestManager;
+import avatar.game.user.hotbar.CombatHotbar;
 import avatar.game.user.hotbar.DefaultHotbar;
 import avatar.game.user.hotbar.HotbarSetup;
 import avatar.game.user.scoreboard.Scoreboard;
+import avatar.game.user.scoreboard.presets.CombatPreset;
+import avatar.game.user.scoreboard.presets.DefaultPreset;
 import avatar.game.user.stats.IStatsPreset;
 import avatar.util.directional.LocationUtils;
+import avatar.util.text.Messager;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 
@@ -32,7 +37,9 @@ public class UserPlayer extends User {
     private ChatColorTemplate chatColorTemplate = ChatColorTemplate.GRAY;
     private ChatChannel chatChannel;
     private Optional<Location> lastBlockLocation = Optional.empty();
-    private HotbarSetup hotbarSetup;
+    private DefaultHotbar passiveHotbar;
+    private HotbarSetup currentSetup;
+    private CombatHotbar combatHotbar;
     private HologramMenu openMenu;
     private Settings settings;
 
@@ -59,7 +66,10 @@ public class UserPlayer extends User {
         scoreboard.init();
         settings = new Settings(this);
 
-        hotbarSetup = new DefaultHotbar(this);
+        passiveHotbar = new DefaultHotbar(this);
+        combatHotbar = new CombatHotbar(this);
+        currentSetup = passiveHotbar;
+        currentSetup.apply();
     }
 
     @Override
@@ -75,7 +85,7 @@ public class UserPlayer extends User {
     }
 
     public HotbarSetup getHotbarSetup() {
-        return hotbarSetup;
+        return currentSetup;
     }
 
     public void setOpenMenu(HologramMenu openMenu) {
@@ -208,5 +218,21 @@ public class UserPlayer extends User {
         if(openMenu != null){
             openMenu.tick();
         }
+    }
+
+    public void swapHotbars() {
+        if(currentSetup == passiveHotbar){
+            currentSetup = combatHotbar;
+            getScoreboard().setPreset(new CombatPreset((this)));
+        } else {
+            if(getCombatLogger().isInCombat()){
+                Messager.sendMessage(getPlayer(), ChatColor.GRAY + "You can't enter passive mode while in combat!", Optional.of(Messager.Prefix.ERROR));
+                return;
+            }
+            currentSetup = passiveHotbar;
+            getScoreboard().setPreset(new DefaultPreset((this)));
+        }
+
+        currentSetup.apply();
     }
 }

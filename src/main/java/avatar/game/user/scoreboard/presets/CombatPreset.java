@@ -1,6 +1,7 @@
 package avatar.game.user.scoreboard.presets;
 
 import avatar.game.user.UserPlayer;
+import avatar.game.user.stats.Stats;
 import org.bukkit.ChatColor;
 
 import java.util.ArrayList;
@@ -21,8 +22,9 @@ public class CombatPreset extends ScoreboardPreset {
         strings.add(ChatColor.BLACK.toString());
         strings.add(owner.getPresentArea().getDisplayName());
         strings.add(ChatColor.RED.toString());
-        strings.add("In combat!");
+        strings.add(ChatColor.RED + "Combat Mode");
         strings.add(ChatColor.RED.toString() + ChatColor.RED.toString());
+        strings.add(ChatColor.GRAY + "Energy: " + ChatColor.AQUA + owner.getStats().getStat(Stats.StatType.CHI).get().getCurrent());
 
         setScores(strings);
     }

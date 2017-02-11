@@ -2,10 +2,13 @@ package avatar.game.user.hotbar;
 
 import avatar.game.user.UserPlayer;
 import avatar.game.user.menus.SettingsMenu;
+import avatar.util.text.Messager;
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+
+import java.util.Optional;
 
 public class DefaultHotbar extends HotbarSetup {
 
@@ -26,6 +29,13 @@ public class DefaultHotbar extends HotbarSetup {
     }
 
     @Override
+    public void apply(){
+        super.apply();
+
+        Messager.sendMessage(owner.getPlayer(), ChatColor.GRAY + "Entering passive mode!", Optional.of(Messager.Prefix.INFO));
+    }
+
+    @Override
     public void handle(int slot) {
         switch (slot){
             case 0:
@@ -36,7 +46,7 @@ public class DefaultHotbar extends HotbarSetup {
                 break;
             case 6: new SettingsMenu(owner);
                 break;
-            case 8: ;
+            case 8: owner.swapHotbars();
         }
     }
 

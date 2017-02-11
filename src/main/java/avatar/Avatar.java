@@ -21,6 +21,7 @@ public class Avatar extends JavaPlugin {
     //TODO work with unique dialogue settings. Want the dialogue to not be dispalyable after certain choice is chosen
 
     //TODO figure out the screen tint effect Sky Bounds has when you enter combat (/toggles, called World Border Warning feature)
+    //TODO stat regen
 
     public static Avatar INSTANCE;
 
