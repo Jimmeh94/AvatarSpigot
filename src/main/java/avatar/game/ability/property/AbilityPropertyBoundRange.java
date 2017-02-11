@@ -32,13 +32,13 @@ public class AbilityPropertyBoundRange extends AbilityProperty {
     }
 
     @Override
-    public void reset() {
-
+    public String getFailMessage() {
+        return null;
     }
 
     @Override
-    public String getFailMessage() {
-        return null;
+    public String getLore() {
+        return "Range: " + range;
     }
 
     public double getRange() {

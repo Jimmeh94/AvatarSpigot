@@ -58,8 +58,8 @@ public abstract class AbilityPropertyCollisionLogic extends AbilityProperty {
     }
 
     @Override
-    public void reset() {
-
+    public String getLore() {
+        return null;
     }
 
     public boolean sameBlock(Location one, Location two){

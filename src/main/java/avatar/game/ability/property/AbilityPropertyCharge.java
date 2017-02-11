@@ -36,13 +36,12 @@ public class AbilityPropertyCharge extends AbilityProperty implements Runnable{
     }
 
     @Override
-    public void reset() {
-        charged = false;
-        countdown = duration;
+    public String getFailMessage() {
+        return null;
     }
 
     @Override
-    public String getFailMessage() {
-        return null;
+    public String getLore() {
+        return "Charge time: " + duration + "s";
     }
 }

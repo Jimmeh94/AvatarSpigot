@@ -1,7 +1,7 @@
 package avatar.game.user;
 
 import avatar.Avatar;
-import avatar.game.ability.abilities.fire.Fireball;
+import avatar.game.ability.abilities.fire.FireballAbilityContainer;
 import avatar.game.area.Area;
 import avatar.game.area.AreaReferences;
 import avatar.game.chat.ChatColorTemplate;
@@ -70,7 +70,7 @@ public class UserPlayer extends User {
         currentSetup = passiveHotbar;
         currentSetup.apply();
 
-        getUserAbilityManager().add(4, new Fireball(this, 1, 5L));
+        getUserAbilityManager().add(4, new FireballAbilityContainer(this));
     }
 
     @Override

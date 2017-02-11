@@ -20,10 +20,18 @@ public class CombatPreset extends ScoreboardPreset {
         strings.add(ChatColor.BOLD + "Server Name");
         strings.add("==============");
         strings.add(ChatColor.BLACK.toString());
+
         strings.add(owner.getPresentArea().getDisplayName());
         strings.add(ChatColor.RED.toString());
-        strings.add(ChatColor.RED + "Combat Mode");
+
+        strings.add(ChatColor.GRAY + "Mode: " + ChatColor.RED + "combat");
         strings.add(ChatColor.RED.toString() + ChatColor.RED.toString());
+
+        if(owner.getCombatLogger().isInCombat())
+            strings.add(ChatColor.GRAY + "Status: " + ChatColor.RED + "in combat");
+        else strings.add(ChatColor.GRAY + "Status: " + ChatColor.GREEN + "out of combat");
+        strings.add(ChatColor.RED.toString() + ChatColor.RED.toString() + ChatColor.RED.toString());
+
         strings.add(ChatColor.GRAY + "Energy: " + ChatColor.AQUA + owner.getStats().getStat(Stats.StatType.CHI).get().getCurrent());
 
         setScores(strings);

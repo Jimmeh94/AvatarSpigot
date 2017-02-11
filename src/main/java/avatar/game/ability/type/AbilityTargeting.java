@@ -51,14 +51,7 @@ public abstract class AbilityTargeting extends Ability implements Runnable{
 
         this.speed = speed;
         effectData = setEffectData();
-    }
-
-    @Override
-    public void setPrefireData(){
-        super.setPrefireData();
         this.target = setInitialTarget();
-        effectData.setCenter(getCenter().clone());
-        effectData.setDisplayAt(effectData.getCenter().clone());
     }
 
     @Override

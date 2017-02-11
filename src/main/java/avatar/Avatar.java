@@ -79,7 +79,6 @@ public class Avatar extends JavaPlugin {
         getCommand("quest").setExecutor(new QuestCommands());
         getCommand("dialogue").setExecutor(new DialogueCommands());
         getCommand("particle").setExecutor(new ParticleCommands());
-        getCommand("ability").setExecutor(new AbilityCommands());
     }
 
     @Override

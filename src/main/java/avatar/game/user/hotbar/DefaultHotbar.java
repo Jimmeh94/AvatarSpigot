@@ -46,7 +46,11 @@ public class DefaultHotbar extends HotbarSetup {
                 break;
             case 6: new SettingsMenu(owner);
                 break;
-            case 8: owner.swapHotbars();
+            case 8: {
+                owner.swapHotbars();
+
+                Messager.sendMessage(owner.getPlayer(), ChatColor.GRAY + "Entering combat mode!", Optional.of(Messager.Prefix.INFO));
+            }
         }
     }
 

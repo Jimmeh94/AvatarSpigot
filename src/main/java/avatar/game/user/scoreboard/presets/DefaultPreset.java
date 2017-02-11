@@ -13,6 +13,8 @@ public class DefaultPreset extends ScoreboardPreset {
      * ============
      * Area the player is in
      *
+     * Mode
+     *
      * Bounty
      *
      * Gold
@@ -32,14 +34,22 @@ public class DefaultPreset extends ScoreboardPreset {
         strings.add(ChatColor.BOLD + "Server Name");
         strings.add("==============");
         strings.add(ChatColor.BLACK.toString());
+
         strings.add(owner.getPresentArea().getDisplayName());
         strings.add(ChatColor.RED.toString());
+
+        strings.add(ChatColor.GRAY + "Mode: " + ChatColor.GREEN + "passive");
+        strings.add(ChatColor.BLACK.toString());
+
         strings.add("Bounty: 0");
         strings.add(ChatColor.RED.toString() + ChatColor.RED.toString());
+
         strings.add("Gold: " + owner.getAccount().getBalance());
         strings.add(ChatColor.RED.toString() + ChatColor.RED.toString() + ChatColor.RED.toString());
+
         strings.add("Element: Fire");
         strings.add(ChatColor.RED.toString() + ChatColor.RED.toString() + ChatColor.RED.toString() + ChatColor.RED.toString());
+
         strings.add("Chat: " + owner.getChatChannel().getKey());
 
         setScores(strings);

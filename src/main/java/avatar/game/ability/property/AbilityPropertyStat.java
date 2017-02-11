@@ -15,8 +15,8 @@ public abstract class AbilityPropertyStat extends AbilityProperty {
     }
 
     @Override
-    public void reset() {
-
+    public String getLore() {
+        return null;
     }
 
     //*** Adjust ***

@@ -14,7 +14,6 @@ import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,32 +40,10 @@ public abstract class Ability{
      */
     protected abstract Location adjustCenter();
     protected abstract void loadProperties(List<AbilityProperty> properties);
-    public abstract ItemStack getItemRepresentation();
 
     public Ability(User owner){
         this.owner = owner;
-        setLocationInfo();
 
-        loadProperties(properties = new ArrayList<>());
-    }
-
-    public Optional<AbilityProperty> getProperty(Class<? extends AbilityProperty> clazz){
-        for(AbilityProperty property: properties){
-            if(property.getClass().getCanonicalName().equals(clazz.getCanonicalName())){
-                return Optional.of(property);
-            }
-        }
-        return Optional.empty();
-    }
-
-    protected void setPrefireData(){
-        setLocationInfo();
-        for(AbilityProperty property: properties){
-            property.reset();
-        }
-    }
-
-    private void setLocationInfo(){
         //set location information
         Entity optional = owner.getEntity();
         if(optional != null){
@@ -80,11 +57,23 @@ public abstract class Ability{
                 area.getInstance(owner).get().addAbility(this);
             }
         }
+
+        loadProperties(properties = new ArrayList<>());
+    }
+
+    public Optional<AbilityProperty> getProperty(Class<? extends AbilityProperty> clazz){
+        for(AbilityProperty property: properties){
+            if(property.getClass().getCanonicalName().equals(clazz.getCanonicalName())){
+                return Optional.of(property);
+            }
+        }
+        return Optional.empty();
+    }
+
+    private void setLocationInfo(){
     }
 
     public void fire(){
-        setPrefireData();
-
         //checks
         for (AbilityStage abilityStage : AbilityStage.firingSequence()) {
             stage = abilityStage;

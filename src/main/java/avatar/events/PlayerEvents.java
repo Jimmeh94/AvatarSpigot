@@ -70,6 +70,7 @@ public class PlayerEvents implements Listener {
             }
         }
 
+        //interacting with environment
         if(event.getClickedBlock() != null) {
             Optional<Items> optional = Items.find(event.getClickedBlock().getType(), event.getClickedBlock().getData());
             if(optional.isPresent()){
@@ -83,8 +84,11 @@ public class PlayerEvents implements Listener {
             }
         }
 
-        if(event.getItem() != null){
-            userPlayer.getHotbarSetup().handle(userPlayer.getPlayer().getInventory().getHeldItemSlot());
+        //using hotbar
+        if(event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+            if (event.getItem() != null) {
+                userPlayer.getHotbarSetup().handle(userPlayer.getPlayer().getInventory().getHeldItemSlot());
+            }
         }
     }
 

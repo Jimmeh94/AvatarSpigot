@@ -38,11 +38,6 @@ public class AbilityPropertyCost extends AbilityProperty {
         return false;
     }
 
-    @Override
-    public void reset() {
-
-    }
-
     public void takeCost(){
         User user = this.ability.getOwner();
         if(user.getStats().hasStat(costType)){
@@ -55,5 +50,10 @@ public class AbilityPropertyCost extends AbilityProperty {
     @Override
     public String getFailMessage() {
         return null;
+    }
+
+    @Override
+    public String getLore() {
+        return "Cost: " + cost + " " + costType.toString();
     }
 }

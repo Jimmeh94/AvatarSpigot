@@ -1,6 +1,6 @@
 package avatar.game.ability;
 
-import avatar.game.ability.type.Ability;
+import avatar.game.ability.type.AbilityContainer;
 import avatar.game.user.User;
 import avatar.game.user.UserPlayer;
 import avatar.game.user.hotbar.CombatHotbar;
@@ -11,7 +11,7 @@ import java.util.Map;
 
 public class UserAbilityManager {
 
-    private Map<Integer, Ability> mapping = new HashMap<>();
+    private Map<Integer, AbilityContainer> mapping = new HashMap<>();
     private CombatHotbar combatHotbar;
     private User owner;
 
@@ -23,17 +23,17 @@ public class UserAbilityManager {
         }
     }
 
-    public void add(int slot, Ability ability){
+    public void add(int slot, AbilityContainer ability){
         abilityUsedCheck(ability);
 
         mapping.put(slot, ability);
         combatHotbar.add(slot, ability.getItemRepresentation());
     }
 
-    private void abilityUsedCheck(Ability ability){
-        Iterator<Map.Entry<Integer, Ability>> iterator = mapping.entrySet().iterator();
+    private void abilityUsedCheck(AbilityContainer ability){
+        Iterator<Map.Entry<Integer, AbilityContainer>> iterator = mapping.entrySet().iterator();
         while(iterator.hasNext()){
-            Map.Entry<Integer, Ability> entry = iterator.next();
+            Map.Entry<Integer, AbilityContainer> entry = iterator.next();
             if(entry.getValue().getClass().getCanonicalName().equals(ability.getClass().getCanonicalName())){
                 remove(entry.getKey());
             }

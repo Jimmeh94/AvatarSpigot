@@ -15,12 +15,12 @@ public abstract class AbilityProperty{
     protected AbilityStage checkWhen;
 
     public abstract boolean validate();
-    public abstract void reset();
 
     public AbilityProperty(String displayName, Ability ability, AbilityStage checkWhen){
         this.displayName = displayName;
         this.ability = ability;
-        this.owner = ability.getOwner();
+        if(ability != null)
+            this.owner = ability.getOwner();
         this.checkWhen = checkWhen;
     }
 
@@ -46,4 +46,5 @@ public abstract class AbilityProperty{
         return stage == checkWhen;
     }
 
+    public abstract String getLore();
 }

@@ -8,40 +8,27 @@ import avatar.game.ability.type.Ability;
  */
 public class AbilityPropertyDuration extends AbilityProperty {
 
-    /**
-     * The amount of cycles to perform.
-     * This isn't counting how many ticks to run.
-     * Set to -1 for infinite/cancellation not based on cycles
-     */
-    private int cycleLifetime, cycleCounter = 0;
+    private int seconds;
+    private long whenShot = System.currentTimeMillis();
 
-    public AbilityPropertyDuration(String displayName, Ability ability, int cycleLifetime){
+    public AbilityPropertyDuration(String displayName, Ability ability, int seconds){
         super(displayName, ability, AbilityStage.UPDATE);
 
-        this.cycleLifetime = cycleLifetime;
-    }
-
-
-    private boolean cycleLifetimeValid(){
-        if(cycleLifetime == -1){
-            return true;
-        } else {
-            return cycleCounter++ < cycleLifetime;
-        }
+        this.seconds = seconds;
     }
 
     @Override
     public boolean validate() {
-        return cycleLifetimeValid();
-    }
-
-    @Override
-    public void reset() {
-        cycleCounter = 0;
+        return ((System.currentTimeMillis() - whenShot)/1000 < seconds);
     }
 
     @Override
     public String getFailMessage() {
         return null;
+    }
+
+    @Override
+    public String getLore() {
+        return "Duration: " + seconds + "s";
     }
 }
