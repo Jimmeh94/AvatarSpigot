@@ -3,6 +3,7 @@ package avatar.game.ability.abilities.fire;
 import avatar.game.ability.property.*;
 import avatar.game.ability.property.collision.CallbackDestroyBlocks;
 import avatar.game.ability.property.collision.CollisionBehavior;
+import avatar.game.ability.type.Ability;
 import avatar.game.ability.type.AbilityContainer;
 import avatar.game.ability.type.AbilityTargetingLocation;
 import avatar.game.user.User;
@@ -24,14 +25,14 @@ import org.bukkit.inventory.meta.ItemMeta;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FireballAbilityContainer extends AbilityContainer<FireballAbilityContainer.Fireball> {
+public class FireballAbilityContainer extends AbilityContainer {
 
     public FireballAbilityContainer(User owner) {
         super(owner);
     }
 
     @Override
-    protected Fireball getAbility() {
+    protected Ability getAbility() {
         return new Fireball(getOwner(), 1, 10L);
     }
 

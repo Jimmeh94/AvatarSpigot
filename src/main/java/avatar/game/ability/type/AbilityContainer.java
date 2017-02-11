@@ -9,7 +9,7 @@ import org.bukkit.inventory.ItemStack;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbilityContainer<T extends Ability> {
+public abstract class AbilityContainer {
 
     protected User owner;
 
@@ -17,7 +17,7 @@ public abstract class AbilityContainer<T extends Ability> {
         this.owner = owner;
     }
 
-    protected abstract T getAbility();
+    protected abstract Ability getAbility();
     public abstract ItemStack getItemRepresentation();
 
     public User getOwner() {
