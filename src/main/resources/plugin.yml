@@ -2,6 +2,7 @@ author: Jimmeh
 name: Avatar
 version: 1.0.0
 main: avatar.Avatar
+depend: [ProtocolLib]
 commands:
     choice:
         usage: /<command>

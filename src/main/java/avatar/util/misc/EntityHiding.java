@@ -78,12 +78,12 @@ public class EntityHiding {
         EntityPlayer entityPlayer = ((CraftPlayer)player).getHandle();
 
         net.minecraft.server.v1_11_R1.Entity other = ((CraftEntity)entity).getHandle();
+        //entityPlayer.playerConnection.sendPacket(new PacketPlayOutEntityDestroy(other.getId()));
+
         EntityTrackerEntry entry = tracker.trackedEntities.get(other.getId());
         if(entry != null) {
             entry.clear(entityPlayer);
         }
-
-        entityPlayer.playerConnection.sendPacket(new PacketPlayOutEntityDestroy(other.getId()));
     }
 
     public static void showEntity(Player player, Entity entity){
@@ -91,13 +91,12 @@ public class EntityHiding {
         EntityPlayer entityPlayer = ((CraftPlayer)player).getHandle();
 
         net.minecraft.server.v1_11_R1.Entity other = ((CraftEntity)entity).getHandle();
+        entityPlayer.playerConnection.sendPacket(new PacketPlayOutSpawnEntityLiving((EntityLiving) other));
 
         EntityTrackerEntry entry = tracker.trackedEntities.get(other.getId());
         if(entry != null) {
-            //entry.updatePlayer(this.getHandle());
+            entry.updatePlayer(entityPlayer);
         }
-
-        entityPlayer.playerConnection.sendPacket(new PacketPlayOutSpawnEntityLiving((EntityLiving) other));
     }
 
 }

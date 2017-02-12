@@ -86,8 +86,13 @@ public class PlayerEvents implements Listener {
 
         //using hotbar
         if(event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
-            if (event.getItem() != null) {
-                userPlayer.getHotbarSetup().handle(userPlayer.getPlayer().getInventory().getHeldItemSlot());
+            if(!userPlayer.getCombatLogger().isInCombat()) {
+                if (event.getItem() != null) {
+                    userPlayer.getHotbarSetup().handle(userPlayer.getPlayer().getInventory().getHeldItemSlot());
+                }
+            } else {
+                //right click to block
+                userPlayer.getCombatLogger().setLastBlock();
             }
         }
     }

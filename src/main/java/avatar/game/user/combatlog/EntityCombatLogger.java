@@ -18,7 +18,7 @@ import java.util.UUID;
 public class EntityCombatLogger {
 
     private List<EntryContainer> entries = new ArrayList<>();
-    private Long lastShot, lastHit;
+    private Long lastShot, lastHit, lastBlock;
     private boolean inCombat = false, passiveMode = true;
     private User user;
 
@@ -119,6 +119,14 @@ public class EntityCombatLogger {
                 return true;
         }
         return false;
+    }
+
+    public void setLastBlock() {
+        this.lastBlock = System.currentTimeMillis();
+    }
+
+    public Long getLastBlock() {
+        return lastBlock;
     }
 
     public void addEntryContainer(UUID owner) {
