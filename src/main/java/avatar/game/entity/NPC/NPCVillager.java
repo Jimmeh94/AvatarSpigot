@@ -1,40 +1,35 @@
 package avatar.game.entity.npc;
 
+import avatar.Avatar;
 import avatar.util.misc.NMSUtils;
 import net.minecraft.server.v1_11_R1.EntityVillager;
 import net.minecraft.server.v1_11_R1.NBTTagCompound;
 import net.minecraft.server.v1_11_R1.PathfinderGoalSelector;
 import org.bukkit.Location;
 import org.bukkit.craftbukkit.v1_11_R1.entity.CraftVillager;
+import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 import org.bukkit.entity.Villager;
 
 import java.util.LinkedHashSet;
 
-public abstract class NPCVillager extends NPC{
+public abstract class NPCVillager implements NPC{
 
     /**
      * Profession that causes double interactions: NITWIT
      */
 
-    private Villager.Profession profession;
-    private String name;
     private Location location;
+    private Entity entity;
 
-    public abstract void onInteraction(Player player);
-
-    public NPCVillager(Villager.Profession profession, String name, Location location) {
-        this.profession = profession;
-        this.name = name;
+    public NPCVillager(Location location, Villager.Profession profession, String name) {
+        Avatar.INSTANCE.getEntityManager().add(this);
         this.location = location;
-    }
 
-    public void spawn(){
         entity = location.getWorld().spawnEntity(location, EntityType.VILLAGER);
 
-        EntityVillager villager1 = ((CraftVillager)getEntity()).getHandle();
-        ((CraftVillager) getEntity()).setProfession(profession);
+        EntityVillager villager1 = ((CraftVillager)entity).getHandle();
+        ((CraftVillager)entity).setProfession(profession);
         villager1.setSilent(true);
 
         Object goalSelector = villager1.goalSelector;
@@ -60,7 +55,18 @@ public abstract class NPCVillager extends NPC{
     }
 
     @Override
-    public void onInteract(Player player){
-        onInteraction(player);
+    public Entity getEntity(){
+        return entity;
+    }
+
+    @Override
+    public void remove(){
+        Avatar.INSTANCE.getEntityManager().remove(this);
+        entity.remove();
+    }
+
+    @Override
+    public Location getLocation() {
+        return location;
     }
 }

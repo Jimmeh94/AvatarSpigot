@@ -20,7 +20,7 @@ public class NPCOldMan extends NPCVillager {
     private Qualifier during, after;
 
     public NPCOldMan() {
-        super(Villager.Profession.FARMER, "Old Man", new Location(Bukkit.getWorlds().get(0), -858.5, 5, 350.5, -135f, 0f));
+        super(new Location(Bukkit.getWorlds().get(0), -858.5, 5, 350.5, -135f, 0f), Villager.Profession.FARMER, "Old Man");
 
         during = new Qualifier(Qualifier.What.QUEST, Qualifier.When.DURING, DemoQuest.reference.getID());
         after = new Qualifier(Qualifier.What.QUEST, Qualifier.When.AFTER, DemoQuest.reference.getID());
@@ -32,7 +32,6 @@ public class NPCOldMan extends NPCVillager {
 
         if(userPlayer.getQuestManager().canTakeQuest(DemoQuest.reference)){
             userPlayer.getDialogueManager().giveDialogue(DialogueReference.DEMO);
-            //userPlayer.getQuestManager().add(DemoQuest.reference.getQuest(userPlayer));
         } else if(during.valid(userPlayer)){
             Messager.sendMessage(player, ChatColor.GRAY + "[Old Man] Have you found them yet?", Optional.<Messager.Prefix>empty());
         } else if(after.valid(userPlayer)){

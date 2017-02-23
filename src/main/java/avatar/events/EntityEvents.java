@@ -25,7 +25,9 @@ public class EntityEvents implements Listener {
 
     @EventHandler
     public void onSpawn(EntitySpawnEvent event){
-        Avatar.INSTANCE.getEntityManager().addEntityToCheck(event.getEntity());
+        if(!Avatar.INSTANCE.getEntityManager().find(event.getEntity()).isPresent()){
+            event.setCancelled(true);
+        }
     }
 
     @EventHandler

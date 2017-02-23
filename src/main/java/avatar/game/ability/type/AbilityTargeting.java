@@ -128,16 +128,10 @@ public abstract class AbilityTargeting extends Ability implements Runnable{
         if(!this.area.contains(this.center)){
             if(this.area != null){
                 area.getAbilityManager().remove(this);
-                if(area.isInstanced(this)){
-                    area.getInstance(this).get().removeAbility(this);
-                }
             }
 
             this.area = Avatar.INSTANCE.getAreaManager().getAreaByContainedLocation(this.center).get();
             this.area.getAbilityManager().add(this);
-            if (area.isInstanced(owner)) {
-                area.getInstance(owner).get().addAbility(this);
-            }
         }
     }
 

@@ -103,7 +103,7 @@ public class PlayerEvents implements Listener {
 
         Optional<NPC> npc = Avatar.INSTANCE.getEntityManager().find(event.getRightClicked());
         if(npc.isPresent()){
-            npc.get().onInteract(event.getPlayer());
+            npc.get().onInteraction(event.getPlayer());
         }
     }
 

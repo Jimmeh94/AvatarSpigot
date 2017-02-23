@@ -53,9 +53,6 @@ public abstract class Ability{
             this.locationChunk = center.getChunk();
             this.area = Avatar.INSTANCE.getAreaManager().getAreaByContainedLocation(this.center).get();
             this.area.getAbilityManager().add(this);
-            if(area.isInstanced(owner)){
-                area.getInstance(owner).get().addAbility(this);
-            }
         }
 
         loadProperties(properties = new ArrayList<>());
@@ -155,9 +152,6 @@ public abstract class Ability{
 
         if(this.area != null){
             area.getAbilityManager().remove(this);
-            if(area.isInstanced(this)){
-                area.getInstance(this).get().removeAbility(this);
-            }
         }
     }
 

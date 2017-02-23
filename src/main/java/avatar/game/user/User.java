@@ -8,21 +8,32 @@ import avatar.game.user.combatlog.EntityCombatLogger;
 import avatar.game.user.stats.IStatsPreset;
 import avatar.game.user.stats.Stats;
 import avatar.game.user.stats.presets.DefaultBenderPreset;
+import avatar.util.misc.EntityHiding;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Entity;
+import org.bukkit.entity.Player;
 
+import java.util.List;
 import java.util.UUID;
 
 /**
  * Base class for any entity that will need stats or ability
  */
-public class User {
+public class User implements Hideable{
+
+    /**
+     * Hideable is for entities that are specific to instances and such
+     */
 
     private UUID user;
     private Stats stats;
     private Area presentArea;
     private EntityCombatLogger combatLogger;
     private UserAbilityManager userAbilityManager;
+    /**
+     * For instanced entities, but have no need for it now
+     */
+    private List<Player> viewers;
 
     public User(UUID user){
         this(user, new DefaultBenderPreset());
@@ -102,5 +113,29 @@ public class User {
 
     public void tick() {
 
+    }
+
+    @Override
+    public void addViewer(Player player) {
+        if(!viewers.contains(player)){
+            viewers.add(player);
+            EntityHiding.showEntity(player, getEntity());
+        }
+    }
+
+    @Override
+    public void removeViewer(Player player) {
+        if(viewers.contains(player)){
+            viewers.remove(player);
+            EntityHiding.hideEntity(player, getEntity());
+        }
+    }
+
+    @Override
+    public boolean canSee(Player player) {
+        if(viewers.isEmpty()){
+            return true;
+        }
+        return viewers.contains(player);
     }
 }

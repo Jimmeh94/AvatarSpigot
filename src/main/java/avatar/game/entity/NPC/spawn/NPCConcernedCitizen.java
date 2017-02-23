@@ -6,6 +6,7 @@ import avatar.game.quest.quests.test.DemoQuest;
 import avatar.game.user.UserPlayer;
 import avatar.util.misc.Qualifier;
 import avatar.util.text.Messager;
+import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -17,8 +18,12 @@ public class NPCConcernedCitizen extends NPCVillager {
 
     private Qualifier qualifier;
 
+    public NPCConcernedCitizen() {
+        this(new Location(Bukkit.getWorlds().get(0), -844.5, 5, 303.5, -90f, 0f));
+    }
+
     public NPCConcernedCitizen(Location location) {
-        super(Villager.Profession.LIBRARIAN, "Concerned Citizen", location);
+        super(location, Villager.Profession.LIBRARIAN, "Concerned Citizen");
 
         this.qualifier = new Qualifier(Qualifier.What.QUEST, Qualifier.When.BEFORE, DemoQuest.reference.getID());
     }

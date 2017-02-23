@@ -16,7 +16,7 @@ public class SlowTimer extends CoreTimer {
         Avatar.INSTANCE.getBlockManager().tick();
 
         //Remove unneeded NPC's
-        Avatar.INSTANCE.getEntityManager().tick();
+        //Avatar.INSTANCE.getEntityManager().tick();
 
         //check client holograms and stat regen
         Avatar.INSTANCE.getUserManager().slowTick();

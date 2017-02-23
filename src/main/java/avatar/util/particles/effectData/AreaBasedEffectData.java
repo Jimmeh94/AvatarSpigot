@@ -1,8 +1,6 @@
 package avatar.util.particles.effectData;
 
-import avatar.Avatar;
 import avatar.game.area.Area;
-import avatar.game.area.Instance;
 import avatar.game.user.UserPlayer;
 import avatar.util.particles.ParticleUtils;
 import org.bukkit.Location;
@@ -20,22 +18,19 @@ public class AreaBasedEffectData extends EffectData {
 
     private Area displayArea;
     private Optional<UserPlayer> owner;
-    private Optional<Instance> areaInstance;
 
     public AreaBasedEffectData(Location center, Area displayArea, DisplayProfile... displayProfiles) {
         super(center, displayProfiles);
 
         this.displayArea = displayArea;
-        areaInstance = Optional.empty();
         owner = Optional.empty();
     }
 
-    public AreaBasedEffectData(Location center, Area displayArea, Optional<UserPlayer> owner, Optional<Instance> areaInstance, DisplayProfile... displayProfiles) {
+    public AreaBasedEffectData(Location center, Area displayArea, Optional<UserPlayer> owner, DisplayProfile... displayProfiles) {
         super(center, displayProfiles);
 
         this.displayArea = displayArea;
         this.owner = owner;
-        this.areaInstance = areaInstance;
     }
 
     public AreaBasedEffectData(Location center, UserPlayer owner, DisplayProfile... displayProfiles) {
@@ -43,25 +38,20 @@ public class AreaBasedEffectData extends EffectData {
 
         this.displayArea = owner.getPresentArea();
         this.owner = Optional.of(owner);
-
-        if(displayArea.isInstanced(owner))
-            this.areaInstance = displayArea.getInstance(owner);
     }
 
     public AreaBasedEffectData(Location center, Location displayAt, Area displayArea, DisplayProfile... displayProfiles) {
         super(center, displayProfiles);
 
         this.displayArea = displayArea;
-        areaInstance = Optional.empty();
         owner = Optional.empty();
     }
 
-    public AreaBasedEffectData(Location center, Location displayAt, Area displayArea, Optional<UserPlayer> owner, Optional<Instance> areaInstance, DisplayProfile... displayProfiles) {
+    public AreaBasedEffectData(Location center, Location displayAt, Area displayArea, Optional<UserPlayer> owner, DisplayProfile... displayProfiles) {
         super(center, displayAt, displayProfiles);
 
         this.displayArea = displayArea;
         this.owner = owner;
-        this.areaInstance = areaInstance;
     }
 
     public AreaBasedEffectData(Location center, Location displayAt, UserPlayer owner, DisplayProfile... displayProfiles) {
@@ -69,9 +59,6 @@ public class AreaBasedEffectData extends EffectData {
 
         this.displayArea = owner.getPresentArea();
         this.owner = Optional.of(owner);
-
-        if(displayArea.isInstanced(owner))
-            this.areaInstance = displayArea.getInstance(owner);
     }
 
     @Override
@@ -80,16 +67,6 @@ public class AreaBasedEffectData extends EffectData {
         List<Player> players = new ArrayList<>();
 
         for (UserPlayer player : displayArea.getPlayersFromMembers()) {
-            if(areaInstance.isPresent()){
-                temp = Avatar.INSTANCE.getAreaManager().getAreaByContainedLocation(player.getPlayer().getLocation());
-                if(temp.isPresent()){
-                    if(temp.get().isInstanced(player)){
-                        if(temp.get().getInstance(player).get() != areaInstance.get()) {
-                            continue;
-                        }
-                    } else continue;
-                }
-            }
             players.add(player.getPlayer());
         }
         ParticleUtils.displayParticles(this, players);
@@ -101,9 +78,5 @@ public class AreaBasedEffectData extends EffectData {
 
     public Optional<UserPlayer> getOwner() {
         return owner;
-    }
-
-    public Optional<Instance> getAreaInstance() {
-        return areaInstance;
     }
 }

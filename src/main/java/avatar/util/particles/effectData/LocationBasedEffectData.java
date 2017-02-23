@@ -1,7 +1,6 @@
 package avatar.util.particles.effectData;
 
 import avatar.Avatar;
-import avatar.game.user.UserPlayer;
 import avatar.util.particles.ParticleUtils;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
@@ -60,12 +59,7 @@ public class LocationBasedEffectData extends EffectData {
             if(!(entity instanceof Player)){
                 continue;
             }
-
-            UserPlayer player = Avatar.INSTANCE.getUserManager().findUserPlayer(entity).get();
-            if(player.getPresentArea().isInstanced(player)){
-                continue;
-            }
-            users.add(player.getPlayer());
+            users.add(Avatar.INSTANCE.getUserManager().findUserPlayer(entity).get().getPlayer());
         }
 
         ParticleUtils.displayParticles(this, users);

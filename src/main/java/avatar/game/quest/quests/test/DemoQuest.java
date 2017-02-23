@@ -3,7 +3,7 @@ package avatar.game.quest.quests.test;
 import avatar.Avatar;
 import avatar.game.area.Area;
 import avatar.game.area.AreaReferences;
-import avatar.game.area.instances.SpawnGardenBrothersInstance;
+import avatar.game.entity.npc.nms.CustomZombie;
 import avatar.game.quest.*;
 import avatar.game.quest.builder.CheckpointBuilder;
 import avatar.game.quest.builder.QuestBuilder;
@@ -58,22 +58,17 @@ public class DemoQuest implements IQuestInitiator{
                 .completeAction(new ICheckpointCompleteAction() {
                     @Override
                     public void doAction(UserPlayer userPlayer) {
-                        Area area = Avatar.INSTANCE.getAreaManager().getAreaByReference(AreaReferences.GARDEN).get();
-                        area.addInstance(new SpawnGardenBrothersInstance(area), userPlayer);
+                        System.out.println("Completed");
+                        CustomZombie customZombie = new CustomZombie(userPlayer.getPlayer().getEyeLocation());
+                        Avatar.INSTANCE.getUserManager().find(customZombie.getEntity().getUniqueId()).get()
+                                .enterArea(Avatar.INSTANCE.getAreaManager().getAreaByContainedLocation(customZombie.getEntity().getLocation()).get(), false);
                     }
                 })
                 .buildCheckpoint();
 
         checkpointBuilder.description("Negotiate with the thieves or kill them")
                 .targetLocation(Optional.<Location>empty())
-                .condition(new BoundArea(Avatar.INSTANCE.getAreaManager().getAreaByReference(AreaReferences.GARDEN).get(), new BoundArea.LeaveAreaAction() {
-                    @Override
-                    public void doAction(UserPlayer userPlayer, Area area) {
-                        if (area.isInstanced(userPlayer)) {
-                            area.getInstance(userPlayer).get().removeUser(userPlayer);
-                        }
-                    }
-                }))
+                .condition(new BoundArea(Avatar.INSTANCE.getAreaManager().getAreaByReference(AreaReferences.GARDEN).get()))
                 .condition(new ClickDialogueChoice("demoBrothersInquire.Compromise"))
                 .buildCheckpoint();
 

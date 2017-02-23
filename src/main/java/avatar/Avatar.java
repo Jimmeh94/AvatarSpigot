@@ -66,6 +66,8 @@ public class Avatar extends JavaPlugin {
 
         CustomEntities.registerEntities();
 
+        entityManager.spawn();
+
         getLogger().info(">> " + getDescription().getName() + " v" + getDescription().getVersion() + " enabled! <<");
     }
 
@@ -80,6 +82,7 @@ public class Avatar extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new InventoryEvents(), this);
         getServer().getPluginManager().registerEvents(new WorldEvents(), this);
 
+        // ProtocolLib
         protocolManager.addPacketListener(new ServerToClient());
     }
 

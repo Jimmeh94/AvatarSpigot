@@ -1,14 +1,17 @@
 package avatar.game.entity.npc;
 
+import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 
-public abstract class NPC {
+public interface NPC {
 
-    protected Entity entity;
+    Entity getEntity();
 
-    public abstract void onInteract(Player player);
+    void onInteraction(Player player);
 
-    public Entity getEntity(){return entity;}
+    Location getLocation();
+
+    void remove();
 
 }

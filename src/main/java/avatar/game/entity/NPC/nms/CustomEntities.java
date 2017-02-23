@@ -2,13 +2,13 @@ package avatar.game.entity.npc.nms;
 
 import net.minecraft.server.v1_11_R1.Entity;
 import net.minecraft.server.v1_11_R1.EntityTypes;
-import net.minecraft.server.v1_11_R1.EntityZombie;
 import net.minecraft.server.v1_11_R1.MinecraftKey;
 import org.bukkit.entity.EntityType;
 
 public enum CustomEntities {
 
-    CUSTOM_ZOMBIE("Custom Zombie", 54, EntityType.ZOMBIE, EntityZombie.class, CustomZombie.class);
+    //CUSTOM_ZOMBIE("Custom Zombie", 54, EntityType.ZOMBIE, EntityZombie.class, CustomZombie.class);
+    ;
 
     private String name;
     private int id;
@@ -29,8 +29,16 @@ public enum CustomEntities {
         this.oldKey = EntityTypes.b.b(nmsClass);
     }
 
-    public static void registerEntities() { for (CustomEntities ce : CustomEntities.values()) ce.register(); }
-    public static void unregisterEntities() { for (CustomEntities ce : CustomEntities.values()) ce.unregister(); }
+    public static void registerEntities() {
+        for (CustomEntities ce : CustomEntities.values()){
+            ce.register();
+        }
+    }
+    public static void unregisterEntities() {
+        for (CustomEntities ce : CustomEntities.values()){
+            ce.unregister();
+        }
+    }
 
     @SuppressWarnings("unchecked")
     private void register() {

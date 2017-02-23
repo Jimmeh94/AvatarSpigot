@@ -17,7 +17,7 @@ public class UserManager extends Manager<User> {
         Optional<User> give = Optional.empty();
 
         for(User user: this.objects){
-            if(user.getUUID().equals(uuid)){
+            if(user.getUUID() == uuid){
                 give = Optional.of(user);
             }
         }

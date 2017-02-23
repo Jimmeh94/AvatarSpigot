@@ -1,7 +1,6 @@
 package avatar.game.area;
 
 import avatar.events.custom.AreaEvent;
-import avatar.game.ability.type.Ability;
 import avatar.game.chat.channel.ChatChannel;
 import avatar.game.user.User;
 import avatar.game.user.UserPlayer;
@@ -27,7 +26,6 @@ public class Area {
     private List<User> members = new ArrayList<>();
     private AreaReferences reference;
     private List<Area> children = new ArrayList<>();
-    private List<Instance> instances = new ArrayList<>();
     private ChatChannel chatChannel;
     private AbilityManager abilityManager;
 
@@ -47,45 +45,6 @@ public class Area {
 
     public AbilityManager getAbilityManager() {
         return abilityManager;
-    }
-
-    public void addInstance(Instance instance, User user){
-        instances.add(instance);
-
-        if(user != null)
-            instances.get(instances.size() - 1).addUser(user);
-    }
-
-    public boolean isInstanced(User user){
-        for(Instance instance: instances){
-            if(instance.hasUser(user))
-                return true;
-        }
-        return false;
-    }
-
-    public boolean isInstanced(Ability ability){
-        for(Instance instance: instances){
-            if(instance.hasAbility(ability))
-                return true;
-        }
-        return false;
-    }
-
-    public Optional<Instance> getInstance(User user){
-        for(Instance instance: instances){
-            if(instance.hasUser(user))
-                return Optional.of(instance);
-        }
-        return Optional.empty();
-    }
-
-    public Optional<Instance> getInstance(Ability ability){
-        for(Instance instance: instances){
-            if(instance.hasAbility(ability))
-                return Optional.of(instance);
-        }
-        return Optional.empty();
     }
 
     public boolean hasChild(AreaReferences reference){
@@ -194,10 +153,6 @@ public class Area {
 
     public AreaShape getShape() {
         return shape;
-    }
-
-    public Instance getInstance(int i) {
-        return instances.get(0);
     }
 
     public static abstract class AreaShape {
