@@ -1,6 +1,8 @@
 package avatar.game.dialogue;
 
+import avatar.game.dialogue.test.BrothersDialogue;
 import avatar.game.dialogue.test.DemoDialogue;
+import avatar.game.dialogue.test.ReturnGlassesDialogue;
 import avatar.game.user.UserPlayer;
 
 import java.lang.reflect.InvocationTargetException;
@@ -8,7 +10,9 @@ import java.util.Optional;
 
 public enum DialogueReference {
 
-    DEMO("test", DemoDialogue.class);
+    DEMO("test", DemoDialogue.class),
+    BROTHERS("brothers", BrothersDialogue.class),
+    RETURN_GLASSES("returnGlasses", ReturnGlassesDialogue.class);
 
     private String id;
     private Class<? extends Dialogue> clazz;

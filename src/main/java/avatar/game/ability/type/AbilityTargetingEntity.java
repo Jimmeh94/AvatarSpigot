@@ -9,12 +9,12 @@ public abstract class AbilityTargetingEntity extends AbilityTargeting {
 
     private Entity targetEntity;
 
-    public AbilityTargetingEntity(User owner, double speed, long interval, Entity targetEntity) {
-        this(owner, speed, interval, 3, targetEntity);
+    public AbilityTargetingEntity(User owner, double speed, Entity targetEntity) {
+        this(owner, speed, 3, targetEntity);
     }
 
-    public AbilityTargetingEntity(User owner, double speed, long interval, int history, Entity targetEntity) {
-        super(owner, speed, interval, history);
+    public AbilityTargetingEntity(User owner, double speed, int history, Entity targetEntity) {
+        super(owner, speed, history);
 
         this.targetEntity = targetEntity;
         this.setTarget(targetEntity.getLocation().add(0, 1, 0));

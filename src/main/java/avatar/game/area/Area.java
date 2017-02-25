@@ -155,6 +155,13 @@ public class Area {
         return shape;
     }
 
+    public void tick() {
+        abilityManager.tick();
+        for(Area area: children){
+            area.tick();
+        }
+    }
+
     public static abstract class AreaShape {
         protected Location center;
         protected double height, radius;

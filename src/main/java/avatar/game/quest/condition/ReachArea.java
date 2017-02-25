@@ -3,6 +3,7 @@ package avatar.game.quest.condition;
 import avatar.Avatar;
 import avatar.game.area.Area;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 
 public class ReachArea extends Condition{
@@ -13,21 +14,9 @@ public class ReachArea extends Condition{
 
     private Area targetArea;
 
-    public ReachArea(Area area) {
+    public ReachArea(Player player, Area area) {
+        super(player);
         this.targetArea = area;
-    }
-
-    @Override
-    public void reset(){
-        super.reset();
-
-        unregisterListener();
-        setAdditionalStartInfo();
-    }
-
-    @Override
-     protected void unregister() {
-
     }
 
     @EventHandler

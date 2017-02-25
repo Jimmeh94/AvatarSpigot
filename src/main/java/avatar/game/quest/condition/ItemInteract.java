@@ -3,6 +3,7 @@ package avatar.game.quest.condition;
 import avatar.Avatar;
 import avatar.util.misc.Items;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 
 public class ItemInteract extends Condition{
@@ -11,7 +12,8 @@ public class ItemInteract extends Condition{
     private Items.ItemCallback itemCallback;
     private Location where;
 
-    public ItemInteract(Items item, Location where, Items.ItemCallback itemCallback) {
+    public ItemInteract(Player player, Items item, Location where, Items.ItemCallback itemCallback) {
+        super(player);
         this.item = item;
         this.where = where;
         this.itemCallback = itemCallback;
@@ -30,11 +32,5 @@ public class ItemInteract extends Condition{
                 itemCallback.handle(Avatar.INSTANCE.getUserManager().findUserPlayer(getPlayer()).get());
             }
         }
-    }
-
-
-    @Override
-    protected void unregister() {
-
     }
 }

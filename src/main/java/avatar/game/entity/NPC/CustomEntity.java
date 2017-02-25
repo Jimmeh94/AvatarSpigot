@@ -1,7 +1,6 @@
-package avatar.game.entity.npc.nms;
+package avatar.game.entity.npc;
 
 import avatar.Avatar;
-import avatar.game.entity.npc.NPC;
 import avatar.game.user.User;
 import avatar.game.user.stats.presets.DefaultBenderPreset;
 import avatar.util.misc.NMSUtils;
@@ -15,14 +14,23 @@ import org.bukkit.entity.Player;
 
 import java.util.LinkedHashSet;
 
-public class CustomZombie implements NPC{
+public abstract class CustomEntity implements NPC{
 
     private Location location;
-    private Entity entity;
+    protected Entity entity;
 
-    public CustomZombie(Location where){
+    protected abstract void onInteract(Player player);
+
+    public CustomEntity(Location where, EntityType type){
         this.location = where;
-        entity = location.getWorld().spawnEntity(location, EntityType.ZOMBIE);
+        Avatar.INSTANCE.getEntityManager().add(this);
+
+        entity = location.getWorld().spawnEntity(location, type);
+        entity.getLocation().setYaw(location.getYaw());
+        entity.getLocation().setPitch(location.getPitch());
+        //To set yaw and pitch:
+        entity.teleport(entity.getLocation());
+        Avatar.INSTANCE.getUserManager().add(new User(entity.getUniqueId(), new DefaultBenderPreset()));
 
         EntityZombie villager1 = ((CraftZombie)entity).getHandle();
         villager1.setSilent(true);
@@ -39,9 +47,6 @@ public class CustomZombie implements NPC{
 
         LinkedHashSet targetC = (LinkedHashSet)NMSUtils.getPrivateField("c", PathfinderGoalSelector.class, goalSelector);
         targetC.clear();
-
-        Avatar.INSTANCE.getUserManager().add(new User(entity.getUniqueId(), new DefaultBenderPreset()));
-        Avatar.INSTANCE.getEntityManager().add(this);
     }
 
     @Override
@@ -58,11 +63,16 @@ public class CustomZombie implements NPC{
 
     @Override
     public void onInteraction(Player player) {
-
+        onInteract(player);
     }
 
     @Override
     public Location getLocation() {
         return location;
+    }
+
+    @Override
+    public User getUser() {
+        return Avatar.INSTANCE.getUserManager().findUser(entity).get();
     }
 }

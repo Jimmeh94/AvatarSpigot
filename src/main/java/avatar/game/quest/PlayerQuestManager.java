@@ -6,6 +6,7 @@ import avatar.util.misc.Items;
 import avatar.util.text.Messager;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.event.Event;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -123,8 +124,24 @@ public class PlayerQuestManager {
      * @param items
      */
     public void checkItemForQuestItem(Location location, Items items) {
-        if(getActiveQuest().isPresent()){
-            getActiveQuest().get().checkItemForQuestItem(location, items);
+        for(Quest quest: ownedQuests){
+            quest.checkItemForQuestItem(location, items);
         }
+    }
+
+    public void checkEvent(Event event) {
+        //The event will be checked no matter if the quest is active or not
+        for(Quest quest: ownedQuests){
+            quest.checkEvent(event);
+        }
+    }
+
+    public boolean hasActiveQuest() {
+        for(Quest quest: ownedQuests){
+            if(quest.isActive()){
+                return true;
+            }
+        }
+        return false;
     }
 }

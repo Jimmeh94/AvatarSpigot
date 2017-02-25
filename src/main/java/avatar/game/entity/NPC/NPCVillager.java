@@ -1,6 +1,7 @@
 package avatar.game.entity.npc;
 
 import avatar.Avatar;
+import avatar.game.user.User;
 import avatar.util.misc.NMSUtils;
 import net.minecraft.server.v1_11_R1.EntityVillager;
 import net.minecraft.server.v1_11_R1.NBTTagCompound;
@@ -20,13 +21,15 @@ public abstract class NPCVillager implements NPC{
      */
 
     private Location location;
-    private Entity entity;
+    protected Entity entity;
 
     public NPCVillager(Location location, Villager.Profession profession, String name) {
         Avatar.INSTANCE.getEntityManager().add(this);
         this.location = location;
 
         entity = location.getWorld().spawnEntity(location, EntityType.VILLAGER);
+
+        createUserEntry();
 
         EntityVillager villager1 = ((CraftVillager)entity).getHandle();
         ((CraftVillager)entity).setProfession(profession);
@@ -54,6 +57,13 @@ public abstract class NPCVillager implements NPC{
         getEntity().setCustomNameVisible(true);
     }
 
+    /**
+     * Override this if you want to give it a preset for stats
+     */
+    protected void createUserEntry(){
+        Avatar.INSTANCE.getUserManager().add(new User(entity.getUniqueId()));
+    }
+
     @Override
     public Entity getEntity(){
         return entity;
@@ -62,11 +72,17 @@ public abstract class NPCVillager implements NPC{
     @Override
     public void remove(){
         Avatar.INSTANCE.getEntityManager().remove(this);
+        Avatar.INSTANCE.getUserManager().remove(Avatar.INSTANCE.getUserManager().find(entity.getUniqueId()).get());
         entity.remove();
     }
 
     @Override
     public Location getLocation() {
         return location;
+    }
+
+    @Override
+    public User getUser() {
+        return Avatar.INSTANCE.getUserManager().findUser(entity).get();
     }
 }

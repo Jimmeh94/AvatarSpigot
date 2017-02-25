@@ -7,6 +7,7 @@ import avatar.game.dialogue.conditions.Condition;
 import avatar.game.user.UserPlayer;
 import avatar.manager.ListenerManager;
 import avatar.util.text.JsonMessager;
+import avatar.util.text.Messager;
 import net.minecraft.server.v1_11_R1.PacketPlayOutChat;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -38,6 +39,7 @@ public class Choice implements Displayable{
     @Override
     public void display(Player player) {
         JsonMessager.sendMessage(player, sentence);
+        Messager.sendBlankLine(player);
     }
 
     public boolean handle() {

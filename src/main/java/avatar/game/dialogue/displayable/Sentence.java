@@ -27,7 +27,8 @@ public class Sentence implements Displayable {
     @Override
     public void display(Player player) {
         for(String text: sentences) {
-                Messager.sendMessage(player, ChatColor.GRAY + text, Optional.<Messager.Prefix>empty());
+            Messager.sendMessage(player, ChatColor.GRAY + text, Optional.<Messager.Prefix>empty());
+            Messager.sendBlankLine(player);
         }
     }
 

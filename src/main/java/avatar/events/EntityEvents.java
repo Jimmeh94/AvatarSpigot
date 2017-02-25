@@ -6,6 +6,7 @@ import org.bukkit.entity.ArmorStand;
 import org.bukkit.entity.Entity;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.event.entity.EntitySpawnEvent;
 
@@ -34,5 +35,8 @@ public class EntityEvents implements Listener {
     public void onDamage(EntityDamageByEntityEvent event){
         event.setCancelled(true);
     }
+
+    @EventHandler
+    public void onCombust(EntityCombustEvent event){event.setCancelled(true);}
 
 }

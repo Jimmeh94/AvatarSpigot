@@ -18,5 +18,6 @@ public class DisplaySentence extends DialogueAction {
     @Override
     public void doWork(UserPlayer userPlayer) {
         Messager.sendMessage(userPlayer.getPlayer(), ChatColor.GRAY + display, Optional.<Messager.Prefix>empty());
+        Messager.sendBlankLine(userPlayer.getPlayer());
     }
 }

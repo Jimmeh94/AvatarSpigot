@@ -37,4 +37,10 @@ public class AreaManager extends Manager<Area> {
 
         return Optional.empty();
     }
+
+    public void tick() {
+        for(Area area: objects){
+            area.tick();
+        }
+    }
 }

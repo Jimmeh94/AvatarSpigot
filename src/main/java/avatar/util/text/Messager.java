@@ -15,8 +15,9 @@ public class Messager {
         } else {
             player.sendMessage(text);
         }
-        player.sendMessage(" ");
     }
+
+    public static void sendBlankLine(Player player){player.sendMessage(" ");}
 
     public static void broadcastMessage(String text, Optional<Prefix> prefix){
         if(prefix.isPresent()){

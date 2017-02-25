@@ -11,12 +11,12 @@ import java.util.Set;
 
 public abstract class AbilityTargetingLocation extends AbilityTargeting {
 
-    public AbilityTargetingLocation(User owner, double speed, long interval) {
-        this(owner, speed, interval, 3);
+    public AbilityTargetingLocation(User owner, double speed) {
+        this(owner, speed, 3);
     }
 
-    public AbilityTargetingLocation(User owner, double speed, long interval, int history) {
-        super(owner, speed, interval, history);
+    public AbilityTargetingLocation(User owner, double speed, int history) {
+        super(owner, speed, history);
     }
 
     @Override

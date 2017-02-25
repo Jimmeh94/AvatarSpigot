@@ -8,9 +8,7 @@ import avatar.game.ability.property.AbilityPropertyCollisionLogic;
 import avatar.game.user.User;
 import avatar.util.directional.LocationUtils;
 import avatar.util.particles.effectData.EffectData;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.scheduler.BukkitTask;
 
 import java.util.Arrays;
 
@@ -18,7 +16,7 @@ import java.util.Arrays;
  * Use this if the ability needs to move somewhere.
  * Self casting/instant ability should just extend Ability
  */
-public abstract class AbilityTargeting extends Ability implements Runnable{
+public abstract class AbilityTargeting extends Ability{
 
     private Location target;
     protected Location[] history;
@@ -27,22 +25,18 @@ public abstract class AbilityTargeting extends Ability implements Runnable{
      * example: 1.0 speed would be to advance the ability by 1 block each update
      */
     private double speed;
-    private BukkitTask task;
-    private Long interval;
     protected EffectData effectData;
 
     protected abstract Location setInitialTarget();
     protected abstract EffectData setEffectData();
     protected abstract void display();
 
-    public AbilityTargeting(User owner, double speed, long interval) {
-        this(owner, speed, interval, 3);
+    public AbilityTargeting(User owner, double speed) {
+        this(owner, speed, 3);
     }
 
-    public AbilityTargeting(User owner, double speed, long interval, int history) {
+    public AbilityTargeting(User owner, double speed, int history) {
         super(owner);
-
-        this.interval = interval;
         this.history = new Location[history];
 
         if(!getProperty(AbilityPropertyBoundRange.class).isPresent()){
@@ -54,27 +48,10 @@ public abstract class AbilityTargeting extends Ability implements Runnable{
         this.target = setInitialTarget();
     }
 
-    @Override
-    public void fire(){
-        super.fire();
-
-        if(this.stage != AbilityStage.FINISH){
-            task = Bukkit.getScheduler().runTaskTimer(Avatar.INSTANCE, this, interval, 0L);
-        }
-    }
-
-    @Override
-    public void cancel(AbilityProperty cause){
-        super.cancel(cause);
-
-        task.cancel();
-    }
-
     public EffectData getEffectData() {
         return effectData;
     }
 
-    @Override
     public void run(){
         //set the location and check if at target
         //check on properties for UPDATE

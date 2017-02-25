@@ -2,7 +2,6 @@ package avatar.game.quest.condition;
 
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 
 public abstract class Condition {
 
@@ -27,9 +26,7 @@ public abstract class Condition {
     /*
      * In case there's any additional info the condition will need once it becomes active
      */
-    public void setAdditionalStartInfo(){}
-
-    protected abstract void unregister();
+    protected void setAdditionalStartInfo(){}
 
     /*
      * Reset the current condition
@@ -37,7 +34,6 @@ public abstract class Condition {
      */
     public void reset(){
         valid = false;
-        unregisterListener();
     }
 
     /*
@@ -47,11 +43,7 @@ public abstract class Condition {
         displayedWarning = true;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
-    }
-
-    public Condition(){}
+    public Condition(Player player){this.player = player;}
 
     public void setStartingInfo() {
         startLocation = getPlayer().getLocation().clone();
@@ -73,10 +65,5 @@ public abstract class Condition {
         if(lastWarningMessage == null)
             return true;
         return ((System.currentTimeMillis() - lastWarningMessage)/1000 >= 10);
-    }
-
-    public void unregisterListener() {
-        if(this instanceof Listener)
-            unregister();
     }
 }

@@ -2,6 +2,7 @@ package avatar.game.quest.condition;
 
 import avatar.util.text.Messager;
 import org.bukkit.ChatColor;
+import org.bukkit.entity.Player;
 
 import java.util.Optional;
 
@@ -14,7 +15,8 @@ public class TimeLimit extends Condition{
     private Long whenStarted;
     private int seconds;
 
-    public TimeLimit(int seconds) {
+    public TimeLimit(Player player, int seconds) {
+        super(player);
         this.seconds = seconds;
     }
 
@@ -28,10 +30,6 @@ public class TimeLimit extends Condition{
             whenStarted = System.currentTimeMillis();
             return true;
         }
-    }
-
-    @Override
-     protected void unregister() {
     }
 
     @Override

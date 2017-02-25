@@ -5,6 +5,7 @@ import avatar.game.area.Area;
 import avatar.game.user.UserPlayer;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 public class BoundArea extends Condition{
 
@@ -15,51 +16,48 @@ public class BoundArea extends Condition{
 
     private Area bound;
     private LeaveAreaAction leaveAreaAction;
+    private EnterAreaAction enterAreaAction;
+    /**
+     * Means the player has left the quest area, meaning that we can do enterAreaAction
+     * once they return
+     */
+    private boolean leftArea = false;
 
-    public BoundArea(Area bound){
-        this(bound, null);
+    public BoundArea(Player player, Area bound){
+        this(player, bound, null);
     }
 
-    public BoundArea(Area bound, LeaveAreaAction leaveAreaAction){
+    public BoundArea(Player player, Area bound, LeaveAreaAction leaveAreaAction){
+        this(player, bound, leaveAreaAction, null);
+    }
+
+    public BoundArea(Player player, Area bound, LeaveAreaAction leaveAreaAction, EnterAreaAction enterAreaAction){
+        super(player);
         this.bound = bound;
         this.leaveAreaAction = leaveAreaAction;
+        this.enterAreaAction = enterAreaAction;
     }
 
     @Override
     public void reset() {
         super.reset();
         getPlayer().teleport(getStartLocation());
-
-        unregisterListener();
-        setAdditionalStartInfo();
-    }
-
-    @Override
-    protected void unregister() {
-
-    }
-
-
-    @Override
-    public void displayWarningMessage() {
-        //May not have a need for this since the tracker is updated with the same thing
-        /*if(displayedWarning){
-            return;
-        }
-
-        if(shouldSendWarningMessage()){
-            setLastWarningMessage();
-            Messager.sendMessage(getPlayer(), ChatColor.GRAY + "You're outside of the quest region! Go back to " + bound.getDisplayName() + " continue the quest!", Optional.of(Messager.Prefix.ERROR));
-        }
-        super.displayWarningMessage();*/
     }
 
     @Override
     public boolean isValid(){
         if(bound.contains(getPlayer().getLocation())){
-            //displayedWarning = false;
+            if(leftArea){
+                leftArea = false;
+                if(enterAreaAction != null){
+                    enterAreaAction.doAction(Avatar.INSTANCE.getUserManager().findUserPlayer(getPlayer()).get(), bound);
+                }
+            }
             return true;
-        } else return false;
+        } else{
+            leftArea = true;
+            return false;
+        }
     }
 
     public String getOutofBoundsMessage() {
@@ -91,6 +89,12 @@ public class BoundArea extends Condition{
     public interface LeaveAreaAction{
 
         //Use for things like removing a player from an instance
+        void doAction(UserPlayer userPlayer, Area area);
+    }
+
+    public interface EnterAreaAction{
+
+        //Use for when a player re-enters the quest area
         void doAction(UserPlayer userPlayer, Area area);
     }
 }

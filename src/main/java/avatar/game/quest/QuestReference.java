@@ -3,23 +3,35 @@ package avatar.game.quest;
 import avatar.game.quest.quests.test.DemoQuest;
 import avatar.game.user.UserPlayer;
 
+import java.lang.reflect.InvocationTargetException;
 import java.util.Optional;
 
 public enum QuestReference {
 
-    DEMO("demo", new DemoQuest());
+    DEMO("DemoQuest", DemoQuest.class);
 
     private String id;
-    private IQuestInitiator initiator;
+    private Class<? extends Quest> quest;
 
-    QuestReference(String id, IQuestInitiator initiator)
+    QuestReference(String id, Class<? extends Quest> quest)
     {
         this.id = id;
-        this.initiator = initiator;
+        this.quest = quest;
     }
 
     public Quest getQuest(UserPlayer userPlayer){
-        return initiator.getQuest(userPlayer);
+        try {
+            return quest.getConstructor(UserPlayer.class).newInstance(userPlayer);
+        } catch (InstantiationException e) {
+            e.printStackTrace();
+        } catch (IllegalAccessException e) {
+            e.printStackTrace();
+        } catch (InvocationTargetException e) {
+            e.printStackTrace();
+        } catch (NoSuchMethodException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
     public static Optional<QuestReference> getReference(String id){

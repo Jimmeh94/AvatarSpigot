@@ -1,6 +1,7 @@
 package avatar.game.quest.condition;
 
 import org.bukkit.Location;
+import org.bukkit.entity.Player;
 
 public class ReachLocation extends Condition {
 
@@ -11,13 +12,10 @@ public class ReachLocation extends Condition {
     private Location targetLocation;
     private double completionRadius = 1.5;
 
-    public ReachLocation(Location location, double radius) {
+    public ReachLocation(Player player, Location location, double radius) {
+        super(player);
         targetLocation = location;
         completionRadius = radius;
-    }
-
-    @Override
-     protected void unregister() {
     }
 
     @Override

@@ -7,6 +7,10 @@ import org.bukkit.entity.EntityType;
 
 public enum CustomEntities {
 
+    /**
+     * Leaving this in case we later want to extend NMS entities. For now, not needing it
+     */
+
     //CUSTOM_ZOMBIE("Custom Zombie", 54, EntityType.ZOMBIE, EntityZombie.class, CustomZombie.class);
     ;
 

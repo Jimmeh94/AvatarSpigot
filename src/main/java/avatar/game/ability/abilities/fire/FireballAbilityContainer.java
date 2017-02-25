@@ -33,7 +33,7 @@ public class FireballAbilityContainer extends AbilityContainer {
 
     @Override
     protected Ability getAbility() {
-        return new Fireball(getOwner(), 1, 10L);
+        return new Fireball(getOwner(), 1);
     }
 
     @Override
@@ -60,8 +60,8 @@ public class FireballAbilityContainer extends AbilityContainer {
 
         private SphereEffect sphereEffect;
 
-        public Fireball(User owner,double speed, long interval) {
-            super(owner, speed, interval, 5);
+        public Fireball(User owner, double speed) {
+            super(owner, speed, 5);
 
             sphereEffect = new SphereEffect(effectData, ParticleUtils.Loaded.SPHERE_025R, 0L, 0L, -1);
         }

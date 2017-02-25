@@ -33,7 +33,7 @@ public class NPCOldMan extends NPCVillager {
         if(userPlayer.getQuestManager().canTakeQuest(DemoQuest.reference)){
             userPlayer.getDialogueManager().giveDialogue(DialogueReference.DEMO);
         } else if(during.valid(userPlayer)){
-            Messager.sendMessage(player, ChatColor.GRAY + "[Old Man] Have you found them yet?", Optional.<Messager.Prefix>empty());
+            userPlayer.getDialogueManager().giveDialogue(DialogueReference.RETURN_GLASSES);
         } else if(after.valid(userPlayer)){
             Messager.sendMessage(player, ChatColor.GRAY + "[Old Man] I can see clearly now the rain is goooooone!", Optional.<Messager.Prefix>empty());
         }

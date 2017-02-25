@@ -1,10 +1,7 @@
 package avatar.game.quest;
 
 import avatar.Avatar;
-import avatar.game.quest.condition.BoundArea;
-import avatar.game.quest.condition.Condition;
-import avatar.game.quest.condition.ItemInteract;
-import avatar.game.quest.condition.ReachArea;
+import avatar.game.quest.condition.*;
 import avatar.util.directional.PlayerDirection;
 import avatar.util.misc.Items;
 import avatar.util.text.Action;
@@ -30,7 +27,8 @@ public class Checkpoint {
     private boolean complete = false;
     private ICheckpointCompleteAction completeAction;
 
-    public Checkpoint(Optional<Location> location, String description, ICheckpointCompleteAction checkpointCompleteAction, Condition... conditions){
+    public Checkpoint(Player player, Optional<Location> location, String description, ICheckpointCompleteAction checkpointCompleteAction, Condition... conditions){
+        this.player = player;
         targetLocation = location;
         this.description = Optional.of(description);
         this.completeAction = checkpointCompleteAction;
@@ -44,12 +42,6 @@ public class Checkpoint {
     public void doCompleteAction(){
         if(completeAction != null){
             completeAction.doAction(Avatar.INSTANCE.getUserManager().findUserPlayer(player).get());
-        }
-    }
-
-    public void deactivate(){
-        for(Condition condition: conditions){
-            condition.unregisterListener();
         }
     }
 
@@ -124,29 +116,35 @@ public class Checkpoint {
         return player;
     }
 
-    public void setPlayer(Player player) {
-        this.player = player;
-        for(Condition condition: conditions)
-            condition.setPlayer(player);
-    }
-
     private int getTrackerDistance() {
         return (int) getTargetLocation().get().distance(player.getLocation());
     }
 
-    private boolean hasCondition(Class<? extends Condition> condition){
+    public boolean hasCondition(Class<? extends Condition> condition){
         for(Condition c: conditions){
-            if(c.getClass().equals(condition)){
+            if(c.getClass().getCanonicalName().equals(condition.getClass().getCanonicalName())){
                 return true;
+            } else if(c instanceof Fork){
+                for(Condition c2: ((Fork)c).getConditions()){
+                    if(c2.getClass().getCanonicalName().equals(condition.getCanonicalName())){
+                        return true;
+                    }
+                }
             }
         }
         return false;
     }
 
-    private Condition getCondition(Class<? extends Condition> condition){
+    public Condition getCondition(Class<? extends Condition> condition){
         for(Condition c: conditions){
-            if(c.getClass().equals(condition)){
+            if(c.getClass().getCanonicalName().equals(condition.getClass().getCanonicalName())){
                 return c;
+            } else if(c instanceof Fork){
+                for(Condition c2: ((Fork)c).getConditions()){
+                    if(c2.getClass().getCanonicalName().equals(condition.getCanonicalName())){
+                        return c2;
+                    }
+                }
             }
         }
         return null;
@@ -180,5 +178,23 @@ public class Checkpoint {
                 ((ItemInteract)condition).handle(location, items);
             }
         }
+    }
+
+    public boolean isFork() {
+        for(Condition condition: conditions){
+            if(condition instanceof Fork){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public List<Checkpoint> getForkedCheckpoint() {
+        for(Condition condition: conditions){
+            if(condition instanceof Fork){
+                return ((Fork)condition).getForkedCheckpoint();
+            }
+        }
+        return null;
     }
 }

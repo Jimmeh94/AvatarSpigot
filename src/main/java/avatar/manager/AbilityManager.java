@@ -1,6 +1,7 @@
 package avatar.manager;
 
 import avatar.game.ability.type.Ability;
+import avatar.game.ability.type.AbilityTargeting;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,4 +22,11 @@ public class AbilityManager extends Manager<Ability> {
         return give;
     }
 
+    public void tick() {
+        for(Ability ability: objects){
+            if(ability instanceof AbilityTargeting){
+                ((AbilityTargeting)ability).run();
+            }
+        }
+    }
 }

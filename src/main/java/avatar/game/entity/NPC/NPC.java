@@ -1,5 +1,6 @@
 package avatar.game.entity.npc;
 
+import avatar.game.user.User;
 import org.bukkit.Location;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
@@ -13,5 +14,7 @@ public interface NPC {
     Location getLocation();
 
     void remove();
+
+    User getUser();
 
 }

@@ -11,13 +11,11 @@ import java.util.UUID;
 
 public class UserManager extends Manager<User> {
 
-    private long lastRun = System.currentTimeMillis();
-
     public Optional<User> find(UUID uuid){
         Optional<User> give = Optional.empty();
 
         for(User user: this.objects){
-            if(user.getUUID() == uuid){
+            if(user.getUUID().equals(uuid)){
                 give = Optional.of(user);
             }
         }

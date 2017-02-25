@@ -4,13 +4,9 @@ import avatar.commands.ChoiceCommands;
 import avatar.commands.DialogueCommands;
 import avatar.commands.ParticleCommands;
 import avatar.commands.QuestCommands;
-import avatar.events.EntityEvents;
-import avatar.events.InventoryEvents;
-import avatar.events.PlayerEvents;
-import avatar.events.WorldEvents;
+import avatar.events.*;
 import avatar.events.protocol.ServerToClient;
 import avatar.game.entity.npc.nms.CustomEntities;
-import avatar.game.quest.builder.QuestBuilder;
 import avatar.manager.*;
 import avatar.runnable.GameTimer;
 import avatar.runnable.SlowTimer;
@@ -29,6 +25,9 @@ public class Avatar extends JavaPlugin {
     //TODO test entity targeting and ability/user collision
     //TODO test blocking and combat, damaging system, combat entries
 
+    //TODO make sure quest checkpoints still get updated and the lore does too when a checkpoint is reached and the quest
+    //TODO (cont.) isn't active
+
     public static Avatar INSTANCE;
 
     //--- manager ---
@@ -43,7 +42,6 @@ public class Avatar extends JavaPlugin {
 
     //misc
     private final int combatInterval = 5; //how many seconds out of combat needed to be switched to out of combat
-    private final QuestBuilder questBuilder = new QuestBuilder();
     private GameTimer gameTimer;
     private SlowTimer slowTimer;
 
@@ -72,7 +70,7 @@ public class Avatar extends JavaPlugin {
     }
 
     private void registerRunnables() {
-        gameTimer = new GameTimer(5L);
+        gameTimer = new GameTimer(10L);
         slowTimer = new SlowTimer(20L);
     }
 
@@ -81,6 +79,7 @@ public class Avatar extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new EntityEvents(), this);
         getServer().getPluginManager().registerEvents(new InventoryEvents(), this);
         getServer().getPluginManager().registerEvents(new WorldEvents(), this);
+        getServer().getPluginManager().registerEvents(new QuestEvents(), this);
 
         // ProtocolLib
         protocolManager.addPacketListener(new ServerToClient());
@@ -122,10 +121,6 @@ public class Avatar extends JavaPlugin {
 
     public EconomyManager getEconomyManager() {
         return economyManager;
-    }
-
-    public QuestBuilder getQuestBuilder() {
-        return questBuilder;
     }
 
     public BlockManager getBlockManager() {
